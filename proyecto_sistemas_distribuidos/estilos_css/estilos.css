@@ -38,6 +38,23 @@ header {
     z-index: 1000;
 }
 /* --- LOGOTIPO --- */
+#login{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(-45deg, #ff0000, #7a0000, #f9f6f6, #1a1a1a);
+    background-size: 400% 400%;
+    animation: gradientBG 6s infinite alternate;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
 .logo {
     height: 50px;
     font-size: 25px;
@@ -252,6 +269,41 @@ main {
     margin-bottom: 15px;
 }
  
+/* Ventana de Archivos */
+.left-section table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.left-section th, .left-section td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.left-section th {
+    background-color: #f1f1f1;
+}
+/* Ventana de Métricas */
+.right-section ul {
+    list-style: none;
+    padding: 0;
+}
+.right-section li {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+/* Caja de registro */
+#caja{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #eaeaf0;
+    margin: 10;
+}
+
 .footer{
     padding: 100px 0;
     background-color: #000000;

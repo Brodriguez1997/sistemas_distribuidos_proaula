@@ -63,7 +63,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background: linear-gradient(-45deg, #f6f4f4, #7a0000, #ca4a4a, #e90303);
     color: rgb(230, 8, 8);
     padding: 10px 20px;
 }
@@ -73,7 +73,7 @@ header h1 {
 }
 
 header nav a {
-    color: rgb(251, 247, 247);
+    color: rgb(215, 26, 26);
     text-decoration: none;
     margin-left: 20px;
 }

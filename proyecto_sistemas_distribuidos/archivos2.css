@@ -1,0 +1,99 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(202, 5, 5, 0.949);
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #901e1e;
+    font-weight: bold;
+}
+
+main {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+}
+
+/* Estilo para las ventanas */
+section {
+    width: 45%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ventana de Archivos */
+.left-section table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.left-section th, .left-section td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.left-section th {
+    background-color: #f1f1f1;
+}
+
+/* Ventana de Métricas */
+.right-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.right-section li {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Caja de registro */
+.register-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

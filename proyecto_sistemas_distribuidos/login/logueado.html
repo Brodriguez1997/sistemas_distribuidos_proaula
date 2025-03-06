@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atención al Cliente</title>
-    <link rel="stylesheet" href="/estilos_css/estilos.css">
+    <link rel="stylesheet" href="/proyecto_sistemas_distribuidos/estilos_css/estilos.css">
 </head>
 <body>
     <header>
-        <img src="/imagenes/PDF.jpeg" alt="Logo JPE" class="logo">
+        <img src="/proyecto_sistemas_distribuidos/imagenes/PDF.jpeg" alt="Logo JPE" class="logo">
         <nav>
             <ul>
                 <li><a id="user-info" class="user-info"></a></li>
-                <li><a href="#">Archivos convertidos</a></li>
+                <li><a href="/proyecto_sistemas_distribuidos/archivos.html">Archivos convertidos</a></li>
                 <li><a href="../index.html">Salir</a></li>
             </ul>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     // Simula obtener el usuario del almacenamiento local (de un login real)
-                    let usuario = localStorage.getItem("usuario");
+                    let usuario = localStorage.getItem("username");
             
                     if (!usuario) {
                         usuario = prompt("Ingresa tu nombre de usuario:");
@@ -40,7 +40,7 @@
                 <button id="uploadBtn">convertir</button>
                 
                 <button id="uploadBtn2" type="file" id="fileInput" multiple>convertir URL</button>
-                <button onclick="location.href='../eliminar citas/eliminar.html'">Ver mis archivos</button>
+                <button onclick="location.href='/proyecto_sistemas_distribuidos/archivos.html'">Ver mis archivos</button>
                 <script>
                     document.getElementById("uploadBtn").addEventListener("click", function() {
                         document.getElementById("fileInput").click(); // Abre el explorador de archivos
