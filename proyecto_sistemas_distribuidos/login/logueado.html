@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atención al Cliente</title>
+    <link rel="stylesheet" href="/estilos_css/estilos.css">
+</head>
+<body>
+    <header>
+        <img src="/imagenes/PDF.jpeg" alt="Logo JPE" class="logo">
+        <nav>
+            <ul>
+                <li><a id="user-info" class="user-info"></a></li>
+                <li><a href="#">Archivos convertidos</a></li>
+                <li><a href="../index.html">Salir</a></li>
+            </ul>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Simula obtener el usuario del almacenamiento local (de un login real)
+                    let usuario = localStorage.getItem("usuario");
+            
+                    if (!usuario) {
+                        usuario = prompt("Ingresa tu nombre de usuario:");
+                        localStorage.setItem("usuario", usuario);
+                    }
+            
+                    document.getElementById("user-info").innerText = `Bienvenido, ${usuario}`;
+                });
+            </script>
+        </nav>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <h1>Convertidor de PDF</h1>
+            <p>Convierte archivos de offimatica en PDF</p>
+            <div class="buttons">
+                <input type="file" id="fileInput" multiple>
+                <button id="uploadBtn">convertir</button>
+                
+                <button id="uploadBtn2" type="file" id="fileInput" multiple>convertir URL</button>
+                <button onclick="location.href='../eliminar citas/eliminar.html'">Ver mis archivos</button>
+                <script>
+                    document.getElementById("uploadBtn").addEventListener("click", function() {
+                        document.getElementById("fileInput").click(); // Abre el explorador de archivos
+                    });
+            
+                    document.getElementById("fileInput").addEventListener("change", function(event) {
+                        let files = event.target.files;
+                        let fileList = document.getElementById("fileList");
+                      
+            
+                        for (let i = 0; i < files.length; i++) {
+                            fileList.innerHTML += `<li>${files[i].name} (${(files[i].size / 1024).toFixed(2)} KB)</li>`;
+                        }
+            
+                        fileList.innerHTML += "</ul>";
+                    });
+                </script>
+                
+            </div>
+            
+    </main>
+
+    <footer>
+        <section class="locations">
+            <div class="location">
+                <h2>WORD A PDF</h2>
+                <ul>
+                 <p><br><br><br></p>
+            </ul>
+            </div>
+            <div class="location">
+                <h2>EXCEL A PDF</h2>
+                <ul>
+                    <p><br><br><br></p>
+                </ul>
+            </div>
+            <div class="location">
+                <h2>POWER POINT A PDF</h2>
+                <ul>
+                <p><br><br><br></p>
+            </ul>
+            </div>
+            <div class="location">
+                <h2>URL A PDF</h2>
+                <ul>
+                <p><br><br><br></p>
+            </ul>
+            </div>
+
+    </footer>
+    
+</body>
+</html>
