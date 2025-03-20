@@ -38,8 +38,6 @@
             <div class="buttons">
                 <input type="file" id="fileInput" multiple>
                 <button id="uploadBtn">convertir</button>
-                
-                <button id="uploadBtn2" type="file" id="fileInput" multiple>convertir URL</button>
                 <button onclick="location.href='/proyecto_sistemas_distribuidos/archivos.html'">Ver mis archivos</button>
                 <script>
                     document.getElementById("uploadBtn").addEventListener("click", function() {
@@ -59,30 +57,31 @@
                     });
                 </script>
                 
+                <button id="urlBtn">Ingersar URLS</button>
+                <button id="convertAllBtn">Convertir Todas</button>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.12/sweetalert2.all.min.js"></script>
+                <script src="/proyecto_sistemas_distribuidos/login/script.js"></script>             
+                
             </div>
-            
+            <div class="url-list">
+                <h3>URLs Guardadas:</h3>
+                <ul id="urlList"></ul>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.12/sweetalert2.all.min.js"></script>
+                <script src="/proyecto_sistemas_distribuidos/login/script.js"></script>
+               
+            </div>
     </main>
 
     <footer>
         <section class="locations">
             <div class="location">
-                <h2>WORD A PDF</h2>
+                <h2>offimatica A PDF</h2>
                 <ul>
                  <p><br><br><br></p>
             </ul>
             </div>
-            <div class="location">
-                <h2>EXCEL A PDF</h2>
-                <ul>
-                    <p><br><br><br></p>
-                </ul>
-            </div>
-            <div class="location">
-                <h2>POWER POINT A PDF</h2>
-                <ul>
-                <p><br><br><br></p>
-            </ul>
-            </div>
+            
+            
             <div class="location">
                 <h2>URL A PDF</h2>
                 <ul>

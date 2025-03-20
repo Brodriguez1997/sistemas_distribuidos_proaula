@@ -294,14 +294,38 @@ main {
     margin-bottom: 10px;
 }
 /* Caja de registro */
-#caja{
+.register-box {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: #eaeaf0;
-    margin: 10;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 50px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 1000px;
+}
+.left-section, .right-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    color: black;
+}
+.left-section {
+    width: 60%;
+}
+
+.right-section {
+    width: 30%;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
 .footer{
@@ -431,4 +455,63 @@ section span:hover{
 }
 #menu{
     display: none;
+}
+/* Estilo del recuadro blanco para mostrar URLs */
+.url-list {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(233, 5, 5, 0.967);
+    max-height: 250px;
+    overflow-y: auto; /* Si hay muchas URLs, aparece scroll */
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.url-list h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.url-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+}
+
+.url-list li {
+    background: #f8f9fa;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    border: 1px solid #ee1010;
+}
+
+.url-list li:hover {
+    background: linear-gradient(rgba(239, 93, 93, 0.7), rgba(0,0,0,0.7)), url(imagenes/2.JPG);
+}
+.delete-btn {
+    background-color: #df1616;
+    color: #fff;
+    border: none;
+    padding: 3px 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.delete-btn:hover {
+    background-color: #b31212;
+    transform: scale(1.1);
 }
