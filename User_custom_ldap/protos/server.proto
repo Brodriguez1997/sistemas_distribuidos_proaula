@@ -14,6 +14,8 @@ service ConvertidorUrls {
 service ConvertidorOffice {
   rpc ConvertirArchivos (ConvertirArchivosRequest) returns (ConvertirArchivosResponse) {}
   rpc DescargarArchivo (DescargarArchivoRequest) returns (DescargarArchivoResponse) {}
+
+  // Nuevo método para enviar un "Hola" y recibir una respuesta
   rpc Saludar (SaludarRequest) returns (SaludarResponse) {}
 }
 

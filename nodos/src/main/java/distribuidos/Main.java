@@ -55,5 +55,21 @@ public class Main {
             );
             responseObserver.onCompleted();
         }
+
+        @Override
+        public void saludar(SaludarRequest request,
+                          StreamObserver<SaludarResponse> responseObserver) {
+            // Nueva implementación del método Saludar
+            String mensajeRecibido = request.getMensaje();
+            String respuesta = "Hola desde el servidor! Recibí tu mensaje: " + mensajeRecibido;
+            System.out.println(request);
+            
+            responseObserver.onNext(
+                SaludarResponse.newBuilder()
+                    .setRespuesta(respuesta)
+                    .build()
+            );
+            responseObserver.onCompleted();
+        }
     }
 }
