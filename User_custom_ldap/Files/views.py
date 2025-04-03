@@ -28,6 +28,15 @@ import server_pb2_grpc as grpc_pb2_grpc
 
 def enviar_mensaje(mensaje):
     print(mensaje)
+    url = "http://host.docker.internal:3000/api/hola"
+
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        print("Respuesta del servidor:", response.text)
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        
     channel = grpc.insecure_channel('host.docker.internal:50051')
     stub = grpc_pb2_grpc.ConvertidorOfficeStub(channel)
     
