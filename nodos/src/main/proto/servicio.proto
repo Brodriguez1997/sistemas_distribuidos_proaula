@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "distribuidos.proto";
+option java_outer_classname = "ServiceProto";
+
+package distribuidos;
+
+service ConvertidorUrls {
+  rpc ConvertirUrls (ConvertirUrlsRequest) returns (ConvertirUrlsResponse) {}
+  rpc DescargarUrls (DescargarUrlsRequest) returns (DescargarUrlsResponse) {}
+}
+
+service ConvertidorOffice {
+  rpc ConvertirArchivos (ConvertirArchivosRequest) returns (ConvertirArchivosResponse) {}
+  rpc DescargarArchivo (DescargarArchivoRequest) returns (DescargarArchivoResponse) {}
+  rpc Saludar (SaludarRequest) returns (SaludarResponse) {}
+}
+
+message ConvertirUrlsRequest {
+  string url = 1;
+  string nombre = 2;
+  string tipo = 3;
+}
+
+message ConvertirUrlsResponse {
+  repeated string resultados = 1;
+}
+
+message DescargarUrlsRequest {
+  string nombre = 1;
+}
+
+message DescargarUrlsResponse {
+  string respuesta = 1;
+}
+
+message ConvertirArchivosRequest {
+  string archivo = 1;
+  string nombre = 2;
+  string tipo = 3;
+}
+
+message ConvertirArchivosResponse {
+  repeated string resultados = 1;
+}
+
+message DescargarArchivoRequest {
+  string nombre = 1;
+}
+
+message DescargarArchivoResponse {
+  string respuesta = 1;
+}
+
+// Nuevo mensaje para solicitud de saludo
+message SaludarRequest {
+  string mensaje = 1;
+}
+
+// Nuevo mensaje para respuesta del saludo
+message SaludarResponse {
+  string respuesta = 1;
+}

@@ -1,0 +1,11 @@
+{
+    "java.project.sourcePaths": [
+        "src/main/java",
+        "target/generated-sources/protobuf/java",
+        "target/generated-sources/protobuf/grpc-java"
+    ],
+    "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": true,
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
+}

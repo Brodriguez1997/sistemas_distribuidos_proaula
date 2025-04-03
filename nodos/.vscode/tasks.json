@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "mvn clean install",
+            "type": "shell",
+            "command": "mvn clean install",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "mvn compile",
+            "type": "shell",
+            "command": "mvn compile",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

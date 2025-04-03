@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "distribuidos.Main",
+            "projectName": "nodos",
+            "args": "",
+            "vmArgs": "-Djava.library.path=target/natives"
+        }
+    ]
+}

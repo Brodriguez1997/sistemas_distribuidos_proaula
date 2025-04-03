@@ -1,0 +1,5 @@
+officepdf\officepdf.class
+urlpdf\urlpdf.class
+urlpdf\ProcessingManager.class
+urlpdf\Processing.class
+officepdf\Processing.class
