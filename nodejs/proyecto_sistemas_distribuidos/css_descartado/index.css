@@ -1,0 +1,137 @@
+*{
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box; 
+    text-decoration: none;  
+    list-style: none;  
+}
+ 
+body{
+    font-family: 'Poppins', sans-serif;
+}
+ 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+ 
+.header{
+    margin-top: 100px;
+}
+ 
+.header{
+    background-image: linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.7)),
+        url(imagenes/2.JPG);
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+}
+ 
+.menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ 
+.logo{
+    color: #FFFDFC;
+    font-size: 25px;
+    font-weight: 800;
+    margin: -8px;
+   
+}
+ 
+ 
+ 
+.menu .navbar ul li{
+    position: relative;
+    float: left;
+}
+ 
+.menu .navbar ul li a{/*items superiores derechos*/
+    font-size: 18px;
+    padding: 20px;
+    color: #000000;
+    display: block;
+    font-weight: 600;
+}
+ 
+.menu .navbar ul li a:hover{/*Items al pasar mouse*/
+    color: #eb3d08;
+}
+ 
+#menu{
+    display: none;
+}
+ 
+.menu-icono{
+    width: 100px;
+}
+ 
+.menu label{
+    cursor: pointer;
+    display: none;
+}
+ 
+.header-content {
+    text-align: center;
+}
+ 
+.header-content h1{/*titulo*/
+    font-size: 50px;
+    line-height: 80px;
+    color: #F9FAFC;
+    text-transform: uppercase;
+    margin-bottom: 35px;
+}
+ 
+.header-content p{
+    font-size: 16px;
+    color: #C5C5C5;
+    padding: 0 250px;
+    margin-bottom: 25px;
+}
+ 
+.link a{
+    font-size: 16px;
+    color: #C5C5C5;
+    display: block;
+    margin-bottom: 15px;
+}
+ 
+.footer{
+    padding: 100px 0;
+    background-color: #000000;
+}
+ 
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+}
+ 
+.link h3{
+    font-size: 18px;
+    color: #F9FAFC;
+    margin-bottom: 15px;
+}
+ 
+.btn-1{/*botones información*/
+    display: inline-block;
+    padding: 11px 35px;
+    background-color: #f51a0b;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+ 
+.btn-1:hover{
+    background-color: #4002f8;
+}
