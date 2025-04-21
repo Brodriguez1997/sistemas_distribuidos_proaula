@@ -1,4 +1,4 @@
-const soapService = require('../services/soapService');
+const soapService = require('../services/soapService.js');
 
 const loginUser = async (req, res, next) => {
   try {
