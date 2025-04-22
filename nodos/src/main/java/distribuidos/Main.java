@@ -7,6 +7,10 @@ import officepdf.officepdf;
 import urlpdf.urlpdf;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import distribuidos.proto.*;
 
 public class Main {
@@ -38,50 +42,57 @@ public class Main {
         @Override
         public void convertirUrls(ConvertirUrlsRequest request, 
                 StreamObserver<ConvertirUrlsResponse> responseObserver) {
-                try {
-                 // Crear el array de URLs con la URL recibida en la solicitud
+            try {
                 String[] urls = {request.getUrl()};
-                 int[] threadCounts = {4}; // Puedes hacer esto configurable si lo necesitas
+                int[] threadCounts = {4};
                                     
-                                    // Crear y ejecutar el procesador de URLs
-                 urlpdf processor = new urlpdf (urls, threadCounts);
-                         processor.processUrls();
+                urlpdf processor = new urlpdf(urls, threadCounts);
+                processor.processUrls();
                                     
-                        responseObserver.onNext(
-                         ConvertirUrlsResponse.newBuilder()
-                     .addResultados("Success")
+                responseObserver.onNext(
+                    ConvertirUrlsResponse.newBuilder()
+                    .addResultados("Success")
                     .build()
-                    );
-                  responseObserver.onCompleted();
-                } catch (Exception e) {
-                 responseObserver.onError(e);
+                );
+                responseObserver.onCompleted();
+            } catch (Exception e) {
+                responseObserver.onError(e);
             }
-         }
+        }
     }
 
     static class OfficeConverterService extends ConvertidorOfficeGrpc.ConvertidorOfficeImplBase {
         @Override
         public void convertirArchivos(ConvertirArchivosRequest request, 
-                                    StreamObserver<ConvertirArchivosResponse> responseObserver) {
-          try {
-                // Crear el array de archivos con el archivo recibido en la solicitud
-            String[] files = {request.getArchivo()};
-            int threads = 4; // Puedes hacer esto configurable
-                                            
-                                            // Crear y ejecutar el procesador de archivos
-            officepdf processor = new officepdf(files, threads);
-            processor.processFiles();
-                                            
+            StreamObserver<ConvertirArchivosResponse> responseObserver) {
+            try {
+                // Decodificar el base64 a archivo temporal
+                byte[] fileBytes = Base64.getDecoder().decode(request.getArchivo());
+                String tempDir = System.getProperty("java.io.tmpdir");
+                String tempFilePath = tempDir + request.getNombre();
+                Path path = Paths.get(tempFilePath);
+                Files.write(path, fileBytes);
+
+                // Procesar el archivo
+                String[] files = {tempFilePath};
+                int threads = 4;
+                
+                officepdf processor = new officepdf(files, threads);
+                processor.processFiles();
+                
+                // Eliminar el archivo temporal después de procesar
+                Files.deleteIfExists(path);
+                
                 responseObserver.onNext(
-                     ConvertirArchivosResponse.newBuilder()
-                     .addResultados("Success - Archivo convertido: " + request.getNombre())
-                     .build()
-                 );
-             responseObserver.onCompleted();
+                    ConvertirArchivosResponse.newBuilder()
+                    .addResultados("Success - Archivo convertido: " + request.getNombre())
+                    .build()
+                );
+                responseObserver.onCompleted();
             } catch (Exception e) {
-             responseObserver.onError(e);
-         }
-    }
+                responseObserver.onError(e);
+            }
+        }
 
         @Override
         public void saludar(SaludarRequest request,
