@@ -1,9 +1,9 @@
 D:\sistemas_distribuidos_proaula\nodos\src\main\java\distribuidos\Main.java
-D:\sistemas_distribuidos_proaula\nodos\src\main\java\officepdf\officepdf.java
+D:\sistemas_distribuidos_proaula\nodos\src\main\java\officepdf\OfficePdf.java
 D:\sistemas_distribuidos_proaula\nodos\src\main\java\officepdf\Processing.java
 D:\sistemas_distribuidos_proaula\nodos\src\main\java\urlpdf\Processing.java
 D:\sistemas_distribuidos_proaula\nodos\src\main\java\urlpdf\ProcessingManager.java
-D:\sistemas_distribuidos_proaula\nodos\src\main\java\urlpdf\urlpdf.java
+D:\sistemas_distribuidos_proaula\nodos\src\main\java\urlpdf\UrlPdf.java
 D:\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\grpc-java\distribuidos\proto\ConvertidorOfficeGrpc.java
 D:\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\grpc-java\distribuidos\proto\ConvertidorUrlsGrpc.java
 D:\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirArchivosRequest.java

@@ -3,9 +3,10 @@ package distribuidos;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import officepdf.officepdf;
-import urlpdf.urlpdf;
+import officepdf.OfficePdf;
+import urlpdf.UrlPdf;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,13 +46,26 @@ public class Main {
             try {
                 String[] urls = {request.getUrl()};
                 int[] threadCounts = {4};
-                                    
-                urlpdf processor = new urlpdf(urls, threadCounts);
+                
+                // Configurar directorio de salida temporal
+                String tempDir = System.getProperty("java.io.tmpdir") + "pdf_output/";
+                new File(tempDir).mkdirs();
+                
+                UrlPdf processor = new UrlPdf(urls, threadCounts, tempDir);
                 processor.processUrls();
-                                    
+                
+                // Leer el PDF generado y convertirlo a base64
+                String pdfName = request.getNombre() + ".pdf";
+                String pdfPath = tempDir + pdfName;
+                byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
+                String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                
+                // Eliminar archivo temporal
+                Files.deleteIfExists(Paths.get(pdfPath));
+                
                 responseObserver.onNext(
                     ConvertirUrlsResponse.newBuilder()
-                    .addResultados("Success")
+                    .addResultados(pdfBase64) // Envía el PDF en base64
                     .build()
                 );
                 responseObserver.onCompleted();
@@ -76,16 +90,24 @@ public class Main {
                 // Procesar el archivo
                 String[] files = {tempFilePath};
                 int threads = 4;
+                String outputDir = tempDir + "pdf_output/";
+                new File(outputDir).mkdirs(); // Crear directorio si no existe
                 
-                officepdf processor = new officepdf(files, threads);
+                OfficePdf processor = new OfficePdf(files, threads, outputDir);
                 processor.processFiles();
                 
-                // Eliminar el archivo temporal después de procesar
+                // Leer el PDF generado y convertirlo a base64
+                String pdfPath = outputDir + request.getNombre().replaceFirst("[.][^.]+$", "") + ".pdf";
+                byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
+                String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                
+                // Limpieza: eliminar archivos temporales
                 Files.deleteIfExists(path);
+                Files.deleteIfExists(Paths.get(pdfPath));
                 
                 responseObserver.onNext(
                     ConvertirArchivosResponse.newBuilder()
-                    .addResultados("Success - Archivo convertido: " + request.getNombre())
+                    .addResultados(pdfBase64) // Envía el PDF en base64
                     .build()
                 );
                 responseObserver.onCompleted();

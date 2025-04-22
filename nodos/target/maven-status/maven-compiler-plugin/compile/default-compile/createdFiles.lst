@@ -1,6 +1,6 @@
 distribuidos\proto\ConvertidorOfficeGrpc$3.class
 distribuidos\proto\ConvertidorOfficeGrpc$MethodHandlers.class
-officepdf\officepdf.class
+urlpdf\UrlPdf.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsFutureStub.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeBaseDescriptorSupplier.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeFutureStub.class
@@ -15,11 +15,11 @@ distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeMethodDescriptorSuppli
 distribuidos\proto\ConvertidorUrlsGrpc$3.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsBlockingStub.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeFileDescriptorSupplier.class
-urlpdf\urlpdf.class
 urlpdf\ProcessingManager.class
 distribuidos\proto\ConvertidorUrlsGrpc.class
 urlpdf\Processing.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsStub.class
+officepdf\OfficePdf.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeImplBase.class
 distribuidos\proto\ConvertidorOfficeGrpc.class
 distribuidos\proto\ConvertidorOfficeGrpc$2.class
