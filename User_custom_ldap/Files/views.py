@@ -46,3 +46,25 @@ def enviar_mensaje(mensaje):
     print(response)
 
     return response
+
+def recibir_archivo(file, nombre_archivo, tipo):
+    
+    url = "http://host.docker.internal:3000/api/pdf/"
+
+    channel = grpc.insecure_channel('host.docker.internal:50051')
+    stub = grpc_pb2_grpc.ConvertidorOfficeStub(channel)
+
+    request = grpc_pb2.ConvertirArchivosRequest(archivo=file, nombre=nombre_archivo, tipo=tipo)
+    response = stub.ConvertirArchivos(request)
+    print(response)
+    
+    if response:
+        data = {
+            "nombre": nombre_archivo,
+            "ruta": 10,
+            "tamano": 1000,
+        }
+        response_db = requests.post(url, json=data)
+        print(response_db)
+
+    return "recibido"

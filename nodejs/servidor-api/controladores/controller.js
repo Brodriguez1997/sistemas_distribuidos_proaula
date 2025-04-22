@@ -24,10 +24,11 @@ const PdfController = {
 
     create: async (req, res) => {
         try {
-            const { nombre, ruta, tama単o } = req.body;
-            const nuevoArchivo = await PdfModel.create(nombre, ruta, tama単o);
+            const { nombre, ruta, tamano } = req.body;
+            const nuevoArchivo = await PdfModel.create(nombre, ruta, tamano);
             res.status(201).json(nuevoArchivo);
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: error.message });
         }
     },

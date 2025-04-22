@@ -13,9 +13,10 @@ class PdfModel {
     }
 
     static async create(nombre, ruta, tamaño) {
+        const fechaActual = new Date();
         const res = await db.query(
-            'INSERT INTO archivos_pdf(nombre, ruta, tamaño) VALUES($1, $2, $3) RETURNING ',
-            [nombre, ruta, tamaño]
+            'INSERT INTO archivo(nombre, nodo, peso, fecha) VALUES($1, $2, $3, $4) RETURNING *',
+            [nombre, ruta, tamaño, fechaActual]
         );
         return res.rows[0];
     }
