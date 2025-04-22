@@ -1,23 +1,24 @@
 package urlpdf;
 
-import java.util.Scanner;
 import java.io.File;
+import java.util.Scanner;
 
 public class urlpdf {
+    private String[] urls;
+    private int[] threadCounts;
 
-    public static void main(String[] args) throws Exception {
+    public urlpdf(String[] urls, int[] threadCounts) {
+        this.urls = urls;
+        this.threadCounts = threadCounts;
+    }
+
+    public void processUrls() throws Exception {
         try (Scanner scanner = new Scanner(System.in)) {
-
-            String[] myurls = {
-               
-            };
-            int[] threadCounts = {4};
-
             for (int numThreads : threadCounts) {
                 long inicio = System.currentTimeMillis();
 
                 ProcessingManager processingManager = new ProcessingManager(numThreads);
-                processingManager.processURLs(myurls);
+                processingManager.processURLs(urls);
 
                 long fin = System.currentTimeMillis();
                 long totalTime = fin - inicio;
@@ -28,7 +29,7 @@ public class urlpdf {
         }
     }
 
-    private static void cleanPdfFolder() {
+    private void cleanPdfFolder() {
         File folder = new File("C:/Users/brayan antonio/eclipse-workspace/pdfs/pdfFolder/");
         File[] files = folder.listFiles();
         if (files != null) {

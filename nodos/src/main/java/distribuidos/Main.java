@@ -3,6 +3,9 @@ package distribuidos;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import officepdf.officepdf;
+import urlpdf.urlpdf;
+
 import java.io.IOException;
 import distribuidos.proto.*;
 
@@ -34,27 +37,51 @@ public class Main {
     static class UrlConverterService extends ConvertidorUrlsGrpc.ConvertidorUrlsImplBase {
         @Override
         public void convertirUrls(ConvertirUrlsRequest request, 
-                               StreamObserver<ConvertirUrlsResponse> responseObserver) {
-            responseObserver.onNext(
-                ConvertirUrlsResponse.newBuilder()
-                    .addResultados("Success")
+                StreamObserver<ConvertirUrlsResponse> responseObserver) {
+                try {
+                 // Crear el array de URLs con la URL recibida en la solicitud
+                String[] urls = {request.getUrl()};
+                 int[] threadCounts = {4}; // Puedes hacer esto configurable si lo necesitas
+                                    
+                                    // Crear y ejecutar el procesador de URLs
+                 urlpdf processor = new urlpdf (urls, threadCounts);
+                         processor.processUrls();
+                                    
+                        responseObserver.onNext(
+                         ConvertirUrlsResponse.newBuilder()
+                     .addResultados("Success")
                     .build()
-            );
-            responseObserver.onCompleted();
-        }
+                    );
+                  responseObserver.onCompleted();
+                } catch (Exception e) {
+                 responseObserver.onError(e);
+            }
+         }
     }
 
     static class OfficeConverterService extends ConvertidorOfficeGrpc.ConvertidorOfficeImplBase {
         @Override
         public void convertirArchivos(ConvertirArchivosRequest request, 
                                     StreamObserver<ConvertirArchivosResponse> responseObserver) {
-            responseObserver.onNext(
-                ConvertirArchivosResponse.newBuilder()
-                    .addResultados("Success")
-                    .build()
-            );
-            responseObserver.onCompleted();
-        }
+          try {
+                // Crear el array de archivos con el archivo recibido en la solicitud
+            String[] files = {request.getArchivo()};
+            int threads = 4; // Puedes hacer esto configurable
+                                            
+                                            // Crear y ejecutar el procesador de archivos
+            officepdf processor = new officepdf(files, threads);
+            processor.processFiles();
+                                            
+                responseObserver.onNext(
+                     ConvertirArchivosResponse.newBuilder()
+                     .addResultados("Success - Archivo convertido: " + request.getNombre())
+                     .build()
+                 );
+             responseObserver.onCompleted();
+            } catch (Exception e) {
+             responseObserver.onError(e);
+         }
+    }
 
         @Override
         public void saludar(SaludarRequest request,
