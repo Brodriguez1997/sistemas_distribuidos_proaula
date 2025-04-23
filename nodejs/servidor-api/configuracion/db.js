@@ -4,7 +4,7 @@ const client = new Client({
     host: 'localhost',
     port: 5432,
     user: 'postgres',
-    password: 'jagua',
+    password: 'Antoniors1997',
     database: 'convertidor_pdf',
 });
 
