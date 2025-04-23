@@ -47,6 +47,7 @@ class SoapServiceUser(ServiceBase):
     @rpc(Unicode, Unicode, _returns=Unicode)
     def loginSoap(ctx, username, password):
         user = authenticate(username=username, password=password)
+        print("llego")
         
         if user:
             refresh = RefreshToken.for_user(user)
