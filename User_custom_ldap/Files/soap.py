@@ -45,6 +45,13 @@ class SoapServiceUser(ServiceBase):
 
         return json.dumps({'message': rta})
     
+    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
+    def recibir_url_soap(ctx, url, nombre_url, tipo):
+
+        rta = recibir_archivo(url, nombre_url, tipo)
+
+        return json.dumps({'message': rta})
+    
 my_soap = Application(
     [SoapServiceUser],
     tns='django.soap.files',

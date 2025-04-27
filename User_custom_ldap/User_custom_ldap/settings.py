@@ -156,7 +156,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Users.User'
 
 ####configuracion de conexion con el directorio activo
-AUTH_LDAP_SERVER_URI = "ldap://192.168.1.72:389"
+AUTH_LDAP_SERVER_URI = "ldap://192.168.185.63:389"
+#192.168.1.72
 AUTH_LDAP_BIND_DN = "CN=Administrador,CN=Users,DC=distribuidos,DC=com"
 AUTH_LDAP_BIND_PASSWORD = "Jagua456"
 AUTH_LDAP_USER_SEARCH = LDAPSearch("dc=distribuidos,dc=com", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")

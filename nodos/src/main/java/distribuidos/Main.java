@@ -4,6 +4,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import officepdf.OfficePdf;
+import officepdf.Processing;
 import urlpdf.UrlPdf;
 
 import java.io.File;
@@ -13,6 +14,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import distribuidos.proto.*;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 
 public class Main {
     private Server server;
@@ -76,9 +85,15 @@ public class Main {
     }
 
     static class OfficeConverterService extends ConvertidorOfficeGrpc.ConvertidorOfficeImplBase {
+             
+        private static final AtomicInteger totalRequests = new AtomicInteger(0);
+        
         @Override
         public void convertirArchivos(ConvertirArchivosRequest request, 
             StreamObserver<ConvertirArchivosResponse> responseObserver) {
+                totalRequests.incrementAndGet();
+                long startTime = System.currentTimeMillis();
+                 MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
             try {
                 // Decodificar el base64 a archivo temporal
                 byte[] fileBytes = Base64.getDecoder().decode(request.getArchivo());
@@ -111,9 +126,25 @@ public class Main {
                     .build()
                 );
                 responseObserver.onCompleted();
+                 
+            long duration = System.currentTimeMillis() - startTime;
+            long memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024); // MB
+            
+            System.out.printf(
+                "gRPC Request: %s, Tiempo: %dms, Memoria: %dMB%n",
+                request.getNombre(), duration, memoryUsed
+            );
+            
+            responseObserver.onNext(ConvertirArchivosResponse.newBuilder()
+                .addResultados(pdfBase64)
+                .build());
+            responseObserver.onCompleted();
+
             } catch (Exception e) {
+                System.err.printf("Error en gRPC: %s%n", e.getMessage());
                 responseObserver.onError(e);
             }
+        
         }
 
         @Override
@@ -132,4 +163,27 @@ public class Main {
             responseObserver.onCompleted();
         }
     }
+    public class OfficePdf2 {
+    private String[] files;
+    private int threads;
+    private String outputPdfPath;
+
+    public void processFiles() throws Exception {
+        long startTime = System.currentTimeMillis();
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+
+        for (String file : files) {
+            executor.submit(new Processing(file, outputPdfPath));
+        }
+
+        executor.shutdown();
+        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        
+        long totalTime = System.currentTimeMillis() - startTime;
+        System.out.printf(
+            "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
+            files.length, threads, totalTime
+        );
+    }
+}
 }

@@ -16,6 +16,7 @@ public class OfficePdf {
     }
 
     public void processFiles() throws Exception {
+        long startTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(threads);
 
         for (String file : files) {
@@ -24,5 +25,10 @@ public class OfficePdf {
 
         executor.shutdown();
         executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+
+        long totalTime = System.currentTimeMillis() - startTime;
+        System.out.printf(
+            "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
+            files.length, threads, totalTime);
     }
 }

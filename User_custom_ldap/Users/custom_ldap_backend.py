@@ -58,8 +58,8 @@ def create_user_in_ldap(username,name,last_name,email,img,question,answer,passwo
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     # Conectarse a la máquina virtual por SSH
-    ssh_client.connect('192.168.1.72', username='Administrador', password='Jagua456')
-    
+    ssh_client.connect('192.168.185.63', username='Administrador', password='Jagua456')
+    #192.168.1.72
     # Ejecutar el script de PowerShell remotamente
     #shell = ssh_client.invoke_shell()
     try:
