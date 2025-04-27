@@ -139,13 +139,23 @@ public class Main {
                 .addResultados(pdfBase64)
                 .build());
             responseObserver.onCompleted();
+            duration = System.currentTimeMillis() - startTime;
+            memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024);
+            System.out.println("\n=== Métricas del Servicio ===");
+            System.out.println("Total de peticiones: " + totalRequests.get());
+            System.out.printf("Última conversión - Tiempo: %dms | Memoria usada: %dMB\n",
+            duration, memoryUsed);
+            System.out.printf("Tiempo: %dms | Memoria: %dMB\n", duration, memoryUsed);
 
             } catch (Exception e) {
                 System.err.printf("Error en gRPC: %s%n", e.getMessage());
                 responseObserver.onError(e);
             }
+            
+     
         
         }
+        
 
         @Override
         public void saludar(SaludarRequest request,
