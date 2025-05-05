@@ -1,4 +1,3 @@
-//Finalmente, crea el archivo principal app.js:
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -21,13 +20,29 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Algo salió mal!' });
 });
 
+// Verificar conexión a la base de datos al iniciar
+db.query('SELECT NOW()')
+    .then(() => console.log('Conexión a PostgreSQL verificada'))
+    .catch(err => console.error('Error al conectar con PostgreSQL:', err));
+
 // Iniciar servidor
-app.listen(PORT, () => {
-    console.log("Servidor corriendo en http://localhost:3000");
+const server = app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
-// Cerrar conexión a la DB al terminar
-process.on('SIGINT', async () => {
-    await db.end();
-    process.exit();
+// Cerrar conexiones adecuadamente
+process.on('SIGTERM', () => {
+    console.log('Apagando servidor...');
+    server.close(() => {
+        db.end();
+        console.log('Servidor apagado');
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', () => {
+    server.close(() => {
+        db.end();
+        process.exit(0);
+    });
 });

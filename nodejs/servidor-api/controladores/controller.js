@@ -24,23 +24,23 @@ const PdfController = {
 
     create: async (req, res) => {
         try {
-            const { nombre, ruta, tamano } = req.body;
-            const nuevoArchivo = await PdfModel.create(nombre, ruta, tamano);
+            const { nombre, nodo, peso } = req.body;
+            const nuevoArchivo = await PdfModel.create(nombre, nodo, peso);
             res.status(201).json(nuevoArchivo);
         } catch (error) {
-            console.log(error)
+            console.error(error);
             res.status(500).json({ error: error.message });
         }
     },
 
     update: async (req, res) => {
         try {
-            const { nombre, ruta, tama単o } = req.body;
+            const { nombre, nodo, peso } = req.body;
             const archivoActualizado = await PdfModel.update(
                 req.params.id,
                 nombre,
-                ruta,
-                tama単o
+                nodo,
+                peso
             );
             if (!archivoActualizado) {
                 return res.status(404).json({ message: 'Archivo no encontrado' });
