@@ -27,7 +27,10 @@ import server_pb2 as grpc_pb2
 import server_pb2_grpc as grpc_pb2_grpc
 
 def recibir_url(lista_grpc_urls):
-    #url = "http://host.docker.internal:3000/api/pdf/"
+    url = "http://host.docker.internal:3000/api/pdf/"
+    iteracion = 0
+    nodos = []
+    nodo = nodos[iteracion] + ":50051"
 
     channel = grpc.insecure_channel('192.168.0.226:50051')
     stub = grpc_pb2_grpc.ConvertidorUrlsStub(channel)
@@ -58,21 +61,31 @@ def recibir_url(lista_grpc_urls):
     
     if response:
         for urlDaTa in lista_grpc_urls:
+            contenido_base64_limpio = urlDaTa.contenido.replace("\n", "").replace("\r", "")
+            longitud_base64 = len(contenido_base64_limpio)
+            relleno = contenido_base64_limpio.count('=')
+            tamaño_bytes = (longitud_base64 * 3 / 4) - relleno
             data = {
                 "nombre": item['nombre'],
-                "ruta": 10,
-                "tamano": 1000,
+                "nodo": 1,
+                "peso": tamaño_bytes,
             }
-            #response_db = requests.post(url, json=data)
-            #print(response_db)
+            response_db = requests.post(url, json=data)
 
-    return "recibido"
+    if iteracion < 2:
+        iteracion += 1
+    else:
+        iteracion = 0
+    return response
 
 def recibir_archivo(lista_grpc_archivos):
     
-    #url = "http://host.docker.internal:3000/api/pdf/"
+    url = "http://host.docker.internal:3000/api/pdf/"
+    iteracion = 0
+    nodos = []
+    nodo = nodos[iteracion] + ":50051"
 
-    channel = grpc.insecure_channel('192.168.0.226:50051')
+    channel = grpc.insecure_channel(nodo)
     stub = grpc_pb2_grpc.ConvertidorOfficeStub(channel)
 
     grpc_archivos = [
@@ -83,19 +96,33 @@ def recibir_archivo(lista_grpc_archivos):
         )
         for item in lista_grpc_urls
     ]
-
-    request = grpc_pb2.ConvertirArchivosRequest(archivos=grpc_archivos)
-    response = stub.ConvertirArchivos(request)
-    print(response)
     
+    try:
+        print(grpc_archivos)
+        request = grpc_pb2.ConvertirArchivosRequest(urls=grpc_urls)
+        response = stub.ConvertirArchivos(request)
+        print("Respuesta gRPC:", response)
+    except grpc.RpcError as e:
+        print("Error en llamada gRPC:")
+        print("Code:", e.code())
+        print("Details:", e.details())
+        return "Error gRPC"
+
     if response:
         for archivo in lista_grpc_archivos:
+            contenido_base64_limpio = archivo.contenido.replace("\n", "").replace("\r", "")
+            longitud_base64 = len(contenido_base64_limpio)
+            relleno = contenido_base64_limpio.count('=')
+            tamaño_bytes = (longitud_base64 * 3 / 4) - relleno
             data = {
                 "nombre": archivo.nombre,
-                "ruta": 10,
-                "tamano": 1000,
+                "nodo": 10,
+                "peso": tamaño_bytes,
             }
-            #response_db = requests.post(url, json=data)
-            #print(response_db)
+            response_db = requests.post(url, json=data)
 
-    return "recibido"
+    if iteracion < 2:
+        iteracion += 1
+    else:
+        iteracion = 0
+    return response
