@@ -47,10 +47,6 @@ private static final long serialVersionUID = 0L;
   public static final int RESULTADOS_FIELD_NUMBER = 1;
   private com.google.protobuf.LazyStringList resultados_;
   /**
-   * <pre>
-   * Ya era una lista
-   * </pre>
-   *
    * <code>repeated string resultados = 1;</code>
    * @return A list containing the resultados.
    */
@@ -59,10 +55,6 @@ private static final long serialVersionUID = 0L;
     return resultados_;
   }
   /**
-   * <pre>
-   * Ya era una lista
-   * </pre>
-   *
    * <code>repeated string resultados = 1;</code>
    * @return The count of resultados.
    */
@@ -70,10 +62,6 @@ private static final long serialVersionUID = 0L;
     return resultados_.size();
   }
   /**
-   * <pre>
-   * Ya era una lista
-   * </pre>
-   *
    * <code>repeated string resultados = 1;</code>
    * @param index The index of the element to return.
    * @return The resultados at the given index.
@@ -82,10 +70,6 @@ private static final long serialVersionUID = 0L;
     return resultados_.get(index);
   }
   /**
-   * <pre>
-   * Ya era una lista
-   * </pre>
-   *
    * <code>repeated string resultados = 1;</code>
    * @param index The index of the value to return.
    * @return The bytes of the resultados at the given index.
@@ -438,10 +422,6 @@ private static final long serialVersionUID = 0L;
        }
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @return A list containing the resultados.
      */
@@ -450,10 +430,6 @@ private static final long serialVersionUID = 0L;
       return resultados_.getUnmodifiableView();
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @return The count of resultados.
      */
@@ -461,10 +437,6 @@ private static final long serialVersionUID = 0L;
       return resultados_.size();
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param index The index of the element to return.
      * @return The resultados at the given index.
@@ -473,10 +445,6 @@ private static final long serialVersionUID = 0L;
       return resultados_.get(index);
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param index The index of the value to return.
      * @return The bytes of the resultados at the given index.
@@ -486,10 +454,6 @@ private static final long serialVersionUID = 0L;
       return resultados_.getByteString(index);
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param index The index to set the value at.
      * @param value The resultados to set.
@@ -506,10 +470,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param value The resultados to add.
      * @return This builder for chaining.
@@ -525,10 +485,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param values The resultados to add.
      * @return This builder for chaining.
@@ -542,10 +498,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @return This builder for chaining.
      */
@@ -556,10 +508,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Ya era una lista
-     * </pre>
-     *
      * <code>repeated string resultados = 1;</code>
      * @param value The bytes of the resultados to add.
      * @return This builder for chaining.

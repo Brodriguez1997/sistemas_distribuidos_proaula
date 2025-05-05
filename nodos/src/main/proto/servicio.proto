@@ -14,22 +14,32 @@ service ConvertidorOffice {
   rpc ConvertirArchivos (ConvertirArchivosRequest) returns (ConvertirArchivosResponse) {}
 }
 
-message ConvertirUrlsRequest {
-  repeated string urls = 1;  // Cambiado de 'url' a 'urls' y ahora es una lista
-  string nombre = 2;
+// Mensaje para representar un elemento URL
+message UrlItem {
+  string nombre = 1;
+  string url = 2;
   string tipo = 3;
+}
+
+// Mensaje para representar un elemento Archivo
+message ArchivoItem {
+  string nombre = 1;
+  string contenido_base64 = 2;
+  string tipo = 3;
+}
+
+message ConvertirUrlsRequest {
+  repeated UrlItem urls = 1;
 }
 
 message ConvertirUrlsResponse {
-  repeated string resultados = 1;  // Ya era una lista
+  repeated string resultados = 1;
 }
 
 message ConvertirArchivosRequest {
-  repeated string archivos = 1;  // Cambiado de 'archivo' a 'archivos' y ahora es una lista
-  string nombre = 2;
-  string tipo = 3;
+  repeated ArchivoItem archivos = 1;
 }
 
 message ConvertirArchivosResponse {
-  repeated string resultados = 1;  // Ya era una lista
+  repeated string resultados = 1;
 }

@@ -19,9 +19,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Comparator;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     private Server server;
@@ -53,40 +57,68 @@ public class Main {
         public void convertirUrls(ConvertirUrlsRequest request, 
                 StreamObserver<ConvertirUrlsResponse> responseObserver) {
             try {
-                // Get all URLs from the repeated field
-                String[] urls = request.getUrlsList().toArray(new String[0]);
+                // Preparar URLs para procesamiento
+                List<String> urlList = new ArrayList<>();
+                List<String> nombres = new ArrayList<>();
+                
+                for (UrlItem item : request.getUrlsList()) {
+                    urlList.add(item.getUrl());
+                    nombres.add(item.getNombre());
+                }
+                
+                String[] urls = urlList.toArray(new String[0]);
                 int[] threadCounts = {4};
                 
                 // Configurar directorio de salida temporal
                 String tempDir = System.getProperty("java.io.tmpdir") + "pdf_output/";
                 new File(tempDir).mkdirs();
                 
+                // Limpiar directorio temporal antes de empezar
+                Files.list(Paths.get(tempDir))
+                    .filter(path -> path.toString().endsWith(".pdf"))
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            System.err.println("Error al limpiar archivo temporal: " + path);
+                        }
+                    });
+                
                 UrlPdf processor = new UrlPdf(urls, threadCounts, tempDir);
                 processor.processUrls();
                 
-                // Leer el PDF generado y convertirlo a base64
-                String pdfName = request.getNombre() + ".pdf";
-                String pdfPath = tempDir + pdfName;
-                byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
-                String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                // Preparar respuesta
+                ConvertirUrlsResponse.Builder responseBuilder = ConvertirUrlsResponse.newBuilder();
                 
-                // Eliminar archivo temporal
-                Files.deleteIfExists(Paths.get(pdfPath));
+                // Buscar TODOS los PDFs generados en el directorio temporal
+                List<Path> generatedPdfs = Files.list(Paths.get(tempDir))
+                                        .filter(path -> path.toString().startsWith(tempDir + "pdf_") && 
+                                                    path.toString().endsWith(".pdf"))
+                                        .sorted(Comparator.comparingLong(p -> {
+                                            String name = p.getFileName().toString();
+                                            return Long.parseLong(name.split("_")[1]);
+                                        }))
+                                        .collect(Collectors.toList());
+
+                // Procesar los PDFs generados
+                for (int i = 0; i < Math.min(generatedPdfs.size(), nombres.size()); i++) {
+                    Path pdfPath = generatedPdfs.get(i);
+                    byte[] pdfBytes = Files.readAllBytes(pdfPath);
+                    String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                    responseBuilder.addResultados(pdfBase64);
+                    Files.delete(pdfPath);
+                }
                 
-                responseObserver.onNext(
-                    ConvertirUrlsResponse.newBuilder()
-                    .addResultados(pdfBase64) // Envía el PDF en base64
-                    .build()
-                );
+                responseObserver.onNext(responseBuilder.build());
                 responseObserver.onCompleted();
             } catch (Exception e) {
+                System.err.println("Error en convertirUrls: " + e.getMessage());
                 responseObserver.onError(e);
             }
         }
     }
 
     static class OfficeConverterService extends ConvertidorOfficeGrpc.ConvertidorOfficeImplBase {
-             
         private static final AtomicInteger totalRequests = new AtomicInteger(0);
         
         @Override
@@ -97,67 +129,73 @@ public class Main {
             MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
             
             try {
-                // Process all files from the repeated field
                 String tempDir = System.getProperty("java.io.tmpdir");
                 String outputDir = tempDir + "pdf_output/";
                 new File(outputDir).mkdirs();
                 
-                // Prepare arrays for processing
-                String[] files = new String[request.getArchivosList().size()];
-                String[] base64Files = request.getArchivosList().toArray(new String[0]);
+                // Preparar archivos para procesamiento
+                List<String> filePaths = new ArrayList<>();
+                List<String> nombres = new ArrayList<>();
                 
-                // Write all temporary files
-                for (int i = 0; i < base64Files.length; i++) {
-                    byte[] fileBytes = Base64.getDecoder().decode(base64Files[i]);
-                    String tempFilePath = tempDir + request.getNombre() + "_" + i;
-                    Path path = Paths.get(tempFilePath);
-                    Files.write(path, fileBytes);
-                    files[i] = tempFilePath;
+                for (ArchivoItem item : request.getArchivosList()) {
+                    byte[] fileBytes = Base64.getDecoder().decode(item.getContenidoBase64());
+                    String tempFilePath = tempDir + "office_" + System.nanoTime() + "_" + item.getNombre();
+                    Files.write(Paths.get(tempFilePath), fileBytes);
+                    filePaths.add(tempFilePath);
+                    nombres.add(item.getNombre());
                 }
 
-                // Procesar los archivos
+                // Procesar archivos
+                String[] files = filePaths.toArray(new String[0]);
                 int threads = 4;
                 OfficePdf processor = new OfficePdf(files, threads, outputDir);
                 processor.processFiles();
                 
-                // Prepare response with all generated PDFs
+                // Preparar respuesta
                 ConvertirArchivosResponse.Builder responseBuilder = ConvertirArchivosResponse.newBuilder();
                 
-                // Read all generated PDFs and add to response
-                for (int i = 0; i < files.length; i++) {
-                    String pdfPath = outputDir + new File(files[i]).getName().replaceFirst("[.][^.]+$", "") + ".pdf";
-                    byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
+                // Buscar todos los PDFs generados recientemente
+                List<Path> generatedPdfs = Files.list(Paths.get(outputDir))
+                                        .filter(path -> path.toString().endsWith(".pdf") && 
+                                                    path.toString().contains("officepdf_"))
+                                        .sorted(Comparator.comparing(path -> {
+                                            String name = path.getFileName().toString();
+                                            return Long.parseLong(name.split("_")[1]);
+                                        }))
+                                        .collect(Collectors.toList());
+
+                // Asociar cada PDF generado con su archivo original
+                for (int i = 0; i < Math.min(generatedPdfs.size(), nombres.size()); i++) {
+                    Path pdfPath = generatedPdfs.get(i);
+                    byte[] pdfBytes = Files.readAllBytes(pdfPath);
                     String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
                     responseBuilder.addResultados(pdfBase64);
                     
-                    // Clean up temporary files
-                    Files.deleteIfExists(Paths.get(files[i]));
-                    Files.deleteIfExists(Paths.get(pdfPath));
+                    // Limpieza
+                    Files.deleteIfExists(Paths.get(filePaths.get(i)));
+                    Files.deleteIfExists(pdfPath);
                 }
                 
-                // Send metrics
+                // Registrar métricas
                 long duration = System.currentTimeMillis() - startTime;
-                long memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024); // MB
-                
-                System.out.printf(
-                    "gRPC Request: %s, Tiempo: %dms, Memoria: %dMB%n",
-                    request.getNombre(), duration, memoryUsed
-                );
+                long memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024);
                 
                 System.out.println("\n=== Métricas del Servicio ===");
                 System.out.println("Total de peticiones: " + totalRequests.get());
                 System.out.printf("Última conversión - Tiempo: %dms | Memoria usada: %dMB\n",
                     duration, memoryUsed);
+                System.out.printf("Estadísticas de conversión: %d éxitos, %d fallos\n",
+                    Processing.getSuccessCount(), Processing.getFailureCount());
                 
                 responseObserver.onNext(responseBuilder.build());
                 responseObserver.onCompleted();
-
             } catch (Exception e) {
                 System.err.printf("Error en gRPC: %s%n", e.getMessage());
                 responseObserver.onError(e);
             }
         }
     }
+
 
     public class OfficePdf2 {
         private String[] files;

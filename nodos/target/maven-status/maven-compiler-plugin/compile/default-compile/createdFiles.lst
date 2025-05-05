@@ -5,13 +5,17 @@ distribuidos\proto\ConvertirArchivosRequest$1.class
 urlpdf\UrlPdf.class
 distribuidos\proto\ConvertirArchivosRequest$Builder.class
 distribuidos\proto\ConvertirArchivosRequestOrBuilder.class
+distribuidos\proto\ArchivoItemOrBuilder.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsFutureStub.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeBaseDescriptorSupplier.class
+distribuidos\proto\UrlItem$Builder.class
 distribuidos\proto\ConvertirUrlsResponse.class
 distribuidos\Main$OfficePdf2.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeFutureStub.class
 distribuidos\proto\ConvertidorUrlsGrpc$2.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsFileDescriptorSupplier.class
+distribuidos\proto\ArchivoItem$1.class
+distribuidos\proto\ArchivoItem.class
 distribuidos\Main$OfficeConverterService.class
 distribuidos\proto\ConvertirUrlsRequest$1.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsImplBase.class
@@ -20,6 +24,7 @@ distribuidos\Main$UrlConverterService.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeBlockingStub.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeMethodDescriptorSupplier.class
 distribuidos\proto\ConvertidorUrlsGrpc$3.class
+distribuidos\proto\ArchivoItem$Builder.class
 distribuidos\proto\ServiceProto.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsBlockingStub.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeFileDescriptorSupplier.class
@@ -27,6 +32,7 @@ distribuidos\proto\ConvertirUrlsResponse$Builder.class
 urlpdf\ProcessingManager.class
 distribuidos\proto\ConvertirArchivosRequest.class
 distribuidos\proto\ConvertirUrlsResponseOrBuilder.class
+distribuidos\proto\UrlItemOrBuilder.class
 distribuidos\proto\ConvertidorUrlsGrpc.class
 urlpdf\Processing.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsStub.class
@@ -34,6 +40,7 @@ officepdf\OfficePdf.class
 distribuidos\proto\ConvertidorOfficeGrpc$ConvertidorOfficeImplBase.class
 distribuidos\proto\ConvertirArchivosResponseOrBuilder.class
 distribuidos\proto\ConvertidorOfficeGrpc.class
+distribuidos\proto\UrlItem.class
 distribuidos\proto\ConvertidorOfficeGrpc$2.class
 distribuidos\proto\ConvertirArchivosResponse$Builder.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsBaseDescriptorSupplier.class
@@ -45,6 +52,7 @@ distribuidos\proto\ConvertirUrlsRequestOrBuilder.class
 officepdf\Processing.class
 distribuidos\proto\ConvertidorUrlsGrpc$ConvertidorUrlsMethodDescriptorSupplier.class
 distribuidos\proto\ConvertidorOfficeGrpc$1.class
+distribuidos\proto\UrlItem$1.class
 distribuidos\Main.class
 distribuidos\proto\ConvertirUrlsResponse$1.class
 distribuidos\proto\ConvertirArchivosResponse$1.class

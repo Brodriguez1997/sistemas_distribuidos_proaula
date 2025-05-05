@@ -15,6 +15,16 @@ public final class ServiceProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_distribuidos_UrlItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_distribuidos_UrlItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_distribuidos_ArchivoItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_distribuidos_ArchivoItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_distribuidos_ConvertirUrlsRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -43,45 +53,60 @@ public final class ServiceProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016servicio.proto\022\014distribuidos\"B\n\024Conver" +
-      "tirUrlsRequest\022\014\n\004urls\030\001 \003(\t\022\016\n\006nombre\030\002" +
-      " \001(\t\022\014\n\004tipo\030\003 \001(\t\"+\n\025ConvertirUrlsRespo" +
-      "nse\022\022\n\nresultados\030\001 \003(\t\"J\n\030ConvertirArch" +
-      "ivosRequest\022\020\n\010archivos\030\001 \003(\t\022\016\n\006nombre\030" +
-      "\002 \001(\t\022\014\n\004tipo\030\003 \001(\t\"/\n\031ConvertirArchivos" +
-      "Response\022\022\n\nresultados\030\001 \003(\t2m\n\017Converti" +
-      "dorUrls\022Z\n\rConvertirUrls\022\".distribuidos." +
-      "ConvertirUrlsRequest\032#.distribuidos.Conv" +
-      "ertirUrlsResponse\"\0002{\n\021ConvertidorOffice" +
-      "\022f\n\021ConvertirArchivos\022&.distribuidos.Con" +
-      "vertirArchivosRequest\032\'.distribuidos.Con" +
-      "vertirArchivosResponse\"\000B$\n\022distribuidos" +
-      ".protoB\014ServiceProtoP\001b\006proto3"
+      "\n\016servicio.proto\022\014distribuidos\"4\n\007UrlIte" +
+      "m\022\016\n\006nombre\030\001 \001(\t\022\013\n\003url\030\002 \001(\t\022\014\n\004tipo\030\003" +
+      " \001(\t\"E\n\013ArchivoItem\022\016\n\006nombre\030\001 \001(\t\022\030\n\020c" +
+      "ontenido_base64\030\002 \001(\t\022\014\n\004tipo\030\003 \001(\t\";\n\024C" +
+      "onvertirUrlsRequest\022#\n\004urls\030\001 \003(\0132\025.dist" +
+      "ribuidos.UrlItem\"+\n\025ConvertirUrlsRespons" +
+      "e\022\022\n\nresultados\030\001 \003(\t\"G\n\030ConvertirArchiv" +
+      "osRequest\022+\n\010archivos\030\001 \003(\0132\031.distribuid" +
+      "os.ArchivoItem\"/\n\031ConvertirArchivosRespo" +
+      "nse\022\022\n\nresultados\030\001 \003(\t2m\n\017ConvertidorUr" +
+      "ls\022Z\n\rConvertirUrls\022\".distribuidos.Conve" +
+      "rtirUrlsRequest\032#.distribuidos.Convertir" +
+      "UrlsResponse\"\0002{\n\021ConvertidorOffice\022f\n\021C" +
+      "onvertirArchivos\022&.distribuidos.Converti" +
+      "rArchivosRequest\032\'.distribuidos.Converti" +
+      "rArchivosResponse\"\000B$\n\022distribuidos.prot" +
+      "oB\014ServiceProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_distribuidos_ConvertirUrlsRequest_descriptor =
+    internal_static_distribuidos_UrlItem_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_distribuidos_UrlItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_distribuidos_UrlItem_descriptor,
+        new java.lang.String[] { "Nombre", "Url", "Tipo", });
+    internal_static_distribuidos_ArchivoItem_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_distribuidos_ArchivoItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_distribuidos_ArchivoItem_descriptor,
+        new java.lang.String[] { "Nombre", "ContenidoBase64", "Tipo", });
+    internal_static_distribuidos_ConvertirUrlsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_distribuidos_ConvertirUrlsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_distribuidos_ConvertirUrlsRequest_descriptor,
-        new java.lang.String[] { "Urls", "Nombre", "Tipo", });
+        new java.lang.String[] { "Urls", });
     internal_static_distribuidos_ConvertirUrlsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_distribuidos_ConvertirUrlsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_distribuidos_ConvertirUrlsResponse_descriptor,
         new java.lang.String[] { "Resultados", });
     internal_static_distribuidos_ConvertirArchivosRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_distribuidos_ConvertirArchivosRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_distribuidos_ConvertirArchivosRequest_descriptor,
-        new java.lang.String[] { "Archivos", "Nombre", "Tipo", });
+        new java.lang.String[] { "Archivos", });
     internal_static_distribuidos_ConvertirArchivosResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_distribuidos_ConvertirArchivosResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_distribuidos_ConvertirArchivosResponse_descriptor,

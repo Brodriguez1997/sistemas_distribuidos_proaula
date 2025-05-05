@@ -1,6 +1,7 @@
 package urlpdf;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Processing implements Runnable {
     private final String url;
@@ -14,32 +15,42 @@ public class Processing implements Runnable {
     @Override
     public void run() {
         try {
-            // Extraer nombre del archivo de la URL
-            String fileName = url.substring(url.lastIndexOf("/") + 1);
-            
-            // Limpiar el nombre de archivo para evitar caracteres inválidos
-            fileName = fileName.replaceAll("[^a-zA-Z0-9.-]", "_") + ".pdf";
-            
-            // Ruta completa de salida
+            // Nombre único basado en timestamp + contador atómico + thread ID
+            String fileName = "pdf_" + System.nanoTime() + "_" + 
+                            Thread.currentThread().getId() + ".pdf";
             String outputPath = outputDir + fileName;
             
-            // Ejecutar Chrome en modo headless para generar el PDF
-            Process process = new ProcessBuilder(
+            System.out.println("Generando PDF desde URL: " + url);
+            System.out.println("Ruta de salida: " + outputPath);
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
                 "C:/Program Files/Google/Chrome/Application/chrome.exe",
                 "--headless",
                 "--disable-gpu",
                 "--print-to-pdf=" + outputPath,
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
                 url
-            ).start();
+            );
+
+            processBuilder.redirectErrorStream(true);
             
-            // Esperar a que termine el proceso
-            int exitCode = process.waitFor();
+            Process process = processBuilder.start();
+            boolean finished = process.waitFor(30, TimeUnit.SECONDS);
             
-            if (exitCode != 0) {
-                System.err.println("Error al generar PDF para URL: " + url);
+            if (!finished) {
+                process.destroy();
+                throw new RuntimeException("Timeout al generar PDF");
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+
+            if (process.exitValue() != 0) {
+                throw new RuntimeException("Chrome falló con código: " + process.exitValue());
+            }
+
+            System.out.println("PDF generado exitosamente: " + outputPath);
+        } catch (Exception e) {
+            System.err.println("Error en Processing.run(): " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

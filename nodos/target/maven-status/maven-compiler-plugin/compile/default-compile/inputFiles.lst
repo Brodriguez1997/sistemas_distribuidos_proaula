@@ -6,6 +6,8 @@ C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\src\main\jav
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\src\main\java\urlpdf\UrlPdf.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\grpc-java\distribuidos\proto\ConvertidorOfficeGrpc.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\grpc-java\distribuidos\proto\ConvertidorUrlsGrpc.java
+C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ArchivoItem.java
+C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ArchivoItemOrBuilder.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirArchivosRequest.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirArchivosRequestOrBuilder.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirArchivosResponse.java
@@ -15,3 +17,5 @@ C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\gener
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirUrlsResponse.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ConvertirUrlsResponseOrBuilder.java
 C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\ServiceProto.java
+C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\UrlItem.java
+C:\Users\stjag\Documents\GitHub\sistemas_distribuidos_proaula\nodos\target\generated-sources\protobuf\java\distribuidos\proto\UrlItemOrBuilder.java

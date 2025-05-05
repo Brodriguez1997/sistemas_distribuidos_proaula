@@ -16,9 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ConvertirArchivosRequest() {
-    archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    nombre_ = "";
-    tipo_ = "";
+    archivos_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -47,130 +45,43 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARCHIVOS_FIELD_NUMBER = 1;
-  private com.google.protobuf.LazyStringList archivos_;
+  private java.util.List<distribuidos.proto.ArchivoItem> archivos_;
   /**
-   * <pre>
-   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string archivos = 1;</code>
-   * @return A list containing the archivos.
+   * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
    */
-  public com.google.protobuf.ProtocolStringList
-      getArchivosList() {
+  @java.lang.Override
+  public java.util.List<distribuidos.proto.ArchivoItem> getArchivosList() {
     return archivos_;
   }
   /**
-   * <pre>
-   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string archivos = 1;</code>
-   * @return The count of archivos.
+   * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
    */
+  @java.lang.Override
+  public java.util.List<? extends distribuidos.proto.ArchivoItemOrBuilder> 
+      getArchivosOrBuilderList() {
+    return archivos_;
+  }
+  /**
+   * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+   */
+  @java.lang.Override
   public int getArchivosCount() {
     return archivos_.size();
   }
   /**
-   * <pre>
-   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string archivos = 1;</code>
-   * @param index The index of the element to return.
-   * @return The archivos at the given index.
+   * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
    */
-  public java.lang.String getArchivos(int index) {
+  @java.lang.Override
+  public distribuidos.proto.ArchivoItem getArchivos(int index) {
     return archivos_.get(index);
   }
   /**
-   * <pre>
-   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string archivos = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the archivos at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getArchivosBytes(int index) {
-    return archivos_.getByteString(index);
-  }
-
-  public static final int NOMBRE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object nombre_;
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The nombre.
+   * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
    */
   @java.lang.Override
-  public java.lang.String getNombre() {
-    java.lang.Object ref = nombre_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      nombre_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The bytes for nombre.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getNombreBytes() {
-    java.lang.Object ref = nombre_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      nombre_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int TIPO_FIELD_NUMBER = 3;
-  private volatile java.lang.Object tipo_;
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The tipo.
-   */
-  @java.lang.Override
-  public java.lang.String getTipo() {
-    java.lang.Object ref = tipo_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      tipo_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The bytes for tipo.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTipoBytes() {
-    java.lang.Object ref = tipo_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      tipo_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public distribuidos.proto.ArchivoItemOrBuilder getArchivosOrBuilder(
+      int index) {
+    return archivos_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -188,13 +99,7 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     for (int i = 0; i < archivos_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, archivos_.getRaw(i));
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nombre_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tipo_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, tipo_);
+      output.writeMessage(1, archivos_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -205,19 +110,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    {
-      int dataSize = 0;
-      for (int i = 0; i < archivos_.size(); i++) {
-        dataSize += computeStringSizeNoTag(archivos_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getArchivosList().size();
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nombre_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tipo_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, tipo_);
+    for (int i = 0; i < archivos_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, archivos_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -236,10 +131,6 @@ private static final long serialVersionUID = 0L;
 
     if (!getArchivosList()
         .equals(other.getArchivosList())) return false;
-    if (!getNombre()
-        .equals(other.getNombre())) return false;
-    if (!getTipo()
-        .equals(other.getTipo())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -255,10 +146,6 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ARCHIVOS_FIELD_NUMBER;
       hash = (53 * hash) + getArchivosList().hashCode();
     }
-    hash = (37 * hash) + NOMBRE_FIELD_NUMBER;
-    hash = (53 * hash) + getNombre().hashCode();
-    hash = (37 * hash) + TIPO_FIELD_NUMBER;
-    hash = (53 * hash) + getTipo().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -387,12 +274,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      if (archivosBuilder_ == null) {
+        archivos_ = java.util.Collections.emptyList();
+      } else {
+        archivos_ = null;
+        archivosBuilder_.clear();
+      }
       bitField0_ = (bitField0_ & ~0x00000001);
-      nombre_ = "";
-
-      tipo_ = "";
-
       return this;
     }
 
@@ -420,13 +308,15 @@ private static final long serialVersionUID = 0L;
     public distribuidos.proto.ConvertirArchivosRequest buildPartial() {
       distribuidos.proto.ConvertirArchivosRequest result = new distribuidos.proto.ConvertirArchivosRequest(this);
       int from_bitField0_ = bitField0_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        archivos_ = archivos_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
+      if (archivosBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          archivos_ = java.util.Collections.unmodifiableList(archivos_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.archivos_ = archivos_;
+      } else {
+        result.archivos_ = archivosBuilder_.build();
       }
-      result.archivos_ = archivos_;
-      result.nombre_ = nombre_;
-      result.tipo_ = tipo_;
       onBuilt();
       return result;
     }
@@ -475,23 +365,31 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(distribuidos.proto.ConvertirArchivosRequest other) {
       if (other == distribuidos.proto.ConvertirArchivosRequest.getDefaultInstance()) return this;
-      if (!other.archivos_.isEmpty()) {
-        if (archivos_.isEmpty()) {
-          archivos_ = other.archivos_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureArchivosIsMutable();
-          archivos_.addAll(other.archivos_);
+      if (archivosBuilder_ == null) {
+        if (!other.archivos_.isEmpty()) {
+          if (archivos_.isEmpty()) {
+            archivos_ = other.archivos_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureArchivosIsMutable();
+            archivos_.addAll(other.archivos_);
+          }
+          onChanged();
         }
-        onChanged();
-      }
-      if (!other.getNombre().isEmpty()) {
-        nombre_ = other.nombre_;
-        onChanged();
-      }
-      if (!other.getTipo().isEmpty()) {
-        tipo_ = other.tipo_;
-        onChanged();
+      } else {
+        if (!other.archivos_.isEmpty()) {
+          if (archivosBuilder_.isEmpty()) {
+            archivosBuilder_.dispose();
+            archivosBuilder_ = null;
+            archivos_ = other.archivos_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            archivosBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getArchivosFieldBuilder() : null;
+          } else {
+            archivosBuilder_.addAllMessages(other.archivos_);
+          }
+        }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -520,21 +418,18 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureArchivosIsMutable();
-              archivos_.add(s);
+              distribuidos.proto.ArchivoItem m =
+                  input.readMessage(
+                      distribuidos.proto.ArchivoItem.parser(),
+                      extensionRegistry);
+              if (archivosBuilder_ == null) {
+                ensureArchivosIsMutable();
+                archivos_.add(m);
+              } else {
+                archivosBuilder_.addMessage(m);
+              }
               break;
             } // case 10
-            case 18: {
-              nombre_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 18
-            case 26: {
-              tipo_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 26
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -552,302 +447,244 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private com.google.protobuf.LazyStringList archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private java.util.List<distribuidos.proto.ArchivoItem> archivos_ =
+      java.util.Collections.emptyList();
     private void ensureArchivosIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        archivos_ = new com.google.protobuf.LazyStringArrayList(archivos_);
+        archivos_ = new java.util.ArrayList<distribuidos.proto.ArchivoItem>(archivos_);
         bitField0_ |= 0x00000001;
        }
     }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        distribuidos.proto.ArchivoItem, distribuidos.proto.ArchivoItem.Builder, distribuidos.proto.ArchivoItemOrBuilder> archivosBuilder_;
+
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @return A list containing the archivos.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getArchivosList() {
-      return archivos_.getUnmodifiableView();
+    public java.util.List<distribuidos.proto.ArchivoItem> getArchivosList() {
+      if (archivosBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(archivos_);
+      } else {
+        return archivosBuilder_.getMessageList();
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @return The count of archivos.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
     public int getArchivosCount() {
-      return archivos_.size();
+      if (archivosBuilder_ == null) {
+        return archivos_.size();
+      } else {
+        return archivosBuilder_.getCount();
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param index The index of the element to return.
-     * @return The archivos at the given index.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public java.lang.String getArchivos(int index) {
-      return archivos_.get(index);
+    public distribuidos.proto.ArchivoItem getArchivos(int index) {
+      if (archivosBuilder_ == null) {
+        return archivos_.get(index);
+      } else {
+        return archivosBuilder_.getMessage(index);
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the archivos at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getArchivosBytes(int index) {
-      return archivos_.getByteString(index);
-    }
-    /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param index The index to set the value at.
-     * @param value The archivos to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
     public Builder setArchivos(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureArchivosIsMutable();
-      archivos_.set(index, value);
-      onChanged();
+        int index, distribuidos.proto.ArchivoItem value) {
+      if (archivosBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureArchivosIsMutable();
+        archivos_.set(index, value);
+        onChanged();
+      } else {
+        archivosBuilder_.setMessage(index, value);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param value The archivos to add.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public Builder setArchivos(
+        int index, distribuidos.proto.ArchivoItem.Builder builderForValue) {
+      if (archivosBuilder_ == null) {
+        ensureArchivosIsMutable();
+        archivos_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        archivosBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public Builder addArchivos(distribuidos.proto.ArchivoItem value) {
+      if (archivosBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureArchivosIsMutable();
+        archivos_.add(value);
+        onChanged();
+      } else {
+        archivosBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
     public Builder addArchivos(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureArchivosIsMutable();
-      archivos_.add(value);
-      onChanged();
+        int index, distribuidos.proto.ArchivoItem value) {
+      if (archivosBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureArchivosIsMutable();
+        archivos_.add(index, value);
+        onChanged();
+      } else {
+        archivosBuilder_.addMessage(index, value);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param values The archivos to add.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public Builder addArchivos(
+        distribuidos.proto.ArchivoItem.Builder builderForValue) {
+      if (archivosBuilder_ == null) {
+        ensureArchivosIsMutable();
+        archivos_.add(builderForValue.build());
+        onChanged();
+      } else {
+        archivosBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public Builder addArchivos(
+        int index, distribuidos.proto.ArchivoItem.Builder builderForValue) {
+      if (archivosBuilder_ == null) {
+        ensureArchivosIsMutable();
+        archivos_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        archivosBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
     public Builder addAllArchivos(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureArchivosIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, archivos_);
-      onChanged();
+        java.lang.Iterable<? extends distribuidos.proto.ArchivoItem> values) {
+      if (archivosBuilder_ == null) {
+        ensureArchivosIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, archivos_);
+        onChanged();
+      } else {
+        archivosBuilder_.addAllMessages(values);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
     public Builder clearArchivos() {
-      archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string archivos = 1;</code>
-     * @param value The bytes of the archivos to add.
-     * @return This builder for chaining.
-     */
-    public Builder addArchivosBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureArchivosIsMutable();
-      archivos_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object nombre_ = "";
-    /**
-     * <code>string nombre = 2;</code>
-     * @return The nombre.
-     */
-    public java.lang.String getNombre() {
-      java.lang.Object ref = nombre_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        nombre_ = s;
-        return s;
+      if (archivosBuilder_ == null) {
+        archivos_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
       } else {
-        return (java.lang.String) ref;
+        archivosBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public Builder removeArchivos(int index) {
+      if (archivosBuilder_ == null) {
+        ensureArchivosIsMutable();
+        archivos_.remove(index);
+        onChanged();
+      } else {
+        archivosBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public distribuidos.proto.ArchivoItem.Builder getArchivosBuilder(
+        int index) {
+      return getArchivosFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
+     */
+    public distribuidos.proto.ArchivoItemOrBuilder getArchivosOrBuilder(
+        int index) {
+      if (archivosBuilder_ == null) {
+        return archivos_.get(index);  } else {
+        return archivosBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @return The bytes for nombre.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getNombreBytes() {
-      java.lang.Object ref = nombre_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        nombre_ = b;
-        return b;
+    public java.util.List<? extends distribuidos.proto.ArchivoItemOrBuilder> 
+         getArchivosOrBuilderList() {
+      if (archivosBuilder_ != null) {
+        return archivosBuilder_.getMessageOrBuilderList();
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        return java.util.Collections.unmodifiableList(archivos_);
       }
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @param value The nombre to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public Builder setNombre(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      nombre_ = value;
-      onChanged();
-      return this;
+    public distribuidos.proto.ArchivoItem.Builder addArchivosBuilder() {
+      return getArchivosFieldBuilder().addBuilder(
+          distribuidos.proto.ArchivoItem.getDefaultInstance());
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public Builder clearNombre() {
-      
-      nombre_ = getDefaultInstance().getNombre();
-      onChanged();
-      return this;
+    public distribuidos.proto.ArchivoItem.Builder addArchivosBuilder(
+        int index) {
+      return getArchivosFieldBuilder().addBuilder(
+          index, distribuidos.proto.ArchivoItem.getDefaultInstance());
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @param value The bytes for nombre to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.ArchivoItem archivos = 1;</code>
      */
-    public Builder setNombreBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      nombre_ = value;
-      onChanged();
-      return this;
+    public java.util.List<distribuidos.proto.ArchivoItem.Builder> 
+         getArchivosBuilderList() {
+      return getArchivosFieldBuilder().getBuilderList();
     }
-
-    private java.lang.Object tipo_ = "";
-    /**
-     * <code>string tipo = 3;</code>
-     * @return The tipo.
-     */
-    public java.lang.String getTipo() {
-      java.lang.Object ref = tipo_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        tipo_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        distribuidos.proto.ArchivoItem, distribuidos.proto.ArchivoItem.Builder, distribuidos.proto.ArchivoItemOrBuilder> 
+        getArchivosFieldBuilder() {
+      if (archivosBuilder_ == null) {
+        archivosBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            distribuidos.proto.ArchivoItem, distribuidos.proto.ArchivoItem.Builder, distribuidos.proto.ArchivoItemOrBuilder>(
+                archivos_,
+                ((bitField0_ & 0x00000001) != 0),
+                getParentForChildren(),
+                isClean());
+        archivos_ = null;
       }
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @return The bytes for tipo.
-     */
-    public com.google.protobuf.ByteString
-        getTipoBytes() {
-      java.lang.Object ref = tipo_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        tipo_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @param value The tipo to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTipo(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      tipo_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTipo() {
-      
-      tipo_ = getDefaultInstance().getTipo();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @param value The bytes for tipo to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTipoBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      tipo_ = value;
-      onChanged();
-      return this;
+      return archivosBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

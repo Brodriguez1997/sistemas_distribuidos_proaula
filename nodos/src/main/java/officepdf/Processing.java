@@ -23,7 +23,15 @@ public class Processing implements Runnable {
         long startTime = System.currentTimeMillis();
         ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
         long cpuStart = threadBean.getCurrentThreadCpuTime();
+        
         try {
+            // Generar nombre único para el PDF de salida
+            String baseName = inputFile.substring(inputFile.lastIndexOf('/') + 1)
+                                .replaceFirst("[.][^.]+$", "");
+            String outputName = "officepdf_" + System.nanoTime() + "_" + 
+                            Thread.currentThread().getId() + "_" + baseName + ".pdf";
+            String outputPath = outputDir + outputName;
+
             ProcessBuilder processBuilder = new ProcessBuilder(
                 "C:/Program Files/LibreOffice/program/soffice.exe",
                 "--headless",
@@ -31,8 +39,12 @@ public class Processing implements Runnable {
                 "pdf",
                 inputFile,
                 "--outdir",
-                outputDir
+                outputDir,
+                "--writer",
+                "--infilter=\"Microsoft Word 2007-2013 XML\""
             );
+
+            processBuilder.redirectErrorStream(true);
             
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
@@ -46,8 +58,8 @@ public class Processing implements Runnable {
             if (exitCode == 0) {
                 successCount.incrementAndGet();
                 System.out.printf(
-                    "Conversión exitosa: %s (Tiempo: %dms, CPU: %dms)%n",
-                    inputFile, duration, cpuUsage
+                    "Conversión exitosa: %s -> %s (Tiempo: %dms, CPU: %dms)%n",
+                    inputFile, outputName, duration, cpuUsage
                 );
             } else {
                 failureCount.incrementAndGet();
@@ -56,12 +68,9 @@ public class Processing implements Runnable {
                     inputFile, exitCode
                 );
             }
-            if (exitCode != 0) {
-                System.err.println("Error al convertir archivo: " + inputFile);
-            }
         } catch (IOException | InterruptedException e) {
             failureCount.incrementAndGet();
-            e.printStackTrace();
+            System.err.println("Error en Processing.run(): " + e.getMessage());
         }
     }
     // Métodos estáticos para acceder a métricas globales

@@ -8,67 +8,26 @@ public interface ConvertirUrlsRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @return A list containing the urls.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
-  java.util.List<java.lang.String>
+  java.util.List<distribuidos.proto.UrlItem> 
       getUrlsList();
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @return The count of urls.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+   */
+  distribuidos.proto.UrlItem getUrls(int index);
+  /**
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
   int getUrlsCount();
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @param index The index of the element to return.
-   * @return The urls at the given index.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
-  java.lang.String getUrls(int index);
+  java.util.List<? extends distribuidos.proto.UrlItemOrBuilder> 
+      getUrlsOrBuilderList();
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the urls at the given index.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
-  com.google.protobuf.ByteString
-      getUrlsBytes(int index);
-
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The nombre.
-   */
-  java.lang.String getNombre();
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The bytes for nombre.
-   */
-  com.google.protobuf.ByteString
-      getNombreBytes();
-
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The tipo.
-   */
-  java.lang.String getTipo();
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The bytes for tipo.
-   */
-  com.google.protobuf.ByteString
-      getTipoBytes();
+  distribuidos.proto.UrlItemOrBuilder getUrlsOrBuilder(
+      int index);
 }

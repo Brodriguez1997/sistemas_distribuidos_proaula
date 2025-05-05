@@ -19,23 +19,12 @@ class ConvertidorUrlsStub(object):
                 request_serializer=server__pb2.ConvertirUrlsRequest.SerializeToString,
                 response_deserializer=server__pb2.ConvertirUrlsResponse.FromString,
                 )
-        self.DescargarUrls = channel.unary_unary(
-                '/distribuidos.ConvertidorUrls/DescargarUrls',
-                request_serializer=server__pb2.DescargarUrlsRequest.SerializeToString,
-                response_deserializer=server__pb2.DescargarUrlsResponse.FromString,
-                )
 
 
 class ConvertidorUrlsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ConvertirUrls(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DescargarUrls(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -48,11 +37,6 @@ def add_ConvertidorUrlsServicer_to_server(servicer, server):
                     servicer.ConvertirUrls,
                     request_deserializer=server__pb2.ConvertirUrlsRequest.FromString,
                     response_serializer=server__pb2.ConvertirUrlsResponse.SerializeToString,
-            ),
-            'DescargarUrls': grpc.unary_unary_rpc_method_handler(
-                    servicer.DescargarUrls,
-                    request_deserializer=server__pb2.DescargarUrlsRequest.FromString,
-                    response_serializer=server__pb2.DescargarUrlsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -81,23 +65,6 @@ class ConvertidorUrls(object):
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
-    @staticmethod
-    def DescargarUrls(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/distribuidos.ConvertidorUrls/DescargarUrls',
-            server__pb2.DescargarUrlsRequest.SerializeToString,
-            server__pb2.DescargarUrlsResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
 
 class ConvertidorOfficeStub(object):
     """Missing associated documentation comment in .proto file."""
@@ -113,16 +80,6 @@ class ConvertidorOfficeStub(object):
                 request_serializer=server__pb2.ConvertirArchivosRequest.SerializeToString,
                 response_deserializer=server__pb2.ConvertirArchivosResponse.FromString,
                 )
-        self.DescargarArchivo = channel.unary_unary(
-                '/distribuidos.ConvertidorOffice/DescargarArchivo',
-                request_serializer=server__pb2.DescargarArchivoRequest.SerializeToString,
-                response_deserializer=server__pb2.DescargarArchivoResponse.FromString,
-                )
-        self.Saludar = channel.unary_unary(
-                '/distribuidos.ConvertidorOffice/Saludar',
-                request_serializer=server__pb2.SaludarRequest.SerializeToString,
-                response_deserializer=server__pb2.SaludarResponse.FromString,
-                )
 
 
 class ConvertidorOfficeServicer(object):
@@ -134,19 +91,6 @@ class ConvertidorOfficeServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DescargarArchivo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def Saludar(self, request, context):
-        """Nuevo método para enviar un "Hola" y recibir una respuesta
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_ConvertidorOfficeServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -154,16 +98,6 @@ def add_ConvertidorOfficeServicer_to_server(servicer, server):
                     servicer.ConvertirArchivos,
                     request_deserializer=server__pb2.ConvertirArchivosRequest.FromString,
                     response_serializer=server__pb2.ConvertirArchivosResponse.SerializeToString,
-            ),
-            'DescargarArchivo': grpc.unary_unary_rpc_method_handler(
-                    servicer.DescargarArchivo,
-                    request_deserializer=server__pb2.DescargarArchivoRequest.FromString,
-                    response_serializer=server__pb2.DescargarArchivoResponse.SerializeToString,
-            ),
-            'Saludar': grpc.unary_unary_rpc_method_handler(
-                    servicer.Saludar,
-                    request_deserializer=server__pb2.SaludarRequest.FromString,
-                    response_serializer=server__pb2.SaludarResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -189,39 +123,5 @@ class ConvertidorOffice(object):
         return grpc.experimental.unary_unary(request, target, '/distribuidos.ConvertidorOffice/ConvertirArchivos',
             server__pb2.ConvertirArchivosRequest.SerializeToString,
             server__pb2.ConvertirArchivosResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DescargarArchivo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/distribuidos.ConvertidorOffice/DescargarArchivo',
-            server__pb2.DescargarArchivoRequest.SerializeToString,
-            server__pb2.DescargarArchivoResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def Saludar(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/distribuidos.ConvertidorOffice/Saludar',
-            server__pb2.SaludarRequest.SerializeToString,
-            server__pb2.SaludarResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

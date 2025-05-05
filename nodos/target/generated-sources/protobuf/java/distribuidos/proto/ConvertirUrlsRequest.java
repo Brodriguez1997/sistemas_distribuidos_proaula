@@ -16,9 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ConvertirUrlsRequest() {
-    urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    nombre_ = "";
-    tipo_ = "";
+    urls_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -47,130 +45,43 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int URLS_FIELD_NUMBER = 1;
-  private com.google.protobuf.LazyStringList urls_;
+  private java.util.List<distribuidos.proto.UrlItem> urls_;
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @return A list containing the urls.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
-  public com.google.protobuf.ProtocolStringList
-      getUrlsList() {
+  @java.lang.Override
+  public java.util.List<distribuidos.proto.UrlItem> getUrlsList() {
     return urls_;
   }
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @return The count of urls.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
+  @java.lang.Override
+  public java.util.List<? extends distribuidos.proto.UrlItemOrBuilder> 
+      getUrlsOrBuilderList() {
+    return urls_;
+  }
+  /**
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+   */
+  @java.lang.Override
   public int getUrlsCount() {
     return urls_.size();
   }
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @param index The index of the element to return.
-   * @return The urls at the given index.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
-  public java.lang.String getUrls(int index) {
+  @java.lang.Override
+  public distribuidos.proto.UrlItem getUrls(int index) {
     return urls_.get(index);
   }
   /**
-   * <pre>
-   * Cambiado de 'url' a 'urls' y ahora es una lista
-   * </pre>
-   *
-   * <code>repeated string urls = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the urls at the given index.
-   */
-  public com.google.protobuf.ByteString
-      getUrlsBytes(int index) {
-    return urls_.getByteString(index);
-  }
-
-  public static final int NOMBRE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object nombre_;
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The nombre.
+   * <code>repeated .distribuidos.UrlItem urls = 1;</code>
    */
   @java.lang.Override
-  public java.lang.String getNombre() {
-    java.lang.Object ref = nombre_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      nombre_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string nombre = 2;</code>
-   * @return The bytes for nombre.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getNombreBytes() {
-    java.lang.Object ref = nombre_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      nombre_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int TIPO_FIELD_NUMBER = 3;
-  private volatile java.lang.Object tipo_;
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The tipo.
-   */
-  @java.lang.Override
-  public java.lang.String getTipo() {
-    java.lang.Object ref = tipo_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      tipo_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string tipo = 3;</code>
-   * @return The bytes for tipo.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTipoBytes() {
-    java.lang.Object ref = tipo_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      tipo_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public distribuidos.proto.UrlItemOrBuilder getUrlsOrBuilder(
+      int index) {
+    return urls_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -188,13 +99,7 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     for (int i = 0; i < urls_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, urls_.getRaw(i));
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nombre_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tipo_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, tipo_);
+      output.writeMessage(1, urls_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -205,19 +110,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    {
-      int dataSize = 0;
-      for (int i = 0; i < urls_.size(); i++) {
-        dataSize += computeStringSizeNoTag(urls_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getUrlsList().size();
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nombre_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tipo_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, tipo_);
+    for (int i = 0; i < urls_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, urls_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -236,10 +131,6 @@ private static final long serialVersionUID = 0L;
 
     if (!getUrlsList()
         .equals(other.getUrlsList())) return false;
-    if (!getNombre()
-        .equals(other.getNombre())) return false;
-    if (!getTipo()
-        .equals(other.getTipo())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -255,10 +146,6 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + URLS_FIELD_NUMBER;
       hash = (53 * hash) + getUrlsList().hashCode();
     }
-    hash = (37 * hash) + NOMBRE_FIELD_NUMBER;
-    hash = (53 * hash) + getNombre().hashCode();
-    hash = (37 * hash) + TIPO_FIELD_NUMBER;
-    hash = (53 * hash) + getTipo().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -387,12 +274,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      if (urlsBuilder_ == null) {
+        urls_ = java.util.Collections.emptyList();
+      } else {
+        urls_ = null;
+        urlsBuilder_.clear();
+      }
       bitField0_ = (bitField0_ & ~0x00000001);
-      nombre_ = "";
-
-      tipo_ = "";
-
       return this;
     }
 
@@ -420,13 +308,15 @@ private static final long serialVersionUID = 0L;
     public distribuidos.proto.ConvertirUrlsRequest buildPartial() {
       distribuidos.proto.ConvertirUrlsRequest result = new distribuidos.proto.ConvertirUrlsRequest(this);
       int from_bitField0_ = bitField0_;
-      if (((bitField0_ & 0x00000001) != 0)) {
-        urls_ = urls_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000001);
+      if (urlsBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          urls_ = java.util.Collections.unmodifiableList(urls_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.urls_ = urls_;
+      } else {
+        result.urls_ = urlsBuilder_.build();
       }
-      result.urls_ = urls_;
-      result.nombre_ = nombre_;
-      result.tipo_ = tipo_;
       onBuilt();
       return result;
     }
@@ -475,23 +365,31 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(distribuidos.proto.ConvertirUrlsRequest other) {
       if (other == distribuidos.proto.ConvertirUrlsRequest.getDefaultInstance()) return this;
-      if (!other.urls_.isEmpty()) {
-        if (urls_.isEmpty()) {
-          urls_ = other.urls_;
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          ensureUrlsIsMutable();
-          urls_.addAll(other.urls_);
+      if (urlsBuilder_ == null) {
+        if (!other.urls_.isEmpty()) {
+          if (urls_.isEmpty()) {
+            urls_ = other.urls_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureUrlsIsMutable();
+            urls_.addAll(other.urls_);
+          }
+          onChanged();
         }
-        onChanged();
-      }
-      if (!other.getNombre().isEmpty()) {
-        nombre_ = other.nombre_;
-        onChanged();
-      }
-      if (!other.getTipo().isEmpty()) {
-        tipo_ = other.tipo_;
-        onChanged();
+      } else {
+        if (!other.urls_.isEmpty()) {
+          if (urlsBuilder_.isEmpty()) {
+            urlsBuilder_.dispose();
+            urlsBuilder_ = null;
+            urls_ = other.urls_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            urlsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getUrlsFieldBuilder() : null;
+          } else {
+            urlsBuilder_.addAllMessages(other.urls_);
+          }
+        }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -520,21 +418,18 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureUrlsIsMutable();
-              urls_.add(s);
+              distribuidos.proto.UrlItem m =
+                  input.readMessage(
+                      distribuidos.proto.UrlItem.parser(),
+                      extensionRegistry);
+              if (urlsBuilder_ == null) {
+                ensureUrlsIsMutable();
+                urls_.add(m);
+              } else {
+                urlsBuilder_.addMessage(m);
+              }
               break;
             } // case 10
-            case 18: {
-              nombre_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 18
-            case 26: {
-              tipo_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 26
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -552,302 +447,244 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private com.google.protobuf.LazyStringList urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private java.util.List<distribuidos.proto.UrlItem> urls_ =
+      java.util.Collections.emptyList();
     private void ensureUrlsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        urls_ = new com.google.protobuf.LazyStringArrayList(urls_);
+        urls_ = new java.util.ArrayList<distribuidos.proto.UrlItem>(urls_);
         bitField0_ |= 0x00000001;
        }
     }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        distribuidos.proto.UrlItem, distribuidos.proto.UrlItem.Builder, distribuidos.proto.UrlItemOrBuilder> urlsBuilder_;
+
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @return A list containing the urls.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getUrlsList() {
-      return urls_.getUnmodifiableView();
+    public java.util.List<distribuidos.proto.UrlItem> getUrlsList() {
+      if (urlsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(urls_);
+      } else {
+        return urlsBuilder_.getMessageList();
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @return The count of urls.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
     public int getUrlsCount() {
-      return urls_.size();
+      if (urlsBuilder_ == null) {
+        return urls_.size();
+      } else {
+        return urlsBuilder_.getCount();
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param index The index of the element to return.
-     * @return The urls at the given index.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public java.lang.String getUrls(int index) {
-      return urls_.get(index);
+    public distribuidos.proto.UrlItem getUrls(int index) {
+      if (urlsBuilder_ == null) {
+        return urls_.get(index);
+      } else {
+        return urlsBuilder_.getMessage(index);
+      }
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the urls at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getUrlsBytes(int index) {
-      return urls_.getByteString(index);
-    }
-    /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param index The index to set the value at.
-     * @param value The urls to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
     public Builder setUrls(
-        int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUrlsIsMutable();
-      urls_.set(index, value);
-      onChanged();
+        int index, distribuidos.proto.UrlItem value) {
+      if (urlsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureUrlsIsMutable();
+        urls_.set(index, value);
+        onChanged();
+      } else {
+        urlsBuilder_.setMessage(index, value);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param value The urls to add.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public Builder setUrls(
+        int index, distribuidos.proto.UrlItem.Builder builderForValue) {
+      if (urlsBuilder_ == null) {
+        ensureUrlsIsMutable();
+        urls_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        urlsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public Builder addUrls(distribuidos.proto.UrlItem value) {
+      if (urlsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureUrlsIsMutable();
+        urls_.add(value);
+        onChanged();
+      } else {
+        urlsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
     public Builder addUrls(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUrlsIsMutable();
-      urls_.add(value);
-      onChanged();
+        int index, distribuidos.proto.UrlItem value) {
+      if (urlsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureUrlsIsMutable();
+        urls_.add(index, value);
+        onChanged();
+      } else {
+        urlsBuilder_.addMessage(index, value);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param values The urls to add.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public Builder addUrls(
+        distribuidos.proto.UrlItem.Builder builderForValue) {
+      if (urlsBuilder_ == null) {
+        ensureUrlsIsMutable();
+        urls_.add(builderForValue.build());
+        onChanged();
+      } else {
+        urlsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public Builder addUrls(
+        int index, distribuidos.proto.UrlItem.Builder builderForValue) {
+      if (urlsBuilder_ == null) {
+        ensureUrlsIsMutable();
+        urls_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        urlsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
     public Builder addAllUrls(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureUrlsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, urls_);
-      onChanged();
+        java.lang.Iterable<? extends distribuidos.proto.UrlItem> values) {
+      if (urlsBuilder_ == null) {
+        ensureUrlsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, urls_);
+        onChanged();
+      } else {
+        urlsBuilder_.addAllMessages(values);
+      }
       return this;
     }
     /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
     public Builder clearUrls() {
-      urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <pre>
-     * Cambiado de 'url' a 'urls' y ahora es una lista
-     * </pre>
-     *
-     * <code>repeated string urls = 1;</code>
-     * @param value The bytes of the urls to add.
-     * @return This builder for chaining.
-     */
-    public Builder addUrlsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      ensureUrlsIsMutable();
-      urls_.add(value);
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object nombre_ = "";
-    /**
-     * <code>string nombre = 2;</code>
-     * @return The nombre.
-     */
-    public java.lang.String getNombre() {
-      java.lang.Object ref = nombre_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        nombre_ = s;
-        return s;
+      if (urlsBuilder_ == null) {
+        urls_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
       } else {
-        return (java.lang.String) ref;
+        urlsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public Builder removeUrls(int index) {
+      if (urlsBuilder_ == null) {
+        ensureUrlsIsMutable();
+        urls_.remove(index);
+        onChanged();
+      } else {
+        urlsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public distribuidos.proto.UrlItem.Builder getUrlsBuilder(
+        int index) {
+      return getUrlsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
+     */
+    public distribuidos.proto.UrlItemOrBuilder getUrlsOrBuilder(
+        int index) {
+      if (urlsBuilder_ == null) {
+        return urls_.get(index);  } else {
+        return urlsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @return The bytes for nombre.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getNombreBytes() {
-      java.lang.Object ref = nombre_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        nombre_ = b;
-        return b;
+    public java.util.List<? extends distribuidos.proto.UrlItemOrBuilder> 
+         getUrlsOrBuilderList() {
+      if (urlsBuilder_ != null) {
+        return urlsBuilder_.getMessageOrBuilderList();
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        return java.util.Collections.unmodifiableList(urls_);
       }
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @param value The nombre to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public Builder setNombre(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      nombre_ = value;
-      onChanged();
-      return this;
+    public distribuidos.proto.UrlItem.Builder addUrlsBuilder() {
+      return getUrlsFieldBuilder().addBuilder(
+          distribuidos.proto.UrlItem.getDefaultInstance());
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public Builder clearNombre() {
-      
-      nombre_ = getDefaultInstance().getNombre();
-      onChanged();
-      return this;
+    public distribuidos.proto.UrlItem.Builder addUrlsBuilder(
+        int index) {
+      return getUrlsFieldBuilder().addBuilder(
+          index, distribuidos.proto.UrlItem.getDefaultInstance());
     }
     /**
-     * <code>string nombre = 2;</code>
-     * @param value The bytes for nombre to set.
-     * @return This builder for chaining.
+     * <code>repeated .distribuidos.UrlItem urls = 1;</code>
      */
-    public Builder setNombreBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      nombre_ = value;
-      onChanged();
-      return this;
+    public java.util.List<distribuidos.proto.UrlItem.Builder> 
+         getUrlsBuilderList() {
+      return getUrlsFieldBuilder().getBuilderList();
     }
-
-    private java.lang.Object tipo_ = "";
-    /**
-     * <code>string tipo = 3;</code>
-     * @return The tipo.
-     */
-    public java.lang.String getTipo() {
-      java.lang.Object ref = tipo_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        tipo_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        distribuidos.proto.UrlItem, distribuidos.proto.UrlItem.Builder, distribuidos.proto.UrlItemOrBuilder> 
+        getUrlsFieldBuilder() {
+      if (urlsBuilder_ == null) {
+        urlsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            distribuidos.proto.UrlItem, distribuidos.proto.UrlItem.Builder, distribuidos.proto.UrlItemOrBuilder>(
+                urls_,
+                ((bitField0_ & 0x00000001) != 0),
+                getParentForChildren(),
+                isClean());
+        urls_ = null;
       }
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @return The bytes for tipo.
-     */
-    public com.google.protobuf.ByteString
-        getTipoBytes() {
-      java.lang.Object ref = tipo_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        tipo_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @param value The tipo to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTipo(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      tipo_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTipo() {
-      
-      tipo_ = getDefaultInstance().getTipo();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string tipo = 3;</code>
-     * @param value The bytes for tipo to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTipoBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      tipo_ = value;
-      onChanged();
-      return this;
+      return urlsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

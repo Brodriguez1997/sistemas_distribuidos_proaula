@@ -30,13 +30,15 @@ class FIleSoapModel(ComplexModel):
     file = String
 
 class ArchivoSoap(ComplexModel):
+    __namespace__ = "Files.soap"
     nombre = Unicode
     contenido = Unicode 
     tipo = Unicode 
 
 class UrlSoap(ComplexModel):
+    __namespace__ = "Files.soap"
     nombre = Unicode
-    url = Unicode 
+    url = Unicode
     tipo = Unicode
 
 class SoapServiceUser(ServiceBase):
@@ -47,37 +49,37 @@ class SoapServiceUser(ServiceBase):
         lista_grpc = []
 
         for archivo in archivos:
-            archivo_grpc = grpc_pb2.Archivo(
-                nombre=archivo.nombre,
-                tipo=archivo.tipo,
-                archivo=archivo.contenido.encode("utf-8")
-            )
-            lista_grpc.append(archivo_grpc)
+            arhivo_data = {
+                'nombre': archivos.nombre,
+                'tipo': archivos.tipo,
+                'contenido_base64': archivos.contenido
+            }
+            lista_grpc.append(arhivo_data)
 
         rta = recibir_archivo(lista_grpc)
 
         return json.dumps({'resultados': rta})
     
     @rpc(Array(UrlSoap), _returns=Unicode)
-    def recibir_url_soap(ctx, url):
+    def recibir_url_soap(ctx, urls):
+        
+        lista_urls = []
 
-        lista_grpc = []
+        for url in urls:
+            url_data = {
+                'nombre': url.nombre,
+                'tipo': url.tipo,
+                'url': url.url
+            }
+            lista_urls.append(url_data)
 
-        for url in archivos:
-            url_grpc = grpc_pb2.Archivo(
-                nombre=url.nombre,
-                tipo=url.tipo,
-                url=url.url
-            )
-            lista_grpc.append(url_grpc)
-
-        rta = recibir_archivo(lista_grpc)
+        rta = recibir_url(lista_urls)
 
         return json.dumps({'message': rta})
     
 my_soap = Application(
     [SoapServiceUser],
-    tns='django.soap.files',
+    tns='Files.soap',
     in_protocol=Soap11(validator='lxml'),
     out_protocol=Soap11(),
 )

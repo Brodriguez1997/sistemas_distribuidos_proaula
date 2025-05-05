@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\x12\x0c\x64istribuidos\"A\n\x14\x43onvertirUrlsRequest\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\x0c\n\x04tipo\x18\x03 \x01(\t\"+\n\x15\x43onvertirUrlsResponse\x12\x12\n\nresultados\x18\x01 \x03(\t\"&\n\x14\x44\x65scargarUrlsRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"*\n\x15\x44\x65scargarUrlsResponse\x12\x11\n\trespuesta\x18\x01 \x01(\t\"I\n\x18\x43onvertirArchivosRequest\x12\x0f\n\x07\x61rchivo\x18\x01 \x01(\t\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\x0c\n\x04tipo\x18\x03 \x01(\t\"/\n\x19\x43onvertirArchivosResponse\x12\x12\n\nresultados\x18\x01 \x03(\t\")\n\x17\x44\x65scargarArchivoRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"-\n\x18\x44\x65scargarArchivoResponse\x12\x11\n\trespuesta\x18\x01 \x01(\t\"!\n\x0eSaludarRequest\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\"$\n\x0fSaludarResponse\x12\x11\n\trespuesta\x18\x01 \x01(\t2\xc9\x01\n\x0f\x43onvertidorUrls\x12Z\n\rConvertirUrls\x12\".distribuidos.ConvertirUrlsRequest\x1a#.distribuidos.ConvertirUrlsResponse\"\x00\x12Z\n\rDescargarUrls\x12\".distribuidos.DescargarUrlsRequest\x1a#.distribuidos.DescargarUrlsResponse\"\x00\x32\xaa\x02\n\x11\x43onvertidorOffice\x12\x66\n\x11\x43onvertirArchivos\x12&.distribuidos.ConvertirArchivosRequest\x1a\'.distribuidos.ConvertirArchivosResponse\"\x00\x12\x63\n\x10\x44\x65scargarArchivo\x12%.distribuidos.DescargarArchivoRequest\x1a&.distribuidos.DescargarArchivoResponse\"\x00\x12H\n\x07Saludar\x12\x1c.distribuidos.SaludarRequest\x1a\x1d.distribuidos.SaludarResponse\"\x00\x42$\n\x12\x64istribuidos.protoB\x0cServiceProtoP\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\x12\x0c\x64istribuidos\"4\n\x07UrlItem\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x12\x0c\n\x04tipo\x18\x03 \x01(\t\"E\n\x0b\x41rchivoItem\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x18\n\x10\x63ontenido_base64\x18\x02 \x01(\t\x12\x0c\n\x04tipo\x18\x03 \x01(\t\";\n\x14\x43onvertirUrlsRequest\x12#\n\x04urls\x18\x01 \x03(\x0b\x32\x15.distribuidos.UrlItem\"+\n\x15\x43onvertirUrlsResponse\x12\x12\n\nresultados\x18\x01 \x03(\t\"G\n\x18\x43onvertirArchivosRequest\x12+\n\x08\x61rchivos\x18\x01 \x03(\x0b\x32\x19.distribuidos.ArchivoItem\"/\n\x19\x43onvertirArchivosResponse\x12\x12\n\nresultados\x18\x01 \x03(\t2m\n\x0f\x43onvertidorUrls\x12Z\n\rConvertirUrls\x12\".distribuidos.ConvertirUrlsRequest\x1a#.distribuidos.ConvertirUrlsResponse\"\x00\x32{\n\x11\x43onvertidorOffice\x12\x66\n\x11\x43onvertirArchivos\x12&.distribuidos.ConvertirArchivosRequest\x1a\'.distribuidos.ConvertirArchivosResponse\"\x00\x42$\n\x12\x64istribuidos.protoB\x0cServiceProtoP\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,28 +22,20 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'server_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['DESCRIPTOR']._options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\022distribuidos.protoB\014ServiceProtoP\001'
-  _globals['_CONVERTIRURLSREQUEST']._serialized_start=30
-  _globals['_CONVERTIRURLSREQUEST']._serialized_end=95
-  _globals['_CONVERTIRURLSRESPONSE']._serialized_start=97
-  _globals['_CONVERTIRURLSRESPONSE']._serialized_end=140
-  _globals['_DESCARGARURLSREQUEST']._serialized_start=142
-  _globals['_DESCARGARURLSREQUEST']._serialized_end=180
-  _globals['_DESCARGARURLSRESPONSE']._serialized_start=182
-  _globals['_DESCARGARURLSRESPONSE']._serialized_end=224
-  _globals['_CONVERTIRARCHIVOSREQUEST']._serialized_start=226
-  _globals['_CONVERTIRARCHIVOSREQUEST']._serialized_end=299
-  _globals['_CONVERTIRARCHIVOSRESPONSE']._serialized_start=301
-  _globals['_CONVERTIRARCHIVOSRESPONSE']._serialized_end=348
-  _globals['_DESCARGARARCHIVOREQUEST']._serialized_start=350
-  _globals['_DESCARGARARCHIVOREQUEST']._serialized_end=391
-  _globals['_DESCARGARARCHIVORESPONSE']._serialized_start=393
-  _globals['_DESCARGARARCHIVORESPONSE']._serialized_end=438
-  _globals['_SALUDARREQUEST']._serialized_start=440
-  _globals['_SALUDARREQUEST']._serialized_end=473
-  _globals['_SALUDARRESPONSE']._serialized_start=475
-  _globals['_SALUDARRESPONSE']._serialized_end=511
-  _globals['_CONVERTIDORURLS']._serialized_start=514
-  _globals['_CONVERTIDORURLS']._serialized_end=715
-  _globals['_CONVERTIDOROFFICE']._serialized_start=718
-  _globals['_CONVERTIDOROFFICE']._serialized_end=1016
+  _globals['_URLITEM']._serialized_start=30
+  _globals['_URLITEM']._serialized_end=82
+  _globals['_ARCHIVOITEM']._serialized_start=84
+  _globals['_ARCHIVOITEM']._serialized_end=153
+  _globals['_CONVERTIRURLSREQUEST']._serialized_start=155
+  _globals['_CONVERTIRURLSREQUEST']._serialized_end=214
+  _globals['_CONVERTIRURLSRESPONSE']._serialized_start=216
+  _globals['_CONVERTIRURLSRESPONSE']._serialized_end=259
+  _globals['_CONVERTIRARCHIVOSREQUEST']._serialized_start=261
+  _globals['_CONVERTIRARCHIVOSREQUEST']._serialized_end=332
+  _globals['_CONVERTIRARCHIVOSRESPONSE']._serialized_start=334
+  _globals['_CONVERTIRARCHIVOSRESPONSE']._serialized_end=381
+  _globals['_CONVERTIDORURLS']._serialized_start=383
+  _globals['_CONVERTIDORURLS']._serialized_end=492
+  _globals['_CONVERTIDOROFFICE']._serialized_start=494
+  _globals['_CONVERTIDOROFFICE']._serialized_end=617
 # @@protoc_insertion_point(module_scope)
