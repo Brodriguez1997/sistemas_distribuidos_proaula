@@ -70,7 +70,7 @@ public class Main {
                 int[] threadCounts = {4};
                 
                 // Configurar directorio de salida temporal
-                String tempDir = System.getProperty("java.io.tmpdir") + "pdf_output/";
+                String tempDir = System.getProperty("java.io.tmpdir") + "/pdf_output/";
                 new File(tempDir).mkdirs();
                 
                 // Limpiar directorio temporal antes de empezar
@@ -130,7 +130,7 @@ public class Main {
             
             try {
                 String tempDir = System.getProperty("java.io.tmpdir");
-                String outputDir = tempDir + "pdf_output/";
+                String outputDir = tempDir + "/pdf_output/";
                 new File(outputDir).mkdirs();
                 
                 // Preparar archivos para procesamiento

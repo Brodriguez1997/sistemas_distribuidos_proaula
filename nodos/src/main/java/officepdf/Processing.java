@@ -25,23 +25,21 @@ public class Processing implements Runnable {
         long cpuStart = threadBean.getCurrentThreadCpuTime();
         
         try {
-            // Generar nombre único para el PDF de salida
             String baseName = inputFile.substring(inputFile.lastIndexOf('/') + 1)
                                 .replaceFirst("[.][^.]+$", "");
             String outputName = "officepdf_" + System.nanoTime() + "_" + 
                             Thread.currentThread().getId() + "_" + baseName + ".pdf";
             String outputPath = outputDir + outputName;
 
+            // Comando para Linux
             ProcessBuilder processBuilder = new ProcessBuilder(
-                "C:/Program Files/LibreOffice/program/soffice.exe",
+                "libreoffice",
                 "--headless",
                 "--convert-to",
                 "pdf",
                 inputFile,
                 "--outdir",
-                outputDir,
-                "--writer",
-                "--infilter=\"Microsoft Word 2007-2013 XML\""
+                outputDir
             );
 
             processBuilder.redirectErrorStream(true);
@@ -68,7 +66,7 @@ public class Processing implements Runnable {
                     inputFile, exitCode
                 );
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             failureCount.incrementAndGet();
             System.err.println("Error en Processing.run(): " + e.getMessage());
         }

@@ -15,7 +15,6 @@ public class Processing implements Runnable {
     @Override
     public void run() {
         try {
-            // Nombre único basado en timestamp + contador atómico + thread ID
             String fileName = "pdf_" + System.nanoTime() + "_" + 
                             Thread.currentThread().getId() + ".pdf";
             String outputPath = outputDir + fileName;
@@ -23,8 +22,9 @@ public class Processing implements Runnable {
             System.out.println("Generando PDF desde URL: " + url);
             System.out.println("Ruta de salida: " + outputPath);
 
+            // Comando para Linux
             ProcessBuilder processBuilder = new ProcessBuilder(
-                "C:/Program Files/Google/Chrome/Application/chrome.exe",
+                "google-chrome",
                 "--headless",
                 "--disable-gpu",
                 "--print-to-pdf=" + outputPath,
