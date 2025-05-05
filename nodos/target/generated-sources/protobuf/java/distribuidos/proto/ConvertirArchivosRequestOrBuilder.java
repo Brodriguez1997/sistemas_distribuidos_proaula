@@ -8,16 +8,45 @@ public interface ConvertirArchivosRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string archivo = 1;</code>
-   * @return The archivo.
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @return A list containing the archivos.
    */
-  java.lang.String getArchivo();
+  java.util.List<java.lang.String>
+      getArchivosList();
   /**
-   * <code>string archivo = 1;</code>
-   * @return The bytes for archivo.
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @return The count of archivos.
+   */
+  int getArchivosCount();
+  /**
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @param index The index of the element to return.
+   * @return The archivos at the given index.
+   */
+  java.lang.String getArchivos(int index);
+  /**
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the archivos at the given index.
    */
   com.google.protobuf.ByteString
-      getArchivoBytes();
+      getArchivosBytes(int index);
 
   /**
    * <code>string nombre = 2;</code>

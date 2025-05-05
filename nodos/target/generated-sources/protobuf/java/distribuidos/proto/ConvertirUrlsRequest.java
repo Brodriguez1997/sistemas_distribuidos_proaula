@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ConvertirUrlsRequest() {
-    url_ = "";
+    urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     nombre_ = "";
     tipo_ = "";
   }
@@ -46,42 +46,55 @@ private static final long serialVersionUID = 0L;
             distribuidos.proto.ConvertirUrlsRequest.class, distribuidos.proto.ConvertirUrlsRequest.Builder.class);
   }
 
-  public static final int URL_FIELD_NUMBER = 1;
-  private volatile java.lang.Object url_;
+  public static final int URLS_FIELD_NUMBER = 1;
+  private com.google.protobuf.LazyStringList urls_;
   /**
-   * <code>string url = 1;</code>
-   * @return The url.
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @return A list containing the urls.
    */
-  @java.lang.Override
-  public java.lang.String getUrl() {
-    java.lang.Object ref = url_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      url_ = s;
-      return s;
-    }
+  public com.google.protobuf.ProtocolStringList
+      getUrlsList() {
+    return urls_;
   }
   /**
-   * <code>string url = 1;</code>
-   * @return The bytes for url.
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @return The count of urls.
    */
-  @java.lang.Override
+  public int getUrlsCount() {
+    return urls_.size();
+  }
+  /**
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @param index The index of the element to return.
+   * @return The urls at the given index.
+   */
+  public java.lang.String getUrls(int index) {
+    return urls_.get(index);
+  }
+  /**
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the urls at the given index.
+   */
   public com.google.protobuf.ByteString
-      getUrlBytes() {
-    java.lang.Object ref = url_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      url_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+      getUrlsBytes(int index) {
+    return urls_.getByteString(index);
   }
 
   public static final int NOMBRE_FIELD_NUMBER = 2;
@@ -174,8 +187,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(url_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, url_);
+    for (int i = 0; i < urls_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, urls_.getRaw(i));
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nombre_);
@@ -192,8 +205,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(url_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, url_);
+    {
+      int dataSize = 0;
+      for (int i = 0; i < urls_.size(); i++) {
+        dataSize += computeStringSizeNoTag(urls_.getRaw(i));
+      }
+      size += dataSize;
+      size += 1 * getUrlsList().size();
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nombre_);
@@ -216,8 +234,8 @@ private static final long serialVersionUID = 0L;
     }
     distribuidos.proto.ConvertirUrlsRequest other = (distribuidos.proto.ConvertirUrlsRequest) obj;
 
-    if (!getUrl()
-        .equals(other.getUrl())) return false;
+    if (!getUrlsList()
+        .equals(other.getUrlsList())) return false;
     if (!getNombre()
         .equals(other.getNombre())) return false;
     if (!getTipo()
@@ -233,8 +251,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + URL_FIELD_NUMBER;
-    hash = (53 * hash) + getUrl().hashCode();
+    if (getUrlsCount() > 0) {
+      hash = (37 * hash) + URLS_FIELD_NUMBER;
+      hash = (53 * hash) + getUrlsList().hashCode();
+    }
     hash = (37 * hash) + NOMBRE_FIELD_NUMBER;
     hash = (53 * hash) + getNombre().hashCode();
     hash = (37 * hash) + TIPO_FIELD_NUMBER;
@@ -367,8 +387,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      url_ = "";
-
+      urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000001);
       nombre_ = "";
 
       tipo_ = "";
@@ -399,7 +419,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public distribuidos.proto.ConvertirUrlsRequest buildPartial() {
       distribuidos.proto.ConvertirUrlsRequest result = new distribuidos.proto.ConvertirUrlsRequest(this);
-      result.url_ = url_;
+      int from_bitField0_ = bitField0_;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        urls_ = urls_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000001);
+      }
+      result.urls_ = urls_;
       result.nombre_ = nombre_;
       result.tipo_ = tipo_;
       onBuilt();
@@ -450,8 +475,14 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(distribuidos.proto.ConvertirUrlsRequest other) {
       if (other == distribuidos.proto.ConvertirUrlsRequest.getDefaultInstance()) return this;
-      if (!other.getUrl().isEmpty()) {
-        url_ = other.url_;
+      if (!other.urls_.isEmpty()) {
+        if (urls_.isEmpty()) {
+          urls_ = other.urls_;
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          ensureUrlsIsMutable();
+          urls_.addAll(other.urls_);
+        }
         onChanged();
       }
       if (!other.getNombre().isEmpty()) {
@@ -489,8 +520,9 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              url_ = input.readStringRequireUtf8();
-
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureUrlsIsMutable();
+              urls_.add(s);
               break;
             } // case 10
             case 18: {
@@ -518,79 +550,150 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
-    private java.lang.Object url_ = "";
-    /**
-     * <code>string url = 1;</code>
-     * @return The url.
-     */
-    public java.lang.String getUrl() {
-      java.lang.Object ref = url_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        url_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    private com.google.protobuf.LazyStringList urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureUrlsIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        urls_ = new com.google.protobuf.LazyStringArrayList(urls_);
+        bitField0_ |= 0x00000001;
+       }
     }
     /**
-     * <code>string url = 1;</code>
-     * @return The bytes for url.
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @return A list containing the urls.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getUrlsList() {
+      return urls_.getUnmodifiableView();
+    }
+    /**
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @return The count of urls.
+     */
+    public int getUrlsCount() {
+      return urls_.size();
+    }
+    /**
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param index The index of the element to return.
+     * @return The urls at the given index.
+     */
+    public java.lang.String getUrls(int index) {
+      return urls_.get(index);
+    }
+    /**
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the urls at the given index.
      */
     public com.google.protobuf.ByteString
-        getUrlBytes() {
-      java.lang.Object ref = url_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        url_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+        getUrlsBytes(int index) {
+      return urls_.getByteString(index);
     }
     /**
-     * <code>string url = 1;</code>
-     * @param value The url to set.
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param index The index to set the value at.
+     * @param value The urls to set.
      * @return This builder for chaining.
      */
-    public Builder setUrl(
+    public Builder setUrls(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUrlsIsMutable();
+      urls_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param value The urls to add.
+     * @return This builder for chaining.
+     */
+    public Builder addUrls(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  
-      url_ = value;
+  ensureUrlsIsMutable();
+      urls_.add(value);
       onChanged();
       return this;
     }
     /**
-     * <code>string url = 1;</code>
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param values The urls to add.
      * @return This builder for chaining.
      */
-    public Builder clearUrl() {
-      
-      url_ = getDefaultInstance().getUrl();
+    public Builder addAllUrls(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureUrlsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, urls_);
       onChanged();
       return this;
     }
     /**
-     * <code>string url = 1;</code>
-     * @param value The bytes for url to set.
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder setUrlBytes(
+    public Builder clearUrls() {
+      urls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Cambiado de 'url' a 'urls' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string urls = 1;</code>
+     * @param value The bytes of the urls to add.
+     * @return This builder for chaining.
+     */
+    public Builder addUrlsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-      
-      url_ = value;
+      ensureUrlsIsMutable();
+      urls_.add(value);
       onChanged();
       return this;
     }

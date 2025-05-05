@@ -53,7 +53,8 @@ public class Main {
         public void convertirUrls(ConvertirUrlsRequest request, 
                 StreamObserver<ConvertirUrlsResponse> responseObserver) {
             try {
-                String[] urls = {request.getUrl()};
+                // Get all URLs from the repeated field
+                String[] urls = request.getUrlsList().toArray(new String[0]);
                 int[] threadCounts = {4};
                 
                 // Configurar directorio de salida temporal
@@ -91,109 +92,94 @@ public class Main {
         @Override
         public void convertirArchivos(ConvertirArchivosRequest request, 
             StreamObserver<ConvertirArchivosResponse> responseObserver) {
-                totalRequests.incrementAndGet();
-                long startTime = System.currentTimeMillis();
-                 MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+            totalRequests.incrementAndGet();
+            long startTime = System.currentTimeMillis();
+            MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+            
             try {
-                // Decodificar el base64 a archivo temporal
-                byte[] fileBytes = Base64.getDecoder().decode(request.getArchivo());
+                // Process all files from the repeated field
                 String tempDir = System.getProperty("java.io.tmpdir");
-                String tempFilePath = tempDir + request.getNombre();
-                Path path = Paths.get(tempFilePath);
-                Files.write(path, fileBytes);
-
-                // Procesar el archivo
-                String[] files = {tempFilePath};
-                int threads = 4;
                 String outputDir = tempDir + "pdf_output/";
-                new File(outputDir).mkdirs(); // Crear directorio si no existe
+                new File(outputDir).mkdirs();
                 
+                // Prepare arrays for processing
+                String[] files = new String[request.getArchivosList().size()];
+                String[] base64Files = request.getArchivosList().toArray(new String[0]);
+                
+                // Write all temporary files
+                for (int i = 0; i < base64Files.length; i++) {
+                    byte[] fileBytes = Base64.getDecoder().decode(base64Files[i]);
+                    String tempFilePath = tempDir + request.getNombre() + "_" + i;
+                    Path path = Paths.get(tempFilePath);
+                    Files.write(path, fileBytes);
+                    files[i] = tempFilePath;
+                }
+
+                // Procesar los archivos
+                int threads = 4;
                 OfficePdf processor = new OfficePdf(files, threads, outputDir);
                 processor.processFiles();
                 
-                // Leer el PDF generado y convertirlo a base64
-                String pdfPath = outputDir + request.getNombre().replaceFirst("[.][^.]+$", "") + ".pdf";
-                byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
-                String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                // Prepare response with all generated PDFs
+                ConvertirArchivosResponse.Builder responseBuilder = ConvertirArchivosResponse.newBuilder();
                 
-                // Limpieza: eliminar archivos temporales
-                Files.deleteIfExists(path);
-                Files.deleteIfExists(Paths.get(pdfPath));
+                // Read all generated PDFs and add to response
+                for (int i = 0; i < files.length; i++) {
+                    String pdfPath = outputDir + new File(files[i]).getName().replaceFirst("[.][^.]+$", "") + ".pdf";
+                    byte[] pdfBytes = Files.readAllBytes(Paths.get(pdfPath));
+                    String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
+                    responseBuilder.addResultados(pdfBase64);
+                    
+                    // Clean up temporary files
+                    Files.deleteIfExists(Paths.get(files[i]));
+                    Files.deleteIfExists(Paths.get(pdfPath));
+                }
                 
-                responseObserver.onNext(
-                    ConvertirArchivosResponse.newBuilder()
-                    .addResultados(pdfBase64) // Envía el PDF en base64
-                    .build()
+                // Send metrics
+                long duration = System.currentTimeMillis() - startTime;
+                long memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024); // MB
+                
+                System.out.printf(
+                    "gRPC Request: %s, Tiempo: %dms, Memoria: %dMB%n",
+                    request.getNombre(), duration, memoryUsed
                 );
+                
+                System.out.println("\n=== Métricas del Servicio ===");
+                System.out.println("Total de peticiones: " + totalRequests.get());
+                System.out.printf("Última conversión - Tiempo: %dms | Memoria usada: %dMB\n",
+                    duration, memoryUsed);
+                
+                responseObserver.onNext(responseBuilder.build());
                 responseObserver.onCompleted();
-                 
-            long duration = System.currentTimeMillis() - startTime;
-            long memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024); // MB
-            
-            System.out.printf(
-                "gRPC Request: %s, Tiempo: %dms, Memoria: %dMB%n",
-                request.getNombre(), duration, memoryUsed
-            );
-            
-            responseObserver.onNext(ConvertirArchivosResponse.newBuilder()
-                .addResultados(pdfBase64)
-                .build());
-            responseObserver.onCompleted();
-            duration = System.currentTimeMillis() - startTime;
-            memoryUsed = memoryBean.getHeapMemoryUsage().getUsed() / (1024 * 1024);
-            System.out.println("\n=== Métricas del Servicio ===");
-            System.out.println("Total de peticiones: " + totalRequests.get());
-            System.out.printf("Última conversión - Tiempo: %dms | Memoria usada: %dMB\n",
-            duration, memoryUsed);
-            System.out.printf("Tiempo: %dms | Memoria: %dMB\n", duration, memoryUsed);
 
             } catch (Exception e) {
                 System.err.printf("Error en gRPC: %s%n", e.getMessage());
                 responseObserver.onError(e);
             }
-            
-     
-        
-        }
-        
-
-        @Override
-        public void saludar(SaludarRequest request,
-                          StreamObserver<SaludarResponse> responseObserver) {
-            // Nueva implementación del método Saludar
-            String mensajeRecibido = request.getMensaje();
-            String respuesta = "Hola desde el servidor! Recibí tu mensaje: " + mensajeRecibido;
-            System.out.println(request);
-            
-            responseObserver.onNext(
-                SaludarResponse.newBuilder()
-                    .setRespuesta(respuesta)
-                    .build()
-            );
-            responseObserver.onCompleted();
         }
     }
+
     public class OfficePdf2 {
-    private String[] files;
-    private int threads;
-    private String outputPdfPath;
+        private String[] files;
+        private int threads;
+        private String outputPdfPath;
 
-    public void processFiles() throws Exception {
-        long startTime = System.currentTimeMillis();
-        ExecutorService executor = Executors.newFixedThreadPool(threads);
+        public void processFiles() throws Exception {
+            long startTime = System.currentTimeMillis();
+            ExecutorService executor = Executors.newFixedThreadPool(threads);
 
-        for (String file : files) {
-            executor.submit(new Processing(file, outputPdfPath));
+            for (String file : files) {
+                executor.submit(new Processing(file, outputPdfPath));
+            }
+
+            executor.shutdown();
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+            
+            long totalTime = System.currentTimeMillis() - startTime;
+            System.out.printf(
+                "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
+                files.length, threads, totalTime
+            );
         }
-
-        executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-        
-        long totalTime = System.currentTimeMillis() - startTime;
-        System.out.printf(
-            "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
-            files.length, threads, totalTime
-        );
     }
-}
 }

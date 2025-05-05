@@ -46,68 +46,6 @@ public final class ConvertidorOfficeGrpc {
     return getConvertirArchivosMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<distribuidos.proto.DescargarArchivoRequest,
-      distribuidos.proto.DescargarArchivoResponse> getDescargarArchivoMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "DescargarArchivo",
-      requestType = distribuidos.proto.DescargarArchivoRequest.class,
-      responseType = distribuidos.proto.DescargarArchivoResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<distribuidos.proto.DescargarArchivoRequest,
-      distribuidos.proto.DescargarArchivoResponse> getDescargarArchivoMethod() {
-    io.grpc.MethodDescriptor<distribuidos.proto.DescargarArchivoRequest, distribuidos.proto.DescargarArchivoResponse> getDescargarArchivoMethod;
-    if ((getDescargarArchivoMethod = ConvertidorOfficeGrpc.getDescargarArchivoMethod) == null) {
-      synchronized (ConvertidorOfficeGrpc.class) {
-        if ((getDescargarArchivoMethod = ConvertidorOfficeGrpc.getDescargarArchivoMethod) == null) {
-          ConvertidorOfficeGrpc.getDescargarArchivoMethod = getDescargarArchivoMethod =
-              io.grpc.MethodDescriptor.<distribuidos.proto.DescargarArchivoRequest, distribuidos.proto.DescargarArchivoResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DescargarArchivo"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.DescargarArchivoRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.DescargarArchivoResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ConvertidorOfficeMethodDescriptorSupplier("DescargarArchivo"))
-              .build();
-        }
-      }
-    }
-    return getDescargarArchivoMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<distribuidos.proto.SaludarRequest,
-      distribuidos.proto.SaludarResponse> getSaludarMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "Saludar",
-      requestType = distribuidos.proto.SaludarRequest.class,
-      responseType = distribuidos.proto.SaludarResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<distribuidos.proto.SaludarRequest,
-      distribuidos.proto.SaludarResponse> getSaludarMethod() {
-    io.grpc.MethodDescriptor<distribuidos.proto.SaludarRequest, distribuidos.proto.SaludarResponse> getSaludarMethod;
-    if ((getSaludarMethod = ConvertidorOfficeGrpc.getSaludarMethod) == null) {
-      synchronized (ConvertidorOfficeGrpc.class) {
-        if ((getSaludarMethod = ConvertidorOfficeGrpc.getSaludarMethod) == null) {
-          ConvertidorOfficeGrpc.getSaludarMethod = getSaludarMethod =
-              io.grpc.MethodDescriptor.<distribuidos.proto.SaludarRequest, distribuidos.proto.SaludarResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Saludar"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.SaludarRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.SaludarResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ConvertidorOfficeMethodDescriptorSupplier("Saludar"))
-              .build();
-        }
-      }
-    }
-    return getSaludarMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -163,20 +101,6 @@ public final class ConvertidorOfficeGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getConvertirArchivosMethod(), responseObserver);
     }
 
-    /**
-     */
-    public void descargarArchivo(distribuidos.proto.DescargarArchivoRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.DescargarArchivoResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDescargarArchivoMethod(), responseObserver);
-    }
-
-    /**
-     */
-    public void saludar(distribuidos.proto.SaludarRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.SaludarResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSaludarMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -186,20 +110,6 @@ public final class ConvertidorOfficeGrpc {
                 distribuidos.proto.ConvertirArchivosRequest,
                 distribuidos.proto.ConvertirArchivosResponse>(
                   this, METHODID_CONVERTIR_ARCHIVOS)))
-          .addMethod(
-            getDescargarArchivoMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                distribuidos.proto.DescargarArchivoRequest,
-                distribuidos.proto.DescargarArchivoResponse>(
-                  this, METHODID_DESCARGAR_ARCHIVO)))
-          .addMethod(
-            getSaludarMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                distribuidos.proto.SaludarRequest,
-                distribuidos.proto.SaludarResponse>(
-                  this, METHODID_SALUDAR)))
           .build();
     }
   }
@@ -225,22 +135,6 @@ public final class ConvertidorOfficeGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getConvertirArchivosMethod(), getCallOptions()), request, responseObserver);
     }
-
-    /**
-     */
-    public void descargarArchivo(distribuidos.proto.DescargarArchivoRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.DescargarArchivoResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getDescargarArchivoMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void saludar(distribuidos.proto.SaludarRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.SaludarResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getSaludarMethod(), getCallOptions()), request, responseObserver);
-    }
   }
 
   /**
@@ -262,20 +156,6 @@ public final class ConvertidorOfficeGrpc {
     public distribuidos.proto.ConvertirArchivosResponse convertirArchivos(distribuidos.proto.ConvertirArchivosRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getConvertirArchivosMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public distribuidos.proto.DescargarArchivoResponse descargarArchivo(distribuidos.proto.DescargarArchivoRequest request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getDescargarArchivoMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public distribuidos.proto.SaludarResponse saludar(distribuidos.proto.SaludarRequest request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getSaludarMethod(), getCallOptions(), request);
     }
   }
 
@@ -300,27 +180,9 @@ public final class ConvertidorOfficeGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getConvertirArchivosMethod(), getCallOptions()), request);
     }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<distribuidos.proto.DescargarArchivoResponse> descargarArchivo(
-        distribuidos.proto.DescargarArchivoRequest request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getDescargarArchivoMethod(), getCallOptions()), request);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<distribuidos.proto.SaludarResponse> saludar(
-        distribuidos.proto.SaludarRequest request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getSaludarMethod(), getCallOptions()), request);
-    }
   }
 
   private static final int METHODID_CONVERTIR_ARCHIVOS = 0;
-  private static final int METHODID_DESCARGAR_ARCHIVO = 1;
-  private static final int METHODID_SALUDAR = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -342,14 +204,6 @@ public final class ConvertidorOfficeGrpc {
         case METHODID_CONVERTIR_ARCHIVOS:
           serviceImpl.convertirArchivos((distribuidos.proto.ConvertirArchivosRequest) request,
               (io.grpc.stub.StreamObserver<distribuidos.proto.ConvertirArchivosResponse>) responseObserver);
-          break;
-        case METHODID_DESCARGAR_ARCHIVO:
-          serviceImpl.descargarArchivo((distribuidos.proto.DescargarArchivoRequest) request,
-              (io.grpc.stub.StreamObserver<distribuidos.proto.DescargarArchivoResponse>) responseObserver);
-          break;
-        case METHODID_SALUDAR:
-          serviceImpl.saludar((distribuidos.proto.SaludarRequest) request,
-              (io.grpc.stub.StreamObserver<distribuidos.proto.SaludarResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -413,8 +267,6 @@ public final class ConvertidorOfficeGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ConvertidorOfficeFileDescriptorSupplier())
               .addMethod(getConvertirArchivosMethod())
-              .addMethod(getDescargarArchivoMethod())
-              .addMethod(getSaludarMethod())
               .build();
         }
       }

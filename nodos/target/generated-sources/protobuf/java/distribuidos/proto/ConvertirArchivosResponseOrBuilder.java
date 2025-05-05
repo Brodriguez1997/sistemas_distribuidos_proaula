@@ -8,23 +8,39 @@ public interface ConvertirArchivosResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * Ya era una lista
+   * </pre>
+   *
    * <code>repeated string resultados = 1;</code>
    * @return A list containing the resultados.
    */
   java.util.List<java.lang.String>
       getResultadosList();
   /**
+   * <pre>
+   * Ya era una lista
+   * </pre>
+   *
    * <code>repeated string resultados = 1;</code>
    * @return The count of resultados.
    */
   int getResultadosCount();
   /**
+   * <pre>
+   * Ya era una lista
+   * </pre>
+   *
    * <code>repeated string resultados = 1;</code>
    * @param index The index of the element to return.
    * @return The resultados at the given index.
    */
   java.lang.String getResultados(int index);
   /**
+   * <pre>
+   * Ya era una lista
+   * </pre>
+   *
    * <code>repeated string resultados = 1;</code>
    * @param index The index of the value to return.
    * @return The bytes of the resultados at the given index.

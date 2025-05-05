@@ -47,46 +47,48 @@ def enviar_mensaje(mensaje):
 
     return response
 
-def recibir_url(url, nombre_url, tipo):
+def recibir_url(lista_grpc_urls):
     
     url = "http://host.docker.internal:3000/api/pdf/"
 
     channel = grpc.insecure_channel('host.docker.internal:50051')
     stub = grpc_pb2_grpc.ConvertidorUrlsStub(channel)
 
-    request = grpc_pb2.ConvertirUrlsRequest(url=url, nombre=nombre_url, tipo=tipo)
+    request = grpc_pb2.ConvertirUrlsRequest(urls=lista_grpc_urls)
     response = stub.ConvertirUrls(request)
     print(response)
     
     if response:
-        data = {
-            "nombre": nombre_url,
-            "ruta": 10,
-            "tamano": 1000,
-        }
-        response_db = requests.post(url, json=data)
-        print(response_db)
+        for urlDaTa in lista_grpc_archivos:
+            data = {
+                "nombre": urlDaTa.nombre,
+                "ruta": 10,
+                "tamano": 1000,
+            }
+            response_db = requests.post(url, json=data)
+            print(response_db)
 
     return "recibido"
 
-def recibir_archivo(file, nombre_archivo, tipo):
+def recibir_archivo(lista_grpc_archivos):
     
     url = "http://host.docker.internal:3000/api/pdf/"
 
     channel = grpc.insecure_channel('host.docker.internal:50051')
     stub = grpc_pb2_grpc.ConvertidorOfficeStub(channel)
 
-    request = grpc_pb2.ConvertirArchivosRequest(archivo=file, nombre=nombre_archivo, tipo=tipo)
+    request = grpc_pb2.ConvertirArchivosRequest(archivos=lista_grpc_archivos)
     response = stub.ConvertirArchivos(request)
     print(response)
     
     if response:
-        data = {
-            "nombre": nombre_archivo,
-            "ruta": 10,
-            "tamano": 1000,
-        }
-        response_db = requests.post(url, json=data)
-        print(response_db)
+        for archivo in lista_grpc_archivos:
+            data = {
+                "nombre": archivo.nombre,
+                "ruta": 10,
+                "tamano": 1000,
+            }
+            response_db = requests.post(url, json=data)
+            print(response_db)
 
     return "recibido"

@@ -8,16 +8,45 @@ public interface ConvertirUrlsRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string url = 1;</code>
-   * @return The url.
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @return A list containing the urls.
    */
-  java.lang.String getUrl();
+  java.util.List<java.lang.String>
+      getUrlsList();
   /**
-   * <code>string url = 1;</code>
-   * @return The bytes for url.
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @return The count of urls.
+   */
+  int getUrlsCount();
+  /**
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @param index The index of the element to return.
+   * @return The urls at the given index.
+   */
+  java.lang.String getUrls(int index);
+  /**
+   * <pre>
+   * Cambiado de 'url' a 'urls' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string urls = 1;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the urls at the given index.
    */
   com.google.protobuf.ByteString
-      getUrlBytes();
+      getUrlsBytes(int index);
 
   /**
    * <code>string nombre = 2;</code>

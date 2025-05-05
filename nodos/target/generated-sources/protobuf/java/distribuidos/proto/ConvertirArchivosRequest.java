@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ConvertirArchivosRequest() {
-    archivo_ = "";
+    archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     nombre_ = "";
     tipo_ = "";
   }
@@ -46,42 +46,55 @@ private static final long serialVersionUID = 0L;
             distribuidos.proto.ConvertirArchivosRequest.class, distribuidos.proto.ConvertirArchivosRequest.Builder.class);
   }
 
-  public static final int ARCHIVO_FIELD_NUMBER = 1;
-  private volatile java.lang.Object archivo_;
+  public static final int ARCHIVOS_FIELD_NUMBER = 1;
+  private com.google.protobuf.LazyStringList archivos_;
   /**
-   * <code>string archivo = 1;</code>
-   * @return The archivo.
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @return A list containing the archivos.
    */
-  @java.lang.Override
-  public java.lang.String getArchivo() {
-    java.lang.Object ref = archivo_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      archivo_ = s;
-      return s;
-    }
+  public com.google.protobuf.ProtocolStringList
+      getArchivosList() {
+    return archivos_;
   }
   /**
-   * <code>string archivo = 1;</code>
-   * @return The bytes for archivo.
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @return The count of archivos.
    */
-  @java.lang.Override
+  public int getArchivosCount() {
+    return archivos_.size();
+  }
+  /**
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @param index The index of the element to return.
+   * @return The archivos at the given index.
+   */
+  public java.lang.String getArchivos(int index) {
+    return archivos_.get(index);
+  }
+  /**
+   * <pre>
+   * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+   * </pre>
+   *
+   * <code>repeated string archivos = 1;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the archivos at the given index.
+   */
   public com.google.protobuf.ByteString
-      getArchivoBytes() {
-    java.lang.Object ref = archivo_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      archivo_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+      getArchivosBytes(int index) {
+    return archivos_.getByteString(index);
   }
 
   public static final int NOMBRE_FIELD_NUMBER = 2;
@@ -174,8 +187,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(archivo_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, archivo_);
+    for (int i = 0; i < archivos_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, archivos_.getRaw(i));
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nombre_);
@@ -192,8 +205,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(archivo_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, archivo_);
+    {
+      int dataSize = 0;
+      for (int i = 0; i < archivos_.size(); i++) {
+        dataSize += computeStringSizeNoTag(archivos_.getRaw(i));
+      }
+      size += dataSize;
+      size += 1 * getArchivosList().size();
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(nombre_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nombre_);
@@ -216,8 +234,8 @@ private static final long serialVersionUID = 0L;
     }
     distribuidos.proto.ConvertirArchivosRequest other = (distribuidos.proto.ConvertirArchivosRequest) obj;
 
-    if (!getArchivo()
-        .equals(other.getArchivo())) return false;
+    if (!getArchivosList()
+        .equals(other.getArchivosList())) return false;
     if (!getNombre()
         .equals(other.getNombre())) return false;
     if (!getTipo()
@@ -233,8 +251,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ARCHIVO_FIELD_NUMBER;
-    hash = (53 * hash) + getArchivo().hashCode();
+    if (getArchivosCount() > 0) {
+      hash = (37 * hash) + ARCHIVOS_FIELD_NUMBER;
+      hash = (53 * hash) + getArchivosList().hashCode();
+    }
     hash = (37 * hash) + NOMBRE_FIELD_NUMBER;
     hash = (53 * hash) + getNombre().hashCode();
     hash = (37 * hash) + TIPO_FIELD_NUMBER;
@@ -367,8 +387,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      archivo_ = "";
-
+      archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000001);
       nombre_ = "";
 
       tipo_ = "";
@@ -399,7 +419,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public distribuidos.proto.ConvertirArchivosRequest buildPartial() {
       distribuidos.proto.ConvertirArchivosRequest result = new distribuidos.proto.ConvertirArchivosRequest(this);
-      result.archivo_ = archivo_;
+      int from_bitField0_ = bitField0_;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        archivos_ = archivos_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000001);
+      }
+      result.archivos_ = archivos_;
       result.nombre_ = nombre_;
       result.tipo_ = tipo_;
       onBuilt();
@@ -450,8 +475,14 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(distribuidos.proto.ConvertirArchivosRequest other) {
       if (other == distribuidos.proto.ConvertirArchivosRequest.getDefaultInstance()) return this;
-      if (!other.getArchivo().isEmpty()) {
-        archivo_ = other.archivo_;
+      if (!other.archivos_.isEmpty()) {
+        if (archivos_.isEmpty()) {
+          archivos_ = other.archivos_;
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          ensureArchivosIsMutable();
+          archivos_.addAll(other.archivos_);
+        }
         onChanged();
       }
       if (!other.getNombre().isEmpty()) {
@@ -489,8 +520,9 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              archivo_ = input.readStringRequireUtf8();
-
+              java.lang.String s = input.readStringRequireUtf8();
+              ensureArchivosIsMutable();
+              archivos_.add(s);
               break;
             } // case 10
             case 18: {
@@ -518,79 +550,150 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
-    private java.lang.Object archivo_ = "";
-    /**
-     * <code>string archivo = 1;</code>
-     * @return The archivo.
-     */
-    public java.lang.String getArchivo() {
-      java.lang.Object ref = archivo_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        archivo_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    private com.google.protobuf.LazyStringList archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureArchivosIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        archivos_ = new com.google.protobuf.LazyStringArrayList(archivos_);
+        bitField0_ |= 0x00000001;
+       }
     }
     /**
-     * <code>string archivo = 1;</code>
-     * @return The bytes for archivo.
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @return A list containing the archivos.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getArchivosList() {
+      return archivos_.getUnmodifiableView();
+    }
+    /**
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @return The count of archivos.
+     */
+    public int getArchivosCount() {
+      return archivos_.size();
+    }
+    /**
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param index The index of the element to return.
+     * @return The archivos at the given index.
+     */
+    public java.lang.String getArchivos(int index) {
+      return archivos_.get(index);
+    }
+    /**
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the archivos at the given index.
      */
     public com.google.protobuf.ByteString
-        getArchivoBytes() {
-      java.lang.Object ref = archivo_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        archivo_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+        getArchivosBytes(int index) {
+      return archivos_.getByteString(index);
     }
     /**
-     * <code>string archivo = 1;</code>
-     * @param value The archivo to set.
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param index The index to set the value at.
+     * @param value The archivos to set.
      * @return This builder for chaining.
      */
-    public Builder setArchivo(
+    public Builder setArchivos(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureArchivosIsMutable();
+      archivos_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param value The archivos to add.
+     * @return This builder for chaining.
+     */
+    public Builder addArchivos(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  
-      archivo_ = value;
+  ensureArchivosIsMutable();
+      archivos_.add(value);
       onChanged();
       return this;
     }
     /**
-     * <code>string archivo = 1;</code>
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param values The archivos to add.
      * @return This builder for chaining.
      */
-    public Builder clearArchivo() {
-      
-      archivo_ = getDefaultInstance().getArchivo();
+    public Builder addAllArchivos(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureArchivosIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, archivos_);
       onChanged();
       return this;
     }
     /**
-     * <code>string archivo = 1;</code>
-     * @param value The bytes for archivo to set.
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder setArchivoBytes(
+    public Builder clearArchivos() {
+      archivos_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Cambiado de 'archivo' a 'archivos' y ahora es una lista
+     * </pre>
+     *
+     * <code>repeated string archivos = 1;</code>
+     * @param value The bytes of the archivos to add.
+     * @return This builder for chaining.
+     */
+    public Builder addArchivosBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-      
-      archivo_ = value;
+      ensureArchivosIsMutable();
+      archivos_.add(value);
       onChanged();
       return this;
     }

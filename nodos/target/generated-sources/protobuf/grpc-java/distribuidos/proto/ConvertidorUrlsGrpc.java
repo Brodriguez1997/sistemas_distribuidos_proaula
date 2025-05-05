@@ -46,37 +46,6 @@ public final class ConvertidorUrlsGrpc {
     return getConvertirUrlsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<distribuidos.proto.DescargarUrlsRequest,
-      distribuidos.proto.DescargarUrlsResponse> getDescargarUrlsMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "DescargarUrls",
-      requestType = distribuidos.proto.DescargarUrlsRequest.class,
-      responseType = distribuidos.proto.DescargarUrlsResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<distribuidos.proto.DescargarUrlsRequest,
-      distribuidos.proto.DescargarUrlsResponse> getDescargarUrlsMethod() {
-    io.grpc.MethodDescriptor<distribuidos.proto.DescargarUrlsRequest, distribuidos.proto.DescargarUrlsResponse> getDescargarUrlsMethod;
-    if ((getDescargarUrlsMethod = ConvertidorUrlsGrpc.getDescargarUrlsMethod) == null) {
-      synchronized (ConvertidorUrlsGrpc.class) {
-        if ((getDescargarUrlsMethod = ConvertidorUrlsGrpc.getDescargarUrlsMethod) == null) {
-          ConvertidorUrlsGrpc.getDescargarUrlsMethod = getDescargarUrlsMethod =
-              io.grpc.MethodDescriptor.<distribuidos.proto.DescargarUrlsRequest, distribuidos.proto.DescargarUrlsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DescargarUrls"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.DescargarUrlsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  distribuidos.proto.DescargarUrlsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new ConvertidorUrlsMethodDescriptorSupplier("DescargarUrls"))
-              .build();
-        }
-      }
-    }
-    return getDescargarUrlsMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -132,13 +101,6 @@ public final class ConvertidorUrlsGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getConvertirUrlsMethod(), responseObserver);
     }
 
-    /**
-     */
-    public void descargarUrls(distribuidos.proto.DescargarUrlsRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.DescargarUrlsResponse> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDescargarUrlsMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -148,13 +110,6 @@ public final class ConvertidorUrlsGrpc {
                 distribuidos.proto.ConvertirUrlsRequest,
                 distribuidos.proto.ConvertirUrlsResponse>(
                   this, METHODID_CONVERTIR_URLS)))
-          .addMethod(
-            getDescargarUrlsMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                distribuidos.proto.DescargarUrlsRequest,
-                distribuidos.proto.DescargarUrlsResponse>(
-                  this, METHODID_DESCARGAR_URLS)))
           .build();
     }
   }
@@ -180,14 +135,6 @@ public final class ConvertidorUrlsGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getConvertirUrlsMethod(), getCallOptions()), request, responseObserver);
     }
-
-    /**
-     */
-    public void descargarUrls(distribuidos.proto.DescargarUrlsRequest request,
-        io.grpc.stub.StreamObserver<distribuidos.proto.DescargarUrlsResponse> responseObserver) {
-      io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getDescargarUrlsMethod(), getCallOptions()), request, responseObserver);
-    }
   }
 
   /**
@@ -209,13 +156,6 @@ public final class ConvertidorUrlsGrpc {
     public distribuidos.proto.ConvertirUrlsResponse convertirUrls(distribuidos.proto.ConvertirUrlsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getConvertirUrlsMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public distribuidos.proto.DescargarUrlsResponse descargarUrls(distribuidos.proto.DescargarUrlsRequest request) {
-      return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getDescargarUrlsMethod(), getCallOptions(), request);
     }
   }
 
@@ -240,18 +180,9 @@ public final class ConvertidorUrlsGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getConvertirUrlsMethod(), getCallOptions()), request);
     }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<distribuidos.proto.DescargarUrlsResponse> descargarUrls(
-        distribuidos.proto.DescargarUrlsRequest request) {
-      return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getDescargarUrlsMethod(), getCallOptions()), request);
-    }
   }
 
   private static final int METHODID_CONVERTIR_URLS = 0;
-  private static final int METHODID_DESCARGAR_URLS = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -273,10 +204,6 @@ public final class ConvertidorUrlsGrpc {
         case METHODID_CONVERTIR_URLS:
           serviceImpl.convertirUrls((distribuidos.proto.ConvertirUrlsRequest) request,
               (io.grpc.stub.StreamObserver<distribuidos.proto.ConvertirUrlsResponse>) responseObserver);
-          break;
-        case METHODID_DESCARGAR_URLS:
-          serviceImpl.descargarUrls((distribuidos.proto.DescargarUrlsRequest) request,
-              (io.grpc.stub.StreamObserver<distribuidos.proto.DescargarUrlsResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -340,7 +267,6 @@ public final class ConvertidorUrlsGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ConvertidorUrlsFileDescriptorSupplier())
               .addMethod(getConvertirUrlsMethod())
-              .addMethod(getDescargarUrlsMethod())
               .build();
         }
       }

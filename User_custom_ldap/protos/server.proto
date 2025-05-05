@@ -64,3 +64,18 @@ message SaludarRequest {
 message SaludarResponse {
   string respuesta = 1;
 }
+
+/////
+message Archivo {
+  string nombre = 1;
+  string tipo = 2;
+  bytes archivo = 3;
+}
+
+message ConvertirArchivosRequest {
+  repeated Archivo archivos = 1;
+}
+
+message ConvertirArchivosResponse {
+  string mensaje = 1;
+}

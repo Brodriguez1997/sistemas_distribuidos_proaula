@@ -29,26 +29,49 @@ class FIleSoapModel(ComplexModel):
     id = Integer
     file = String
 
+class ArchivoSoap(ComplexModel):
+    nombre = Unicode
+    contenido = Unicode 
+    tipo = Unicode 
+
+class UrlSoap(ComplexModel):
+    nombre = Unicode
+    url = Unicode 
+    tipo = Unicode
+
 class SoapServiceUser(ServiceBase):
-
-    @rpc(Unicode, _returns=Unicode)
-    def mensajeSoap(ctx, mensaje):
-        
-        rta = enviar_mensaje(mensaje)
-        
-        return json.dumps({'mensaje': rta.respuesta})
     
-    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
-    def recibir_archivo_soap(ctx, file, nombre_archivo, tipo):
+    @rpc(Array(ArchivoSoap), _returns=Unicode)
+    def recibir_archivos_soap(ctx, archivos):
+        
+        lista_grpc = []
 
-        rta = recibir_archivo(file, nombre_archivo, tipo)
+        for archivo in archivos:
+            archivo_grpc = grpc_pb2.Archivo(
+                nombre=archivo.nombre,
+                tipo=archivo.tipo,
+                archivo=archivo.contenido.encode("utf-8")
+            )
+            lista_grpc.append(archivo_grpc)
 
-        return json.dumps({'message': rta})
+        rta = recibir_archivo(lista_grpc)
+
+        return json.dumps({'resultados': rta})
     
-    @rpc(Unicode, Unicode, Unicode, _returns=Unicode)
-    def recibir_url_soap(ctx, url, nombre_url, tipo):
+    @rpc(Array(UrlSoap), _returns=Unicode)
+    def recibir_url_soap(ctx, url):
 
-        rta = recibir_archivo(url, nombre_url, tipo)
+        lista_grpc = []
+
+        for url in archivos:
+            url_grpc = grpc_pb2.Archivo(
+                nombre=url.nombre,
+                tipo=url.tipo,
+                url=url.url
+            )
+            lista_grpc.append(url_grpc)
+
+        rta = recibir_archivo(lista_grpc)
 
         return json.dumps({'message': rta})
     
