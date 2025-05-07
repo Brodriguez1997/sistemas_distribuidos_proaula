@@ -1,26 +1,18 @@
 package officepdf;
 
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
-import java.util.concurrent.atomic.AtomicLong;
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Processing implements Runnable {
     private final String inputFile;
     private final String outputDir;
-    private static final AtomicLong totalConversionTime = new AtomicLong(0);
     private static final AtomicLong successCount = new AtomicLong(0);
     private static final AtomicLong failureCount = new AtomicLong(0);
 
@@ -31,128 +23,171 @@ public class Processing implements Runnable {
 
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
         Path logFile = null;
         Process process = null;
         
         try {
-            // 1. Verificaciones iniciales
+            // 1. Validaciones iniciales
             Path inputPath = Paths.get(inputFile).toAbsolutePath().normalize();
             Path outputDirPath = Paths.get(outputDir).toAbsolutePath().normalize();
             
-            validateInputFile(inputPath);
+            validateFile(inputPath);
             checkLibreOfficeEnvironment();
+            checkLibreOfficeComponents();
             
-            // 2. Configurar proceso
-            logFile = outputDirPath.resolve("lo_conv_" + System.nanoTime() + ".log");
+            // 2. Configurar archivo de log
+            logFile = outputDirPath.resolve("libreoffice_conv_" + System.nanoTime() + ".log");
             
-            ProcessBuilder pb = new ProcessBuilder(
-                "libreoffice",
-                "--headless",
-                "--convert-to",
-                "pdf:writer_pdf_Export",
-                "--nologo",
-                "--norestore",
-                "--nodefault",
-                "--nolockcheck",
-                "--invisible",
-                "--nofirststartwizard",
-                inputPath.toString(),
-                "--outdir",
-                outputDirPath.toString()
-            );
-            
-            pb.redirectErrorStream(true);
-            pb.redirectOutput(ProcessBuilder.Redirect.to(logFile.toFile()));
-            
-            // 3. Ejecutar conversión
+            // 3. Configurar y ejecutar proceso de conversión
+            ProcessBuilder pb = createProcessBuilder(inputPath, outputDirPath, logFile);
             process = pb.start();
-            long timeout = calculateTimeout(Files.size(inputPath));
-            boolean finished = process.waitFor(timeout, TimeUnit.SECONDS);
             
-            if (!finished) {
+            // 4. Esperar con timeout dinámico
+            long timeout = calculateTimeout(Files.size(inputPath));
+            if (!process.waitFor(timeout, TimeUnit.SECONDS)) {
                 process.destroyForcibly();
-                throw new TimeoutException("Timeout después de " + timeout + " segundos");
+                throw new TimeoutException("Tiempo de conversión excedido (" + timeout + "s)");
             }
             
-            // 4. Verificar resultado
+            // 5. Verificar resultado
             if (process.exitValue() != 0) {
                 String errorDetails = Files.readString(logFile);
                 throw new IOException("Error en conversión (código " + process.exitValue() + ")\n" +
-                                "Detalles:\n" + errorDetails);
+                                    "Detalles LibreOffice:\n" + errorDetails);
             }
             
             successCount.incrementAndGet();
             
         } catch (Exception e) {
             failureCount.incrementAndGet();
-            manejarError(e, inputFile, logFile); // Método renombrado para consistencia
+            handleConversionError(e, inputFile, logFile);
         } finally {
             cleanResources(process, logFile);
         }
     }
-    
-    private void validateInputFile(Path filePath) throws IOException {
-        if (Files.size(filePath) < 50) {
-            throw new IOException("El archivo es demasiado pequeño para ser válido");
+
+    private ProcessBuilder createProcessBuilder(Path inputPath, Path outputDirPath, Path logFile) {
+        ProcessBuilder pb = new ProcessBuilder(
+            "libreoffice",
+            "--headless",
+            "--convert-to",
+            "pdf:writer_pdf_Export",
+            "--nologo",
+            "--norestore",
+            "--nodefault",
+            "--nolockcheck",
+            "--invisible",
+            "--nofirststartwizard",
+            "--writer",
+            "--infilter=\"writer8\"",
+            inputPath.toString(),
+            "--outdir",
+            outputDirPath.toString()
+        );
+        
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.to(logFile.toFile()));
+        return pb;
+    }
+
+    private void validateFile(Path filePath) throws IOException {
+        // Verificar existencia y tamaño
+        if (!Files.exists(filePath)) {
+            throw new IOException("El archivo no existe: " + filePath);
         }
         
-        if (!Files.isReadable(filePath)) {
-            throw new IOException("No se tienen permisos para leer el archivo");
+        long fileSize = Files.size(filePath);
+        if (fileSize < 100) {
+            throw new IOException("Archivo demasiado pequeño (" + fileSize + " bytes). Posible archivo corrupto.");
         }
         
+        // Verificar cabecera del archivo
         byte[] header = new byte[8];
         try (InputStream is = Files.newInputStream(filePath)) {
-            is.read(header);
-            if (header[0] == 0 && header[1] == 0 && header[2] == 0) {
-                throw new IOException("El archivo parece estar corrupto o vacío");
+            int bytesRead = is.read(header);
+            if (bytesRead < 4) {
+                throw new IOException("No se pudo leer la cabecera del archivo");
+            }
+            
+            // Detección de formatos comunes (ZIP para ODT/DOCX o cabeceras binarias)
+            boolean isZipFormat = header[0] == 0x50 && header[1] == 0x4B && 
+                                header[2] == 0x03 && header[3] == 0x04;
+            boolean isOfficeFormat = header[0] == (byte)0xD0 && header[1] == (byte)0xCF &&
+                                   header[2] == (byte)0x11 && header[3] == (byte)0xE0;
+            
+            if (!isZipFormat && !isOfficeFormat) {
+                throw new IOException("El archivo no parece ser un documento de Office válido");
             }
         }
     }
 
     private void checkLibreOfficeEnvironment() throws IOException {
         try {
+            // Verificar instalación básica
             Process p = new ProcessBuilder("libreoffice", "--version").start();
-            if (p.waitFor(5, TimeUnit.SECONDS) && p.exitValue() != 0) {
+            if (!p.waitFor(5, TimeUnit.SECONDS) || p.exitValue() != 0) {
                 throw new IOException("LibreOffice no está instalado correctamente");
             }
             
+            // Verificar directorio temporal
             Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"));
             if (!Files.isWritable(tempDir)) {
                 throw new IOException("No se puede escribir en el directorio temporal: " + tempDir);
-            }
-            
-            long freeMem = Runtime.getRuntime().freeMemory() / (1024 * 1024);
-            if (freeMem < 100) {
-                throw new IOException("Memoria insuficiente: " + freeMem + "MB libres");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IOException("Verificación interrumpida", e);
         }
     }
-    
-    private void manejarError(Exception e, String inputFile, Path archivoLog) {
+
+    private void checkLibreOfficeComponents() throws IOException {
+        try {
+            Process process = new ProcessBuilder(
+                "libreoffice",
+                "--headless",
+                "--cat",
+                "macro:///Standard.Module1.ComponentExist"
+            ).start();
+            
+            if (!process.waitFor(5, TimeUnit.SECONDS) || process.exitValue() != 0) {
+                throw new IOException("Faltan componentes esenciales en LibreOffice");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Verificación interrumpida", e);
+        }
+    }
+
+    private void handleConversionError(Exception e, String inputFile, Path logFile) {
         System.err.println("\n=== ERROR DE CONVERSIÓN ===");
         System.err.println("Archivo: " + inputFile);
         System.err.println("Tipo: " + e.getClass().getSimpleName());
         System.err.println("Mensaje: " + e.getMessage());
         
-        if (archivoLog != null && Files.exists(archivoLog)) {
-            System.err.println("\nDetalles del error (log LibreOffice):");
+        // Mostrar log de LibreOffice si existe
+        if (logFile != null && Files.exists(logFile)) {
             try {
-                Files.lines(archivoLog).forEach(System.err::println);
+                System.err.println("\nLOG DE LIBREOFFICE:");
+                System.err.println(Files.readString(logFile));
             } catch (IOException ioEx) {
-                System.err.println("No se pudo leer el log: " + ioEx.getMessage());
+                System.err.println("No se pudo leer el archivo de log: " + ioEx.getMessage());
             }
         }
         
-        System.err.println("Stack Trace:");
+        // Consejos específicos para errores comunes
+        if (e.getMessage() != null && e.getMessage().contains("código 1")) {
+            System.err.println("\nPOSIBLES SOLUCIONES:");
+            System.err.println("1. Verificar que el archivo no esté corrupto");
+            System.err.println("2. Instalar componentes faltantes: sudo apt-get install libreoffice-writer");
+            System.err.println("3. Verificar permisos del archivo");
+        }
+        
+        System.err.println("\nStack Trace:");
         e.printStackTrace();
         System.err.println("=== FIN DEL ERROR ===\n");
     }
-    
-    private void cleanResources(Process process, Path archivoLog) {
+
+    private void cleanResources(Process process, Path logFile) {
         try {
             if (process != null && process.isAlive()) {
                 process.destroyForcibly();
@@ -162,8 +197,8 @@ public class Processing implements Runnable {
         }
         
         try {
-            if (archivoLog != null && Files.exists(archivoLog)) {
-                Files.deleteIfExists(archivoLog);
+            if (logFile != null && Files.exists(logFile)) {
+                Files.deleteIfExists(logFile);
             }
         } catch (IOException e) {
             System.err.println("Error al limpiar archivo de log: " + e.getMessage());
@@ -171,11 +206,8 @@ public class Processing implements Runnable {
     }
 
     private long calculateTimeout(long fileSize) {
+        // Tiempo base de 30 segundos + 1 segundo por cada 100KB
         return 30 + (fileSize / (100 * 1024));
-    }
-
-    public static long getTotalConversionTime() {
-        return totalConversionTime.get();
     }
 
     public static long getSuccessCount() {
