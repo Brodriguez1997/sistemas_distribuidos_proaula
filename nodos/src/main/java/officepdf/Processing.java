@@ -1,5 +1,8 @@
 package officepdf;
 
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
@@ -19,7 +22,6 @@ public class Processing implements Runnable {
     private static final AtomicLong successCount = new AtomicLong(0);
     private static final AtomicLong failureCount = new AtomicLong(0);
 
-
     public Processing(String inputFile, String outputDir) {
         this.inputFile = inputFile;
         this.outputDir = outputDir;
@@ -27,6 +29,7 @@ public class Processing implements Runnable {
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
         try {
             // 1. Normalización de rutas y nombres
             Path inputPath = Paths.get(inputFile).toAbsolutePath().normalize();
@@ -43,7 +46,7 @@ public class Processing implements Runnable {
             // 3. Crear nombre de salida consistente
             String baseName = inputPath.getFileName().toString()
                 .replaceFirst("[.][^.]+$", "")
-                .toLowerCase() // Normalizar a minúsculas
+                .toLowerCase()
                 .replaceAll("[^a-z0-9]", "_");
             
             String outputName = "officepdf_" + System.nanoTime() + "_" + 
@@ -87,11 +90,21 @@ public class Processing implements Runnable {
                     // Buscar cualquier PDF recién creado como fallback
                     Optional<Path> generatedPdf = Files.list(outputDirPath)
                         .filter(p -> p.toString().endsWith(".pdf"))
-                        .filter(p -> Files.getLastModifiedTime(p).toMillis() > startTime)
+                        .filter(p -> {
+                            try {
+                                return Files.getLastModifiedTime(p).toMillis() > startTime;
+                            } catch (IOException e) {
+                                return false;
+                            }
+                        })
                         .findFirst();
                     
                     if (generatedPdf.isPresent()) {
-                        Files.move(generatedPdf.get(), outputPath);
+                        try {
+                            Files.move(generatedPdf.get(), outputPath, StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException e) {
+                            throw new IOException("No se pudo mover el PDF generado a la ubicación esperada", e);
+                        }
                     } else {
                         throw new IOException("LibreOffice reportó éxito pero no generó PDF");
                     }
@@ -102,7 +115,10 @@ public class Processing implements Runnable {
             }
         } catch (Exception e) {
             failureCount.incrementAndGet();
-            // Manejo mejorado de errores...
+            System.err.println("Error en el procesamiento del archivo: " + inputFile);
+            System.err.println("Tipo de error: " + e.getClass().getSimpleName());
+            System.err.println("Mensaje: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -110,7 +126,7 @@ public class Processing implements Runnable {
         // 30 segundos base + 1 segundo por cada 100KB
         return 30 + (fileSize / (100 * 1024));
     }
-    // Métodos estáticos para acceder a métricas globales
+
     public static long getTotalConversionTime() {
         return totalConversionTime.get();
     }

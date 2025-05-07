@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Base64;
 import distribuidos.proto.*;
 
@@ -212,10 +213,13 @@ public class Main {
             if (!Files.exists(outputDir)) {
                 Files.createDirectories(outputDir);
                 try {
-                    Files.setPosixFilePermissions(outputDir, 
-                        PosixFilePermissions.fromString("rwxrwxrwx"));
+                    // Solo establecer permisos POSIX si el sistema lo soporta
+                    if (!System.getProperty("os.name").toLowerCase().contains("win")) {
+                        Files.setPosixFilePermissions(outputDir, 
+                            PosixFilePermissions.fromString("rwxrwxrwx"));
+                    }
                 } catch (UnsupportedOperationException e) {
-                    // Si no soporta POSIX permissions (como en Windows), continuar
+                    // Ignorar en sistemas que no soportan POSIX
                 }
             }
             
@@ -260,7 +264,7 @@ public class Main {
                     .sorted(Comparator.comparing(path -> {
                         String name = path.getFileName().toString();
                         return Long.parseLong(name.split("_")[1]);
-                    })
+                    })) // <-- Aquí faltaba cerrar este paréntesis
                     .collect(Collectors.toList());
         }
 
