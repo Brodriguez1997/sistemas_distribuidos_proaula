@@ -32,58 +32,103 @@ public class Processing implements Runnable {
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
-        Path archivoLog = null;
+        Path logFile = null;
         Process process = null;
         
         try {
+            // 1. Verificaciones iniciales
             Path inputPath = Paths.get(inputFile).toAbsolutePath().normalize();
             Path outputDirPath = Paths.get(outputDir).toAbsolutePath().normalize();
             
-            // Validar el archivo antes de procesar
-            verificarArchivoOffice(inputPath);
+            validateInputFile(inputPath);
+            checkLibreOfficeEnvironment();
             
-            archivoLog = outputDirPath.resolve("conversion_log_" + System.nanoTime() + ".txt");
+            // 2. Configurar proceso
+            logFile = outputDirPath.resolve("lo_conv_" + System.nanoTime() + ".log");
             
-            ProcessBuilder processBuilder = new ProcessBuilder(
+            ProcessBuilder pb = new ProcessBuilder(
                 "libreoffice",
                 "--headless",
                 "--convert-to",
-                "pdf",
+                "pdf:writer_pdf_Export",
+                "--nologo",
+                "--norestore",
+                "--nodefault",
+                "--nolockcheck",
+                "--invisible",
+                "--nofirststartwizard",
                 inputPath.toString(),
                 "--outdir",
                 outputDirPath.toString()
             );
             
-            processBuilder.redirectErrorStream(true);
-            processBuilder.redirectOutput(ProcessBuilder.Redirect.to(archivoLog.toFile()));
+            pb.redirectErrorStream(true);
+            pb.redirectOutput(ProcessBuilder.Redirect.to(logFile.toFile()));
             
-            process = processBuilder.start();
+            // 3. Ejecutar conversión
+            process = pb.start();
+            long timeout = calculateTimeout(Files.size(inputPath));
+            boolean finished = process.waitFor(timeout, TimeUnit.SECONDS);
             
-            if (!process.waitFor(30, TimeUnit.SECONDS)) {
+            if (!finished) {
                 process.destroyForcibly();
-                throw new TimeoutException("Tiempo de conversión excedido");
+                throw new TimeoutException("Timeout después de " + timeout + " segundos");
             }
             
+            // 4. Verificar resultado
             if (process.exitValue() != 0) {
-                String errorDetails = leerLogError(archivoLog);
-                throw new IOException("Error en conversión (código " + process.exitValue() + ")\n" + errorDetails);
+                String errorDetails = Files.readString(logFile);
+                throw new IOException("Error en conversión (código " + process.exitValue() + ")\n" +
+                                "Detalles:\n" + errorDetails);
             }
             
             successCount.incrementAndGet();
             
         } catch (Exception e) {
             failureCount.incrementAndGet();
-            manejarError(e, inputFile, archivoLog);
+            manejarError(e, inputFile, logFile); // Método renombrado para consistencia
         } finally {
-            limpiarRecursos(process, archivoLog);
+            cleanResources(process, logFile);
         }
     }
     
-    private String leerLogError(Path archivoLog) {
+    private void validateInputFile(Path filePath) throws IOException {
+        if (Files.size(filePath) < 50) {
+            throw new IOException("El archivo es demasiado pequeño para ser válido");
+        }
+        
+        if (!Files.isReadable(filePath)) {
+            throw new IOException("No se tienen permisos para leer el archivo");
+        }
+        
+        byte[] header = new byte[8];
+        try (InputStream is = Files.newInputStream(filePath)) {
+            is.read(header);
+            if (header[0] == 0 && header[1] == 0 && header[2] == 0) {
+                throw new IOException("El archivo parece estar corrupto o vacío");
+            }
+        }
+    }
+
+    private void checkLibreOfficeEnvironment() throws IOException {
         try {
-            return new String(Files.readAllBytes(archivoLog), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            return "No se pudo leer el archivo de log: " + e.getMessage();
+            Process p = new ProcessBuilder("libreoffice", "--version").start();
+            if (p.waitFor(5, TimeUnit.SECONDS) && p.exitValue() != 0) {
+                throw new IOException("LibreOffice no está instalado correctamente");
+            }
+            
+            Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"));
+            if (!Files.isWritable(tempDir)) {
+                throw new IOException("No se puede escribir en el directorio temporal: " + tempDir);
+            }
+            
+            long freeMem = Runtime.getRuntime().freeMemory() / (1024 * 1024);
+            if (freeMem < 100) {
+                throw new IOException("Memoria insuficiente: " + freeMem + "MB libres");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Verificación interrumpida", e);
         }
     }
     
@@ -107,7 +152,7 @@ public class Processing implements Runnable {
         System.err.println("=== FIN DEL ERROR ===\n");
     }
     
-    private void limpiarRecursos(Process process, Path archivoLog) {
+    private void cleanResources(Process process, Path archivoLog) {
         try {
             if (process != null && process.isAlive()) {
                 process.destroyForcibly();
@@ -139,53 +184,5 @@ public class Processing implements Runnable {
 
     public static long getFailureCount() {
         return failureCount.get();
-    }
-
-    private boolean esArchivoOfficeValido(byte[] cabecera) {
-        return esDocValido(cabecera) || esDocxValido(cabecera) || 
-               esPptValido(cabecera) || esXlsValido(cabecera) ||
-               esPptxValido(cabecera) || esXlsxValido(cabecera);
-    }
-
-    private boolean esDocValido(byte[] cabecera) {
-        return cabecera.length >= 8 && 
-               cabecera[0] == (byte) 0xD0 && 
-               cabecera[1] == (byte) 0xCF &&
-               cabecera[2] == (byte) 0x11 && 
-               cabecera[3] == (byte) 0xE0;
-    }
-
-    private boolean esDocxValido(byte[] cabecera) {
-        return cabecera.length >= 4 && 
-               cabecera[0] == (byte) 0x50 && 
-               cabecera[1] == (byte) 0x4B &&
-               cabecera[2] == (byte) 0x03 && 
-               cabecera[3] == (byte) 0x04;
-    }
-
-    private boolean esPptValido(byte[] cabecera) {
-        return esDocValido(cabecera);
-    }
-
-    private boolean esXlsValido(byte[] cabecera) {
-        return esDocValido(cabecera);
-    }
-
-    private boolean esPptxValido(byte[] cabecera) {
-        return esDocxValido(cabecera);
-    }
-
-    private boolean esXlsxValido(byte[] cabecera) {
-        return esDocxValido(cabecera);
-    }
-
-    private void verificarArchivoOffice(Path rutaArchivo) throws IOException {
-        byte[] cabecera = new byte[8];
-        try (InputStream is = Files.newInputStream(rutaArchivo)) {
-            int bytesLeidos = is.read(cabecera);
-            if (bytesLeidos < 8 || !esArchivoOfficeValido(cabecera)) {
-                throw new IOException("El archivo no parece ser un documento de Office válido");
-            }
-        }
     }
 }
