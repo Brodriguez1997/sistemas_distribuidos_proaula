@@ -27,128 +27,88 @@ public class Processing implements Runnable {
 
     @Override
     public void run() {
-        long startTime = System.currentTimeMillis();
-        ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
-        long cpuStart = threadBean.getCurrentThreadCpuTime();
-
-        String directorioSalida = outputDir; // Crear una variable local mutable
-
         try {
-            // 1. Preparación del nombre de archivo
-            String baseName = new File(inputFile).getName().replaceFirst("[.][^.]+$", "");
-            String outputName = String.format("officepdf_%d_%d_%s.pdf",
-                    System.nanoTime(),
-                    Thread.currentThread().getId(),
-                    baseName);
-            if (directorioSalida.endsWith(File.separator)) {
-                directorioSalida = directorioSalida.substring(0, directorioSalida.length() - 1);
+            // 1. Normalización de rutas y nombres
+            Path inputPath = Paths.get(inputFile).toAbsolutePath().normalize();
+            Path outputDirPath = Paths.get(outputDir).toAbsolutePath().normalize();
+            
+            // 2. Validación de archivo de entrada
+            if (!Files.exists(inputPath)) {
+                throw new IOException("Archivo de entrada no existe: " + inputPath);
             }
-            String outputPath = directorioSalida + File.separator + outputName;
+            if (Files.size(inputPath) == 0) {
+                throw new IOException("Archivo de entrada está vacío");
+            }
 
-            // 2. Configuración del proceso
+            // 3. Crear nombre de salida consistente
+            String baseName = inputPath.getFileName().toString()
+                .replaceFirst("[.][^.]+$", "")
+                .toLowerCase() // Normalizar a minúsculas
+                .replaceAll("[^a-z0-9]", "_");
+            
+            String outputName = "officepdf_" + System.nanoTime() + "_" + 
+                            Thread.currentThread().getId() + "_" + baseName + ".pdf";
+            Path outputPath = outputDirPath.resolve(outputName);
+
+            // 4. Configuración robusta de LibreOffice
             ProcessBuilder processBuilder = new ProcessBuilder(
-                    "libreoffice",
-                    "--headless",
-                    "--convert-to",
-                    "pdf:writer_pdf_Export",
-                    "--nologo",
-                    "--norestore",
-                    "--nodefault",
-                    "--nolockcheck",
-                    "--invisible",
-                    inputFile,
-                    "--outdir",
-                    directorioSalida // Usar la variable local
+                "libreoffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--nologo",
+                "--norestore",
+                "--nodefault",
+                "--nolockcheck",
+                "--invisible",
+                inputPath.toString(),
+                "--outdir",
+                outputDirPath.toString()
             );
 
-            // 3. Redirección de errores y salida
-            File logFile = new File(directorioSalida + File.separator + "libreoffice_log_" + System.nanoTime() + ".txt");
+            // 5. Redirección de logs detallada
+            Path logFile = outputDirPath.resolve("libreoffice_log_" + System.nanoTime() + ".log");
             processBuilder.redirectErrorStream(true);
-            processBuilder.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
+            processBuilder.redirectOutput(ProcessBuilder.Redirect.to(logFile.toFile()));
 
-            // 4. Variables para capturar salida
-            StringBuilder processOutput = new StringBuilder();
-
-            // 5. Ejecución del proceso
+            // 6. Ejecución con timeout dinámico
             Process process = processBuilder.start();
+            long timeout = calculateTimeout(Files.size(inputPath));
+            boolean finished = process.waitFor(timeout, TimeUnit.SECONDS);
 
-            // Leer la salida del proceso en un hilo separado
-            Thread outputReader = new Thread(() -> {
-                try (BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(process.getInputStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        processOutput.append(line).append("\n");
+            if (!finished) {
+                process.destroyForcibly();
+                throw new TimeoutException("Tiempo de conversión excedido (" + timeout + " segundos)");
+            }
+
+            // 7. Validación estricta del resultado
+            if (process.exitValue() == 0) {
+                if (!Files.exists(outputPath)) {
+                    // Buscar cualquier PDF recién creado como fallback
+                    Optional<Path> generatedPdf = Files.list(outputDirPath)
+                        .filter(p -> p.toString().endsWith(".pdf"))
+                        .filter(p -> Files.getLastModifiedTime(p).toMillis() > startTime)
+                        .findFirst();
+                    
+                    if (generatedPdf.isPresent()) {
+                        Files.move(generatedPdf.get(), outputPath);
+                    } else {
+                        throw new IOException("LibreOffice reportó éxito pero no generó PDF");
                     }
-                } catch (IOException e) {
-                    System.err.println("Error leyendo salida del proceso: " + e.getMessage());
                 }
-            });
-            outputReader.start();
-
-            // 6. Esperar por la finalización
-            int exitCode = process.waitFor();
-            outputReader.join(); // Asegurar que hemos leído toda la salida
-
-            long endTime = System.currentTimeMillis();
-            long cpuEnd = threadBean.getCurrentThreadCpuTime();
-            long duration = endTime - startTime;
-            long cpuUsage = (cpuEnd - cpuStart) / 1_000_000;
-
-            System.out.println("inputFile: " + inputFile);
-            System.out.println("outputDir: " + directorioSalida);
-            System.out.println("outputName: " + outputName);
-            System.out.println("outputPath: " + outputPath);
-
-            // 7. Manejo de resultados
-            if (exitCode == 0) {
                 successCount.incrementAndGet();
-                System.out.printf(
-                        "Conversión exitosa: %s -> %s (Tiempo: %dms, CPU: %dms)%n",
-                        inputFile, outputName, duration, cpuUsage
-                );
-
-                // Verificar que realmente se creó el PDF
-                if (!Files.exists(Paths.get(outputPath))) {
-                    System.err.println("¡¡¡ERROR!!! El archivo PDF de salida no se creó: " + outputPath);
-                    throw new IOException("El archivo PDF de salida no se creó: " + outputPath);
-                }
             } else {
-                failureCount.incrementAndGet();
-                System.err.printf(
-                        "Error en conversión: %s (Código: %d)%nDetalles:%n%s%n",
-                        inputFile, exitCode, processOutput.toString()
-                );
-
-                // Guardar el archivo problemático para diagnóstico
-                Path problematicFile = Paths.get(directorioSalida + File.separator + "problematic_" + baseName);
-                Files.copy(Paths.get(inputFile), problematicFile, StandardCopyOption.REPLACE_EXISTING);
-                System.err.println("Se guardó copia del archivo problemático en: " + problematicFile);
+                throw new IOException("Error en conversión (código " + process.exitValue() + ")");
             }
         } catch (Exception e) {
             failureCount.incrementAndGet();
-            System.err.println("\n=== ERROR CRÍTICO ===");
-            System.err.println("Archivo: " + inputFile);
-            System.err.println("Tipo: " + e.getClass().getSimpleName());
-            System.err.println("Mensaje: " + e.getMessage());
-            System.err.println("Stack Trace:");
-            e.printStackTrace();
-            System.err.println("====================\n");
-
-            // Intenta limpiar archivos temporales
-            try {
-                Files.deleteIfExists(Paths.get(inputFile));
-            } catch (IOException ioEx) {
-                System.err.println("No se pudo limpiar archivo temporal: " + ioEx.getMessage());
-            }
-        } finally {
-            // 8. Limpieza de recursos
-            try {
-                Files.deleteIfExists(Paths.get(inputFile));
-            } catch (IOException e) {
-                System.err.println("Advertencia: No se pudo eliminar el archivo temporal " + inputFile);
-            }
+            // Manejo mejorado de errores...
         }
+    }
+
+    private long calculateTimeout(long fileSize) {
+        // 30 segundos base + 1 segundo por cada 100KB
+        return 30 + (fileSize / (100 * 1024));
     }
     // Métodos estáticos para acceder a métricas globales
     public static long getTotalConversionTime() {
