@@ -156,7 +156,8 @@ public class Main {
                     byte[] fileBytes = Base64.getDecoder().decode(item.getContenidoBase64());
                     Files.write(tempFilePath, fileBytes);
                     
-                    // Validar archivo temporal
+                    // Validaciones añadidas aquí
+                    validarTipoArchivo(tempFilePath);  // <-- Nueva validación
                     validateTempFile(tempFilePath);
                     
                     filePaths.add(tempFilePath.toString());
@@ -329,6 +330,14 @@ public class Main {
                     duration, memoryUsed);
             System.out.printf("Estadísticas: %d éxitos, %d fallos\n",
                     Processing.getSuccessCount(), Processing.getFailureCount());
+        }
+
+        private void validarTipoArchivo(Path rutaArchivo) throws IOException {
+            String nombreArchivo = rutaArchivo.getFileName().toString().toLowerCase();
+            if (!nombreArchivo.matches(".*\\.(doc|docx|ppt|pptx|xls|xlsx|odt|ods|odp|rtf|txt)$")) {
+                throw new IOException("Formato de archivo no soportado: " + nombreArchivo + 
+                                "\nFormatos soportados: DOC, DOCX, PPT, PPTX, XLS, XLSX, ODT, ODS, ODP, RTF, TXT");
+            }
         }
     }
 
