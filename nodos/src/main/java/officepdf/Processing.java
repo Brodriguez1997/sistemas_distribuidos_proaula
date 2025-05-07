@@ -68,7 +68,10 @@ public class Processing implements Runnable {
             }
         } catch (Exception e) {
             failureCount.incrementAndGet();
-            System.err.println("Error en Processing.run(): " + e.getMessage());
+            System.err.println("Error procesando archivo: " + inputFile);
+            System.err.println("Tipo de error: " + e.getClass().getName());
+            System.err.println("Mensaje de error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     // Métodos estáticos para acceder a métricas globales

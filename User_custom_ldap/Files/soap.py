@@ -50,9 +50,9 @@ class SoapServiceUser(ServiceBase):
 
         for archivo in archivos:
             arhivo_data = {
-                'nombre': archivos.nombre,
-                'tipo': archivos.tipo,
-                'contenido_base64': archivos.contenido
+                'nombre': archivo.nombre,
+                'tipo': archivo.tipo,
+                'contenido_base64': archivo.contenido
             }
             lista_grpc.append(arhivo_data)
 

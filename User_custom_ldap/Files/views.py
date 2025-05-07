@@ -22,17 +22,18 @@ from rest_framework.decorators import parser_classes
 import base64
 import re
 import grpc
+from google.protobuf.json_format import MessageToDict
 import json
 import server_pb2 as grpc_pb2
 import server_pb2_grpc as grpc_pb2_grpc
 
 def recibir_url(lista_grpc_urls):
-    url = "http://host.docker.internal:3000/api/pdf/"
+    url = "http://192.168.0.114:3000/api/pdf/"
     iteracion = 0
-    nodos = []
+    nodos = ["192.168.0.139"]
     nodo = nodos[iteracion] + ":50051"
 
-    channel = grpc.insecure_channel('192.168.0.226:50051')
+    channel = grpc.insecure_channel(nodo)
     stub = grpc_pb2_grpc.ConvertidorUrlsStub(channel)
 
     grpc_urls = []
@@ -46,83 +47,120 @@ def recibir_url(lista_grpc_urls):
             grpc_urls.append(grpc_item)
         except Exception as e:
             print("Error construyendo item gRPC:", e)
+            return json.dumps({"error": str(e)})
 
-    # Enviar al servidor gRPC
     try:
-        print(grpc_urls)
         request = grpc_pb2.ConvertirUrlsRequest(urls=grpc_urls)
         response = stub.ConvertirUrls(request)
-        print("Respuesta gRPC:", response)
-    except grpc.RpcError as e:
-        print("Error en llamada gRPC:")
-        print("Code:", e.code())
-        print("Details:", e.details())
-        return "Error gRPC"
-    
-    if response:
-        for urlDaTa in lista_grpc_urls:
-            contenido_base64_limpio = urlDaTa.contenido.replace("\n", "").replace("\r", "")
-            longitud_base64 = len(contenido_base64_limpio)
-            relleno = contenido_base64_limpio.count('=')
-            tamaño_bytes = (longitud_base64 * 3 / 4) - relleno
+        
+        # Procesar cada resultado para calcular el peso
+        resultados_con_peso = []
+        total_peso = 0
+        
+        for i, base64_str in enumerate(response.resultados):
+            # Calcular peso en bytes (fórmula para base64)
+            contenido_limpio = base64_str.replace("\n", "").replace("\r", "")
+            longitud = len(contenido_limpio)
+            relleno = contenido_limpio.count('=')
+            peso_bytes = (longitud * 3 / 4) - relleno
+            
+            resultados_con_peso.append({
+                "nombre": lista_grpc_urls[i]['nombre'],  # Asume mismo orden
+                "contenido_base64": base64_str,
+                "peso_bytes": round(peso_bytes, 2)
+            })
+            total_peso += peso_bytes
+
+        # Enviar datos a tu API
+        for item in resultados_con_peso:
             data = {
                 "nombre": item['nombre'],
                 "nodo": 1,
-                "peso": tamaño_bytes,
+                "peso": item['peso_bytes'],  # Peso real calculado
+                "tipo": lista_grpc_urls[i]['tipo']  # Añade tipo si es necesario
             }
-            response_db = requests.post(url, json=data)
+            requests.post(url, json=data)
 
-    if iteracion < 2:
-        iteracion += 1
-    else:
-        iteracion = 0
-    return response
+        # Rotación de nodos
+        iteracion = (iteracion + 1) % len(nodos)
+
+        return json.dumps({
+            "resultados": resultados_con_peso,
+            "total_peso_bytes": round(total_peso, 2)
+        })
+
+    except grpc.RpcError as e:
+        error_msg = f"Error gRPC: {e.code()}: {e.details()}"
+        print(error_msg)
+        return json.dumps({"error": error_msg})
 
 def recibir_archivo(lista_grpc_archivos):
-    
-    url = "http://host.docker.internal:3000/api/pdf/"
+    print("LLEGO 2")
+    url = "http://192.168.0.114:3000/api/pdf/"
     iteracion = 0
-    nodos = []
+    nodos = ["192.168.0.139"]
     nodo = nodos[iteracion] + ":50051"
 
     channel = grpc.insecure_channel(nodo)
     stub = grpc_pb2_grpc.ConvertidorOfficeStub(channel)
 
-    grpc_archivos = [
-        grpc_pb2.UrlItem(
-            nombre=item['nombre'],
-            contenido_base64=item['contenido_base64'],
-            tipo=item['tipo']
-        )
-        for item in lista_grpc_urls
-    ]
-    
     try:
-        print(grpc_archivos)
-        request = grpc_pb2.ConvertirArchivosRequest(urls=grpc_urls)
+        # Construir la lista de ArchivoItem (corregido el nombre del campo)
+        grpc_archivos = [
+            grpc_pb2.ArchivoItem(
+                nombre=item['nombre'],
+                contenido_base64=item['contenido_base64'],
+                tipo=item['tipo']
+            )
+            for item in lista_grpc_archivos  # Corregido el nombre del parámetro
+        ]
+
+        # Crear y enviar la request (corregido el nombre del campo)
+        request = grpc_pb2.ConvertirArchivosRequest(archivos=grpc_archivos)
         response = stub.ConvertirArchivos(request)
-        print("Respuesta gRPC:", response)
-    except grpc.RpcError as e:
-        print("Error en llamada gRPC:")
-        print("Code:", e.code())
-        print("Details:", e.details())
-        return "Error gRPC"
+        
+        # Procesar la respuesta con cálculo de pesos
+        resultados_con_peso = []
+        total_peso = 0
 
-    if response:
-        for archivo in lista_grpc_archivos:
-            contenido_base64_limpio = archivo.contenido.replace("\n", "").replace("\r", "")
-            longitud_base64 = len(contenido_base64_limpio)
-            relleno = contenido_base64_limpio.count('=')
-            tamaño_bytes = (longitud_base64 * 3 / 4) - relleno
+        for i, base64_str in enumerate(response.resultados):
+            # Calcular peso en bytes
+            contenido_limpio = base64_str.replace("\n", "").replace("\r", "")
+            longitud = len(contenido_limpio)
+            relleno = contenido_limpio.count('=')
+            peso_bytes = (longitud * 3 / 4) - relleno
+            
+            resultados_con_peso.append({
+                "nombre": lista_grpc_archivos[i]['nombre'],
+                "peso_bytes": round(peso_bytes, 2),
+                "tipo": lista_grpc_archivos[i]['tipo']
+            })
+            total_peso += peso_bytes
+
+            # Enviar a la API
             data = {
-                "nombre": archivo.nombre,
-                "nodo": 10,
-                "peso": tamaño_bytes,
+                "nombre": lista_grpc_archivos[i]['nombre'],
+                "nodo": nodos.index(nodo.split(":")[0]) + 1,  # Nodo numérico
+                "peso": round(peso_bytes, 2),
+                "tipo": lista_grpc_archivos[i]['tipo']
             }
-            response_db = requests.post(url, json=data)
+            requests.post(url, json=data)
 
-    if iteracion < 2:
-        iteracion += 1
-    else:
-        iteracion = 0
-    return response
+        # Rotación de nodos
+        iteracion = (iteracion + 1) % len(nodos)
+
+        return json.dumps({
+            "resultados": resultados_con_peso,
+            "total_peso_bytes": round(total_peso, 2),
+            "siguiente_nodo": nodos[iteracion]
+        })
+
+    except grpc.RpcError as e:
+        error_msg = f"Error gRPC: {e.code()}: {e.details()}"
+        print(error_msg)
+        return json.dumps({"error": error_msg})
+    
+    except Exception as e:
+        error_msg = f"Error inesperado: {str(e)}"
+        print(error_msg)
+        return json.dumps({"error": error_msg})

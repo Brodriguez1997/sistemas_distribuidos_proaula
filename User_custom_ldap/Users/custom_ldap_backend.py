@@ -58,7 +58,7 @@ def create_user_in_ldap(username,name,last_name,email,img,question,answer,passwo
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     # Conectarse a la máquina virtual por SSH
-    ssh_client.connect('192.168.185.63', username='Administrador', password='Jagua456')
+    ssh_client.connect('10.152.190.14', username='Administrador', password='Jagua456')
     #192.168.1.72
     # Ejecutar el script de PowerShell remotamente
     #shell = ssh_client.invoke_shell()
@@ -111,7 +111,7 @@ def create_user_with_ldap(username,name,last_name,email,img,question,answer,pass
 
 #funcion para agregar al usuario a un grupo
 def add_user_to_group_in_ldap(username):
-    server_uri = "ldap://20.127.226.155:389"
+    server_uri = "ldap://10.152.190.14:389"
     bind_dn = "CN=Administrador,CN=Users,DC=nexus,DC=upb"
     bind_password = "Adminupb1234#"
     
@@ -129,7 +129,7 @@ def add_user_to_group_in_ldap(username):
     
 #funcion para remover un usuario d eun grupo
 def remove_user_from_group_in_ldap(username):
-    server_uri = "ldap://20.127.226.155:389"
+    server_uri = "ldap://210.152.190.14:389"
     bind_dn = "CN=Administrador,CN=Users,DC=nexus,DC=upb"
     bind_password = "Adminupb1234#"
 
@@ -149,7 +149,7 @@ def remove_user_from_group_in_ldap(username):
 
 #funcion para editar la informacion general de un usuario
 def edit_user_in_ldap(username,new_name,new_last_name):
-    server_uri = "ldap://192.168.1.70:389"
+    server_uri = "ldap://10.152.190.14:389"
     bind_dn = "CN=Administrador,CN=Users,DC=distribuidos,DC=com"
     bind_password = "Jagua456"
     
