@@ -38,6 +38,9 @@ public class Processing implements Runnable {
                 System.nanoTime(), 
                 Thread.currentThread().getId(), 
                 baseName);
+            if (outputDir.endsWith(File.separator)) {
+                outputDir = outputDir.substring(0, outputDir.length() - 1);
+            }
             String outputPath = outputDir + File.separator + outputName;
 
             // 2. Configuración del proceso
@@ -90,6 +93,11 @@ public class Processing implements Runnable {
             long duration = endTime - startTime;
             long cpuUsage = (cpuEnd - cpuStart) / 1_000_000;
 
+            System.out.println("inputFile: " + inputFile);
+            System.out.println("outputDir: " + outputDir);
+            System.out.println("outputName: " + outputName);
+            System.out.println("outputPath: " + outputPath);
+
             // 7. Manejo de resultados
             if (exitCode == 0) {
                 successCount.incrementAndGet();
@@ -100,6 +108,7 @@ public class Processing implements Runnable {
                 
                 // Verificar que realmente se creó el PDF
                 if (!Files.exists(Paths.get(outputPath))) {
+                    System.err.println("¡¡¡ERROR!!! El archivo PDF de salida no se creó: " + outputPath);
                     throw new IOException("El archivo PDF de salida no se creó: " + outputPath);
                 }
             } else {

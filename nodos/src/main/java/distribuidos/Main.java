@@ -93,13 +93,13 @@ public class Main {
                 
                 // Buscar TODOS los PDFs generados en el directorio temporal
                 List<Path> generatedPdfs = Files.list(Paths.get(tempDir))
-                                        .filter(path -> path.toString().startsWith(tempDir + "pdf_") && 
-                                                    path.toString().endsWith(".pdf"))
-                                        .sorted(Comparator.comparingLong(p -> {
-                                            String name = p.getFileName().toString();
-                                            return Long.parseLong(name.split("_")[1]);
-                                        }))
-                                        .collect(Collectors.toList());
+                                .filter(path -> path.toString().startsWith(tempDir + "pdf_") && 
+                                            path.toString().endsWith(".pdf"))
+                                .sorted(Comparator.comparingLong(p -> {
+                                    String name = p.getFileName().toString();
+                                    return Long.parseLong(name.split("_")[1]);
+                                }))
+                                .collect(Collectors.toList());
 
                 // Procesar los PDFs generados
                 for (int i = 0; i < Math.min(generatedPdfs.size(), nombres.size()); i++) {
@@ -128,17 +128,21 @@ public class Main {
             totalRequests.incrementAndGet();
             long startTime = System.currentTimeMillis();
             MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+            private static final String FILE_SEPARATOR = File.separator;
             
             // Configurar directorios
             String tempDir = System.getProperty("java.io.tmpdir");
-            String outputDir = tempDir + File.separator + "pdf_output" + File.separator;
+            if (tempDir.endsWith(FILE_SEPARATOR)) {
+                tempDir = tempDir.substring(0, tempDir.length() - 1);
+            }
+            String outputDir = tempDir + FILE_SEPARATOR + "pdf_output" + File.separator;
             List<String> filePaths = new ArrayList<>();
             List<String> nombres = new ArrayList<>();
             
             try {
                 // 1. Preparar directorio de salida
                 System.out.println("Directorio de salida: " + outputDir);
-                Files.createDirectories(Paths.get(outputDir));
+                Stream Files.createDirectories(Paths.get(outputDir));
                 
                 // 2. Procesar cada archivo recibido
                 for (ArchivoItem item : request.getArchivosList()) {
@@ -163,6 +167,9 @@ public class Main {
                     nombres.add(nombreLimpio);
                 }
 
+                System.out.println("tempDir: " + tempDir);
+                System.out.println("outputDir: " + outputDir);
+
                 // 3. Procesar archivos con hilos
                 String[] files = filePaths.toArray(new String[0]);
                 int threads = Math.min(4, Runtime.getRuntime().availableProcessors());
@@ -174,13 +181,13 @@ public class Main {
                 
                 // Buscar PDFs generados
                 List<Path> pdfsGenerados = Files.list(Paths.get(outputDir))
-                                        .filter(path -> path.toString().endsWith(".pdf") && 
-                                                    path.toString().contains("officepdf_"))
-                                        .sorted(Comparator.comparing(path -> {
-                                            String nombre = path.getFileName().toString();
-                                            return Long.parseLong(nombre.split("_")[1]);
-                                        }))
-                                        .collect(Collectors.toList());
+                                .filter(path -> path.toString().endsWith(".pdf") && 
+                                            path.toString().contains("officepdf_"))
+                                .sorted(Comparator.comparing(path -> {
+                                    String nombre = path.getFileName().toString();
+                                    return Long.parseLong(nombre.split("_")[1]);
+                                }))
+                                .collect(Collectors.toList());
 
                 // 5. Agregar resultados a la respuesta
                 for (int i = 0; i < Math.min(pdfsGenerados.size(), nombres.size()); i++) {
