@@ -55,51 +55,51 @@ public class Main {
 
     static class UrlConverterService extends ConvertidorUrlsGrpc.ConvertidorUrlsImplBase {
         @Override
-        public void convertirUrls(ConvertirUrlsRequest request, 
-                StreamObserver<ConvertirUrlsResponse> responseObserver) {
+        public void convertirUrls(ConvertirUrlsRequest request,
+                                    StreamObserver<ConvertirUrlsResponse> responseObserver) {
             try {
                 // Preparar URLs para procesamiento
                 List<String> urlList = new ArrayList<>();
                 List<String> nombres = new ArrayList<>();
-                
+
                 for (UrlItem item : request.getUrlsList()) {
                     urlList.add(item.getUrl());
                     nombres.add(item.getNombre());
                 }
-                
+
                 String[] urls = urlList.toArray(new String[0]);
                 int[] threadCounts = {4};
-                
+
                 // Configurar directorio de salida temporal
                 String tempDir = System.getProperty("java.io.tmpdir") + "/pdf_output/";
                 new File(tempDir).mkdirs();
-                
+
                 // Limpiar directorio temporal antes de empezar
                 Files.list(Paths.get(tempDir))
-                    .filter(path -> path.toString().endsWith(".pdf"))
-                    .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            System.err.println("Error al limpiar archivo temporal: " + path);
-                        }
-                    });
-                
+                        .filter(path -> path.toString().endsWith(".pdf"))
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                            } catch (IOException e) {
+                                System.err.println("Error al limpiar archivo temporal: " + path);
+                            }
+                        });
+
                 UrlPdf processor = new UrlPdf(urls, threadCounts, tempDir);
                 processor.processUrls();
-                
+
                 // Preparar respuesta
                 ConvertirUrlsResponse.Builder responseBuilder = ConvertirUrlsResponse.newBuilder();
-                
+
                 // Buscar TODOS los PDFs generados en el directorio temporal
                 List<Path> generatedPdfs = Files.list(Paths.get(tempDir))
-                                .filter(path -> path.toString().startsWith(tempDir + "pdf_") && 
-                                            path.toString().endsWith(".pdf"))
-                                .sorted(Comparator.comparingLong(p -> {
-                                    String name = p.getFileName().toString();
-                                    return Long.parseLong(name.split("_")[1]);
-                                }))
-                                .collect(Collectors.toList());
+                        .filter(path -> path.toString().startsWith(tempDir + "pdf_") &&
+                                        path.toString().endsWith(".pdf"))
+                        .sorted(Comparator.comparingLong(p -> {
+                            String name = p.getFileName().toString();
+                            return Long.parseLong(name.split("_")[1]);
+                        }))
+                        .collect(Collectors.toList());
 
                 // Procesar los PDFs generados
                 for (int i = 0; i < Math.min(generatedPdfs.size(), nombres.size()); i++) {
@@ -109,7 +109,7 @@ public class Main {
                     responseBuilder.addResultados(pdfBase64);
                     Files.delete(pdfPath);
                 }
-                
+
                 responseObserver.onNext(responseBuilder.build());
                 responseObserver.onCompleted();
             } catch (Exception e) {
@@ -121,48 +121,48 @@ public class Main {
 
     static class OfficeConverterService extends ConvertidorOfficeGrpc.ConvertidorOfficeImplBase {
         private static final AtomicInteger totalRequests = new AtomicInteger(0);
-        
+        private static final String FILE_SEPARATOR = File.separator; // Mover la constante aquí
+
         @Override
-        public void convertirArchivos(ConvertirArchivosRequest request, 
-            StreamObserver<ConvertirArchivosResponse> responseObserver) {
+        public void convertirArchivos(ConvertirArchivosRequest request,
+                                        StreamObserver<ConvertirArchivosResponse> responseObserver) {
             totalRequests.incrementAndGet();
             long startTime = System.currentTimeMillis();
             MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-            private static final String FILE_SEPARATOR = File.separator;
-            
+
             // Configurar directorios
             String tempDir = System.getProperty("java.io.tmpdir");
             if (tempDir.endsWith(FILE_SEPARATOR)) {
                 tempDir = tempDir.substring(0, tempDir.length() - 1);
             }
-            String outputDir = tempDir + FILE_SEPARATOR + "pdf_output" + File.separator;
+            String outputDir = tempDir + FILE_SEPARATOR + "pdf_output" + FILE_SEPARATOR;
             List<String> filePaths = new ArrayList<>();
             List<String> nombres = new ArrayList<>();
-            
+
             try {
                 // 1. Preparar directorio de salida
                 System.out.println("Directorio de salida: " + outputDir);
-                Stream Files.createDirectories(Paths.get(outputDir));
-                
+                Files.createDirectories(Paths.get(outputDir)); // Corregir: Usar Files.createDirectories
+
                 // 2. Procesar cada archivo recibido
                 for (ArchivoItem item : request.getArchivosList()) {
                     // Limpiar nombre de archivo (eliminar caracteres especiales y espacios)
                     String nombreLimpio = item.getNombre()
-                        .replaceAll("[^a-zA-Z0-9.-]", "_")
-                        .replace(" ", "_");
-                    
-                    String tempFilePath = tempDir + File.separator + "office_" + 
-                                        System.nanoTime() + "_" + nombreLimpio;
-                    
+                            .replaceAll("[^a-zA-Z0-9.-]", "_")
+                            .replace(" ", "_");
+
+                    String tempFilePath = tempDir + FILE_SEPARATOR + "office_" +
+                            System.nanoTime() + "_" + nombreLimpio;
+
                     // Escribir archivo temporal
                     byte[] fileBytes = Base64.getDecoder().decode(item.getContenidoBase64());
                     Files.write(Paths.get(tempFilePath), fileBytes);
-                    
+
                     // Verificar que se creó correctamente
                     if (!Files.exists(Paths.get(tempFilePath))) {
                         throw new IOException("No se pudo crear el archivo temporal: " + tempFilePath);
                     }
-                    
+
                     filePaths.add(tempFilePath);
                     nombres.add(nombreLimpio);
                 }
@@ -175,19 +175,19 @@ public class Main {
                 int threads = Math.min(4, Runtime.getRuntime().availableProcessors());
                 OfficePdf processor = new OfficePdf(files, threads, outputDir);
                 processor.processFiles();
-                
+
                 // 4. Preparar respuesta
                 ConvertirArchivosResponse.Builder responseBuilder = ConvertirArchivosResponse.newBuilder();
-                
+
                 // Buscar PDFs generados
                 List<Path> pdfsGenerados = Files.list(Paths.get(outputDir))
-                                .filter(path -> path.toString().endsWith(".pdf") && 
-                                            path.toString().contains("officepdf_"))
-                                .sorted(Comparator.comparing(path -> {
-                                    String nombre = path.getFileName().toString();
-                                    return Long.parseLong(nombre.split("_")[1]);
-                                }))
-                                .collect(Collectors.toList());
+                        .filter(path -> path.toString().endsWith(".pdf") &&
+                                        path.toString().contains("officepdf_"))
+                        .sorted(Comparator.comparing(path -> {
+                            String nombre = path.getFileName().toString();
+                            return Long.parseLong(nombre.split("_")[1]);
+                        }))
+                        .collect(Collectors.toList());
 
                 // 5. Agregar resultados a la respuesta
                 for (int i = 0; i < Math.min(pdfsGenerados.size(), nombres.size()); i++) {
@@ -200,25 +200,25 @@ public class Main {
                         responseBuilder.addResultados(""); // Resultado vacío para conversiones fallidas
                     }
                 }
-                
+
                 // 6. Enviar respuesta
                 responseObserver.onNext(responseBuilder.build());
                 responseObserver.onCompleted();
-                
+
             } catch (Exception e) {
                 // 7. Manejar errores adecuadamente
                 String mensajeError = "Error al procesar archivos: " + e.getMessage();
                 System.err.println(mensajeError);
                 e.printStackTrace();
-                
+
                 responseObserver.onError(Status.INTERNAL
-                    .withDescription(mensajeError)
-                    .withCause(e)
-                    .asRuntimeException());
+                        .withDescription(mensajeError)
+                        .withCause(e)
+                        .asRuntimeException());
             } finally {
                 // 8. Limpieza de archivos temporales
                 limpiarArchivosTemporales(filePaths, outputDir);
-                
+
                 // 9. Registrar métricas
                 registrarMetricas(startTime, memoryBean);
             }
@@ -233,18 +233,18 @@ public class Main {
                     System.err.println("No se pudo eliminar archivo temporal: " + archivo);
                 }
             }
-            
+
             // Limpiar PDFs generados
             try {
                 Files.list(Paths.get(directorioSalida))
-                    .filter(path -> path.toString().contains("officepdf_"))
-                    .forEach(path -> {
-                        try {
-                            Files.deleteIfExists(path);
-                        } catch (IOException e) {
-                            System.err.println("No se pudo eliminar PDF temporal: " + path);
-                        }
-                    });
+                        .filter(path -> path.toString().contains("officepdf_"))
+                        .forEach(path -> {
+                            try {
+                                Files.deleteIfExists(path);
+                            } catch (IOException e) {
+                                System.err.println("No se pudo eliminar PDF temporal: " + path);
+                            }
+                        });
             } catch (IOException e) {
                 System.err.println("Error limpiando directorio de salida: " + e.getMessage());
             }
@@ -254,21 +254,27 @@ public class Main {
         private void registrarMetricas(long inicio, MemoryMXBean memoria) {
             long duracion = System.currentTimeMillis() - inicio;
             long memoriaUsada = memoria.getHeapMemoryUsage().getUsed() / (1024 * 1024);
-            
+
             System.out.println("\n=== Métricas del Servicio ===");
             System.out.println("Total de peticiones: " + totalRequests.get());
             System.out.printf("Última conversión - Tiempo: %dms | Memoria usada: %dMB\n",
-                duracion, memoriaUsada);
+                    duracion, memoriaUsada);
             System.out.printf("Estadísticas: %d éxitos, %d fallos\n",
-                Processing.getSuccessCount(), Processing.getFailureCount());
+                    Processing.getSuccessCount(), Processing.getFailureCount());
         }
     }
 
 
-    public class OfficePdf2 {
+    public static class OfficePdf2 { // Corregir: Hacer la clase OfficePdf2 static
         private String[] files;
         private int threads;
         private String outputPdfPath;
+
+        public OfficePdf2(String[] files, int threads, String outputPdfPath) { // Agregar constructor
+            this.files = files;
+            this.threads = threads;
+            this.outputPdfPath = outputPdfPath;
+        }
 
         public void processFiles() throws Exception {
             long startTime = System.currentTimeMillis();
@@ -280,11 +286,11 @@ public class Main {
 
             executor.shutdown();
             executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-            
+
             long totalTime = System.currentTimeMillis() - startTime;
             System.out.printf(
-                "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
-                files.length, threads, totalTime
+                    "Resumen: %d archivos, %d hilos, Tiempo total: %dms%n",
+                    files.length, threads, totalTime
             );
         }
     }

@@ -30,50 +30,52 @@ public class Processing implements Runnable {
         long startTime = System.currentTimeMillis();
         ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
         long cpuStart = threadBean.getCurrentThreadCpuTime();
-        
+
+        String directorioSalida = outputDir; // Crear una variable local mutable
+
         try {
             // 1. Preparación del nombre de archivo
             String baseName = new File(inputFile).getName().replaceFirst("[.][^.]+$", "");
-            String outputName = String.format("officepdf_%d_%d_%s.pdf", 
-                System.nanoTime(), 
-                Thread.currentThread().getId(), 
-                baseName);
-            if (outputDir.endsWith(File.separator)) {
-                outputDir = outputDir.substring(0, outputDir.length() - 1);
+            String outputName = String.format("officepdf_%d_%d_%s.pdf",
+                    System.nanoTime(),
+                    Thread.currentThread().getId(),
+                    baseName);
+            if (directorioSalida.endsWith(File.separator)) {
+                directorioSalida = directorioSalida.substring(0, directorioSalida.length() - 1);
             }
-            String outputPath = outputDir + File.separator + outputName;
+            String outputPath = directorioSalida + File.separator + outputName;
 
             // 2. Configuración del proceso
             ProcessBuilder processBuilder = new ProcessBuilder(
-                "libreoffice",
-                "--headless",
-                "--convert-to",
-                "pdf:writer_pdf_Export",
-                "--nologo",
-                "--norestore",
-                "--nodefault",
-                "--nolockcheck",
-                "--invisible",
-                inputFile,
-                "--outdir",
-                outputDir
+                    "libreoffice",
+                    "--headless",
+                    "--convert-to",
+                    "pdf:writer_pdf_Export",
+                    "--nologo",
+                    "--norestore",
+                    "--nodefault",
+                    "--nolockcheck",
+                    "--invisible",
+                    inputFile,
+                    "--outdir",
+                    directorioSalida // Usar la variable local
             );
 
             // 3. Redirección de errores y salida
-            File logFile = new File(outputDir + File.separator + "libreoffice_log_" + System.nanoTime() + ".txt");
+            File logFile = new File(directorioSalida + File.separator + "libreoffice_log_" + System.nanoTime() + ".txt");
             processBuilder.redirectErrorStream(true);
             processBuilder.redirectOutput(ProcessBuilder.Redirect.appendTo(logFile));
 
             // 4. Variables para capturar salida
             StringBuilder processOutput = new StringBuilder();
-            
+
             // 5. Ejecución del proceso
             Process process = processBuilder.start();
-            
+
             // Leer la salida del proceso en un hilo separado
             Thread outputReader = new Thread(() -> {
                 try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()))) {
+                        new InputStreamReader(process.getInputStream()))) {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         processOutput.append(line).append("\n");
@@ -87,14 +89,14 @@ public class Processing implements Runnable {
             // 6. Esperar por la finalización
             int exitCode = process.waitFor();
             outputReader.join(); // Asegurar que hemos leído toda la salida
-            
+
             long endTime = System.currentTimeMillis();
             long cpuEnd = threadBean.getCurrentThreadCpuTime();
             long duration = endTime - startTime;
             long cpuUsage = (cpuEnd - cpuStart) / 1_000_000;
 
             System.out.println("inputFile: " + inputFile);
-            System.out.println("outputDir: " + outputDir);
+            System.out.println("outputDir: " + directorioSalida);
             System.out.println("outputName: " + outputName);
             System.out.println("outputPath: " + outputPath);
 
@@ -102,10 +104,10 @@ public class Processing implements Runnable {
             if (exitCode == 0) {
                 successCount.incrementAndGet();
                 System.out.printf(
-                    "Conversión exitosa: %s -> %s (Tiempo: %dms, CPU: %dms)%n",
-                    inputFile, outputName, duration, cpuUsage
+                        "Conversión exitosa: %s -> %s (Tiempo: %dms, CPU: %dms)%n",
+                        inputFile, outputName, duration, cpuUsage
                 );
-                
+
                 // Verificar que realmente se creó el PDF
                 if (!Files.exists(Paths.get(outputPath))) {
                     System.err.println("¡¡¡ERROR!!! El archivo PDF de salida no se creó: " + outputPath);
@@ -114,12 +116,12 @@ public class Processing implements Runnable {
             } else {
                 failureCount.incrementAndGet();
                 System.err.printf(
-                    "Error en conversión: %s (Código: %d)%nDetalles:%n%s%n",
-                    inputFile, exitCode, processOutput.toString()
+                        "Error en conversión: %s (Código: %d)%nDetalles:%n%s%n",
+                        inputFile, exitCode, processOutput.toString()
                 );
-                
+
                 // Guardar el archivo problemático para diagnóstico
-                Path problematicFile = Paths.get(outputDir + File.separator + "problematic_" + baseName);
+                Path problematicFile = Paths.get(directorioSalida + File.separator + "problematic_" + baseName);
                 Files.copy(Paths.get(inputFile), problematicFile, StandardCopyOption.REPLACE_EXISTING);
                 System.err.println("Se guardó copia del archivo problemático en: " + problematicFile);
             }
@@ -132,7 +134,7 @@ public class Processing implements Runnable {
             System.err.println("Stack Trace:");
             e.printStackTrace();
             System.err.println("====================\n");
-            
+
             // Intenta limpiar archivos temporales
             try {
                 Files.deleteIfExists(Paths.get(inputFile));
@@ -152,11 +154,11 @@ public class Processing implements Runnable {
     public static long getTotalConversionTime() {
         return totalConversionTime.get();
     }
-    
+
     public static long getSuccessCount() {
         return successCount.get();
     }
-    
+
     public static long getFailureCount() {
         return failureCount.get();
     }
