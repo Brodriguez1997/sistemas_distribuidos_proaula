@@ -137,6 +137,7 @@ public class Main {
             
             try {
                 // 1. Preparar directorio de salida
+                System.out.println("Directorio de salida: " + outputDir);
                 Files.createDirectories(Paths.get(outputDir));
                 
                 // 2. Procesar cada archivo recibido
