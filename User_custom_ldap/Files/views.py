@@ -28,9 +28,9 @@ import server_pb2 as grpc_pb2
 import server_pb2_grpc as grpc_pb2_grpc
 
 def recibir_url(lista_grpc_urls):
-    url = "http://192.168.0.114:3000/api/pdf/"
+    url = "http://10.152.164.36:3000/api/pdf/"
     iteracion = 0
-    nodos = ["192.168.0.139"]
+    nodos = ["10.152.164.37"]
     nodo = nodos[iteracion] + ":50051"
 
     channel = grpc.insecure_channel(nodo)
@@ -96,9 +96,9 @@ def recibir_url(lista_grpc_urls):
 
 def recibir_archivo(lista_grpc_archivos):
     print("LLEGO 2")
-    url = "http://192.168.0.114:3000/api/pdf/"
+    url = "http://10.152.164.36:3000/api/pdf/"
     iteracion = 0
-    nodos = ["192.168.0.139"]
+    nodos = ["10.152.164.37"]
     nodo = nodos[iteracion] + ":50051"
 
     channel = grpc.insecure_channel(nodo)
