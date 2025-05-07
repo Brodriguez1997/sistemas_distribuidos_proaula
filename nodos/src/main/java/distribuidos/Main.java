@@ -9,6 +9,7 @@ import officepdf.Processing;
 import urlpdf.UrlPdf;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -334,9 +335,39 @@ public class Main {
 
         private void validarTipoArchivo(Path rutaArchivo) throws IOException {
             String nombreArchivo = rutaArchivo.getFileName().toString().toLowerCase();
-            if (!nombreArchivo.matches(".*\\.(doc|docx|ppt|pptx|xls|xlsx|odt|ods|odp|rtf|txt)$")) {
+            
+            // Lista ampliada de extensiones soportadas
+            if (nombreArchivo.matches(".*\\.(doc|docx|ppt|pptx|xls|xlsx|odt|ods|odp|ott|ots|otp|rtf|txt)$")) {
+                return;
+            }
+            
+            // Si la extensión no es reconocida, verificar por contenido
+            if (!esArchivoOfficeValidoPorContenido(rutaArchivo)) {
                 throw new IOException("Formato de archivo no soportado: " + nombreArchivo + 
                                 "\nFormatos soportados: DOC, DOCX, PPT, PPTX, XLS, XLSX, ODT, ODS, ODP, RTF, TXT");
+            }
+        }
+
+        private boolean esArchivoOfficeValidoPorContenido(Path rutaArchivo) {
+            try (InputStream is = Files.newInputStream(rutaArchivo)) {
+                byte[] cabecera = new byte[8];
+                int bytesLeidos = is.read(cabecera);
+                
+                // Verificación para formatos basados en ZIP (ODT, DOCX, etc.)
+                if (bytesLeidos >= 4 && cabecera[0] == 0x50 && cabecera[1] == 0x4B && 
+                    cabecera[2] == 0x03 && cabecera[3] == 0x04) {
+                    return true;
+                }
+                
+                // Verificación para formatos binarios antiguos (DOC, XLS, PPT)
+                if (bytesLeidos >= 8 && cabecera[0] == (byte) 0xD0 && cabecera[1] == (byte) 0xCF &&
+                    cabecera[2] == (byte) 0x11 && cabecera[3] == (byte) 0xE0) {
+                    return true;
+                }
+                
+                return false;
+            } catch (IOException e) {
+                return false;
             }
         }
     }
